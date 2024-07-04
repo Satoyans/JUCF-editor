@@ -1,10 +1,13 @@
 import Moveable from "react-moveable";
 
-function MoveableElement() {
+const MoveableElement: React.FC<{
+	targetElement: HTMLElement | null;
+	setTargetElement: React.Dispatch<React.SetStateAction<HTMLElement | null>>;
+}> = ({ targetElement }) => {
 	return (
 		<>
 			<Moveable
-				target={document.querySelector(".moveable") as HTMLElement}
+				target={targetElement}
 				resizable={true}
 				draggable={true}
 				onDrag={(e) => {
@@ -18,7 +21,6 @@ function MoveableElement() {
 			/>
 		</>
 	);
-}
-export default MoveableElement;
+};
 
-// createRoot(document.getElementById("root")!).render(<App />);
+export default MoveableElement;
