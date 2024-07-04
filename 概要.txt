@@ -11,3 +11,5 @@ JUCF-editor | Json Ui Custom Form editor
 ・変数を使った三項演算子のような概念
 
 3.UI
+できればmuiみたいなのを使いたい
+センスないから
