@@ -12,6 +12,9 @@ const MoveableElement: React.FC<{
 				draggable={true}
 				onDrag={(e) => {
 					e.target.style.transform = e.transform;
+					console.log(e.transform);
+					console.log(e.top, e.left);
+					// console.log(e.transform.replace("translate(", "").replace(/px/g, "").replace(")", "").split(", "));
 				}}
 				onResize={(e) => {
 					e.target.style.width = `${e.width}px`;
