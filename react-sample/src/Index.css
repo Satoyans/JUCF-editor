@@ -1,22 +1,3 @@
 body {
 	margin: 0;
 }
-
-.form_element > div > p {
-	white-space: nowrap;
-	margin: 0;
-	pointer-events: none;
-	user-select: none;
-	text-align: center;
-}
-
-.form_element {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	flex-direction: column;
-}
-
-.selected {
-	border: red 1px solid;
-}

@@ -96,10 +96,6 @@ const Screen: React.FC<{
 	};
 	children: React.ReactNode;
 }> = ({ props, children }) => {
-	const border_style = {
-		border: "solid 1px",
-	};
-
 	const form_size = { x: props.formSize.x * props.scale * props.screenZoomRatio, y: props.formSize.y * props.scale * props.screenZoomRatio };
 	const game_screen_size = { x: props.gameScreenSize.x * props.scale * props.screenZoomRatio, y: props.gameScreenSize.y * props.scale * props.screenZoomRatio };
 
@@ -115,22 +111,22 @@ const Screen: React.FC<{
 			<div
 				id="game_screen"
 				style={{
-					...border_style,
 					width: `${game_screen_size.x}px`,
 					height: `${game_screen_size.y}px`,
 					backgroundColor: theme_color_dict[props.themeColor].screen.gameArea,
 					display: "flex",
 					justifyContent: "center",
 					alignItems: "center",
+					border: "solid 1px black",
 				}}
 			>
 				<div
 					id="form_screen"
 					style={{
-						...border_style,
 						width: `${form_size.x}px`,
 						height: `${form_size.y}px`,
 						backgroundColor: theme_color_dict[props.themeColor].screen.formArea,
+						border: "solid 1px black",
 					}}
 				>
 					<div></div>
@@ -145,7 +141,7 @@ const Screen: React.FC<{
 const Header: React.FC = () => {
 	const header_height = 50;
 	return (
-		<div id="header" style={{ width: "100%", height: `${header_height}px`, margin: 0, borderBottom: "solid 1px", display: "flex", justifyContent: "space-between" }}>
+		<div id="header" style={{ width: "100%", height: `${header_height}px`, margin: 0, borderBottom: "solid 1px black", display: "flex", justifyContent: "space-between" }}>
 			<div className="title" style={{ margin: "0 0 0 10px" }}>
 				<p style={{ margin: 0, fontSize: 36 }}>JUCF-editor</p>
 			</div>
@@ -169,7 +165,7 @@ const ToolBar: React.FC<{
 	};
 }> = ({ props }) => {
 	return (
-		<div id="toolbar" style={{ width: "100%", height: "50px", margin: 0, borderBottom: "solid 1px" }}>
+		<div id="toolbar" style={{ width: "100%", height: "50px", margin: 0, borderBottom: "solid 1px black" }}>
 			<div style={{ margin: "0 0 0 10px", display: "flex" }}>
 				<p style={{ margin: 0, fontSize: 24 }}>toolbar</p>
 				<button
@@ -202,19 +198,34 @@ const ElementsGenerator: React.FC<{
 		return (
 			<div
 				id={`form_element${index}`}
-				className={`form_element ${index === props.targetFormElementIndex ? "selected" : ""}`}
+				className={`form_element`}
 				style={{
 					width: `${form_element.w * props.scale * props.screenZoomRatio - 2}px`,
 					height: `${form_element.h * props.scale * props.screenZoomRatio - 2}px`,
 					position: "absolute",
-					border: "solid 1px",
 					letterSpacing: `${-0.75 * props.scale * props.screenZoomRatio}px`,
 					fontSize: `${(10 * props.scale * props.screenZoomRatio) / 1.2}px`,
+					border: `${index === props.targetFormElementIndex ? "solid 1px red" : "solid 1px black"}`,
+
+					display: "flex",
+					alignItems: "center",
+					justifyContent: "center",
+					flexDirection: "column",
 				}}
 			>
 				{!form_element.is_show_text ? null : (
 					<div>
-						<p>{form_element.text}</p>
+						<p
+							style={{
+								whiteSpace: "nowrap",
+								margin: 0,
+								pointerEvents: "none",
+								userSelect: "none",
+								textAlign: "center",
+							}}
+						>
+							{form_element.text}
+						</p>
 					</div>
 				)}
 				{!form_element.is_show_image ? null : (
@@ -250,7 +261,6 @@ const ElementPanel: React.FC<{
 		return (
 			<div
 				style={{
-					border: "solid 1px",
 					width: "80px",
 					height: "80px",
 					margin: "10px",
@@ -258,9 +268,9 @@ const ElementPanel: React.FC<{
 					display: "flex",
 					justifyContent: " center",
 					alignItems: "center",
+					border: `${index === props.targetFormElementIndex ? "solid 1px red" : "solid 1px black"}`,
 				}}
 				id={`in_panel_element${index}`}
-				className={`${index === props.targetFormElementIndex ? "selected" : ""}`}
 				onClick={(e) => {
 					const form_element_index = Number((e.target as HTMLDivElement).id.replace("in_panel_element", ""));
 					if (Number.isNaN(form_element_index)) throw new Error("element_panel_index is not a number!");
