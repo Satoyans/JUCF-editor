@@ -3,9 +3,9 @@ import { default as MoveableElement } from "./MoveableElement";
 import { useWindowSize } from "react-use";
 import React from "react";
 
-const theme_color_dict: { [theme: string]: { screen: { gameArea: string; formArea: string } } } = {
-	Light: { screen: { gameArea: "#dddddd", formArea: "#fdfdfd" } },
-	Dark: { screen: { gameArea: "#303030", formArea: "#a1a1a1" } },
+const theme_color_dict: { [theme: string]: { screen: { gameArea: string; formArea: string }; element_panel: { background: string } } } = {
+	Light: { screen: { gameArea: "#dddddd", formArea: "#fdfdfd" }, element_panel: { background: "#dddddd" } },
+	Dark: { screen: { gameArea: "#303030", formArea: "#a1a1a1" }, element_panel: { background: "#303030" } },
 };
 
 export namespace formElementsTypes {
@@ -194,12 +194,15 @@ const ElementsGenerator: React.FC<{
 		setScale: React.Dispatch<React.SetStateAction<number>>;
 		screenZoomRatio: number;
 		setScreenZoomRatio: React.Dispatch<React.SetStateAction<number>>;
+		targetFormElementIndex: number | null;
+		setTargetFormElementIndex: React.Dispatch<React.SetStateAction<number | null>>;
 	};
 }> = ({ props }) => {
-	function elementGenerator(form_element: formElementsTypes.elementPropertiesTypes.all) {
+	function elementGenerator(form_element: formElementsTypes.elementPropertiesTypes.all, index: number) {
 		return (
 			<div
-				className="form_element moveable"
+				id={`form_element${index}`}
+				className={`form_element ${index === props.targetFormElementIndex ? "selected" : ""}`}
 				style={{
 					width: `${form_element.w * props.scale * props.screenZoomRatio - 2}px`,
 					height: `${form_element.h * props.scale * props.screenZoomRatio - 2}px`,
@@ -223,9 +226,74 @@ const ElementsGenerator: React.FC<{
 		);
 	}
 	return (
-		<div className="form_elements ">
+		<div id="form_elements">
 			{props.formElements.map((form_element, index) => (
-				<React.Fragment key={index}>{elementGenerator(form_element)}</React.Fragment>
+				<React.Fragment key={index}>{elementGenerator(form_element, index)}</React.Fragment>
+			))}
+		</div>
+	);
+};
+
+const ElementPanel: React.FC<{
+	props: {
+		themeColor: "Light" | "Dark";
+		elementPanelHeight: number;
+		formElements: formElementsTypes.elementPropertiesTypes.all[];
+		targetFormElement: null | HTMLElement;
+		setTargetFormElement: React.Dispatch<React.SetStateAction<HTMLElement | null>>;
+		targetFormElementIndex: number | null;
+		setTargetFormElementIndex: React.Dispatch<React.SetStateAction<number | null>>;
+	};
+}> = ({ props }) => {
+	const row_count = Math.floor((window.innerWidth - 20) / 100);
+	function InPanelElement(form_element: formElementsTypes.elementPropertiesTypes.all, index: number) {
+		return (
+			<div
+				style={{
+					border: "solid 1px",
+					width: "80px",
+					height: "80px",
+					margin: "10px",
+
+					display: "flex",
+					justifyContent: " center",
+					alignItems: "center",
+				}}
+				id={`in_panel_element${index}`}
+				className={`${index === props.targetFormElementIndex ? "selected" : ""}`}
+				onClick={(e) => {
+					const form_element_index = Number((e.target as HTMLDivElement).id.replace("in_panel_element", ""));
+					if (Number.isNaN(form_element_index)) throw new Error("element_panel_index is not a number!");
+					props.setTargetFormElementIndex(form_element_index);
+				}}
+			>
+				<p
+					style={{
+						whiteSpace: "nowrap",
+						overflow: "hidden",
+						textOverflow: "ellipsis",
+						margin: 0,
+					}}
+				>
+					{form_element.text}
+				</p>
+				<img></img>
+			</div>
+		);
+	}
+	return (
+		<div
+			id="element_panel"
+			style={{
+				backgroundColor: theme_color_dict[props.themeColor].element_panel.background,
+				width: "100%",
+				height: `${props.elementPanelHeight}px`,
+				display: "flex",
+				flexFlow: "wrap",
+			}}
+		>
+			{props.formElements.map((form_element, index) => (
+				<React.Fragment key={index}>{InPanelElement(form_element, index)}</React.Fragment>
 			))}
 		</div>
 	);
@@ -242,6 +310,8 @@ function App() {
 	const [scale, setScale] = useState(0);
 	//State: フォームid
 	const [formId, setFormId] = useState("custom_form");
+	//State: ターゲットエレメントインデックス
+	const [targetFormElementIndex, setTargetFormElementIndex] = useState<number | null>(null);
 	//State: ターゲットエレメント
 	const [targetFormElement, setTargetFormElement] = useState<null | HTMLElement>(null);
 	//State: エレメントのリスト
@@ -251,17 +321,23 @@ function App() {
 	//State: エレメントパネルの高さ
 	const [elementPanelHeight, setElementPanelHeight] = useState(0);
 
-	//初回またはターゲット要素変更時にMoveableのtarget更新
+	//ターゲットインデックス更新時にターゲットを更新
 	useEffect(() => {
-		setTargetFormElement(document.querySelector(".moveable") as HTMLElement);
-	}, [targetFormElement]);
+		if (targetFormElementIndex === null) return setTargetFormElement(null);
+		const form_elements_div = document.querySelector("#form_elements");
+		if (form_elements_div === null) throw new Error("form_elements_div is null");
+		setTargetFormElement(form_elements_div.children[targetFormElementIndex] as HTMLElement);
+	}, [targetFormElementIndex]);
 
 	//初回だけ実行?
 	useEffect(() => {
+		const update_scale = getScale(gameScreenSize, formSize, elementPanelHeight);
+		if (Math.abs(update_scale - scale) >= 0.05) setScale(update_scale);
+
 		getScale(gameScreenSize, formSize, elementPanelHeight);
 		// 横 = ((ウィンドウの幅 - 左右) / マスのサイズ横)
 		// Math.ceil(配列の数 / 横) * マスのサイズ縦 +上下
-		setElementPanelHeight(Math.ceil((formElements.length / ((window.innerWidth - 20) / 100)) * 100 + 20));
+		setElementPanelHeight(Math.ceil(formElements.length / Math.floor((window.innerWidth - 20) / 100)) * 100 + 20);
 	});
 
 	//ウィンドウサイズ変更時に実行
@@ -269,7 +345,7 @@ function App() {
 		const update_scale = getScale(gameScreenSize, formSize, elementPanelHeight);
 		if (Math.abs(update_scale - scale) < 0.05) return;
 		setScale(update_scale);
-		setElementPanelHeight(Math.ceil((formElements.length / ((window.innerWidth - 20) / 100)) * 100 + 20));
+		setElementPanelHeight(Math.ceil(formElements.length / Math.floor((window.innerWidth - 20) / 100)) * 100 + 20);
 	};
 
 	//テキストエリア用のステート
@@ -291,9 +367,12 @@ function App() {
 			<Header />
 			<ToolBar props={{ formElements, setFormElements }} />
 			<Screen props={{ formId, themeColor, gameScreenSize, formSize, screenZoomRatio, setScreenZoomRatio, scale, setScale }}>
-				<ElementsGenerator props={{ formElements, setFormElements, scale, setScale, screenZoomRatio, setScreenZoomRatio }} />
+				<ElementsGenerator
+					props={{ formElements, setFormElements, scale, setScale, screenZoomRatio, setScreenZoomRatio, targetFormElementIndex, setTargetFormElementIndex }}
+				/>
 				<MoveableElement targetFormElement={targetFormElement} setTargetFormElement={setTargetFormElement} />
 			</Screen>
+			<ElementPanel props={{ themeColor, elementPanelHeight, formElements, targetFormElement, setTargetFormElement, targetFormElementIndex, setTargetFormElementIndex }} />
 			<div id="dev_info" /*style={{ maxHeight: "100px" }}*/>
 				<p>
 					window:{window.innerWidth}/{window.innerHeight}
