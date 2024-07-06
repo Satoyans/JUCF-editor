@@ -8,10 +8,65 @@ const theme_color_dict: { [theme: string]: { screen: { gameArea: string; formAre
 	Dark: { screen: { gameArea: "#303030", formArea: "#a1a1a1" } },
 };
 
+export namespace formElementsTypes {
+	interface basePropertiesType {
+		w: number;
+		h: number;
+		x: number;
+		y: number;
+	}
+	export namespace elementPropertiesOption {
+		export interface buttonOption {
+			// is_show_button?: boolean;
+		}
+		export interface closeButtonOption {
+			// is_show_close?: boolean;
+		}
+		export interface textOption {
+			text: string;
+			// is_show_text?: boolean;
+		}
+		export interface imageOption {
+			texture: string;
+			// is_show_image?: boolean;
+		}
+		export interface hoverTextOption {
+			hover_text: string;
+			// is_show_hover?: boolean; //実際は使っていない、falseならhover_textを""にするだけ
+		}
+		export interface customOption {
+			buttonOption?: buttonOption;
+			closeButtonOption?: closeButtonOption;
+			textOption?: textOption;
+			imageOption?: imageOption;
+			hoverTextOption?: hoverTextOption;
+		}
+	}
+	export namespace elementPropertiesTypes {
+		export interface addButton extends basePropertiesType, elementPropertiesOption.buttonOption {}
+		export interface addCloseButton extends basePropertiesType, elementPropertiesOption.closeButtonOption {}
+		export interface addText extends basePropertiesType, elementPropertiesOption.textOption {}
+		export interface addImage extends basePropertiesType, elementPropertiesOption.imageOption {}
+		export interface addHoverText extends basePropertiesType, elementPropertiesOption.hoverTextOption {}
+		export interface all
+			extends basePropertiesType,
+				elementPropertiesOption.buttonOption,
+				elementPropertiesOption.closeButtonOption,
+				elementPropertiesOption.hoverTextOption,
+				elementPropertiesOption.imageOption,
+				elementPropertiesOption.textOption {
+			is_show_button: boolean;
+			is_show_close: boolean;
+			is_show_text: boolean;
+			is_show_image: boolean;
+		}
+	}
+}
+
 //ウィンドウサイズとゲームスクリーンサイズの比を返す関数
-function getScale(game_screen_size: { x: number; y: number }, form_size: { x: number; y: number }) {
+function getScale(game_screen_size: { x: number; y: number }, form_size: { x: number; y: number }, elementPanelHeight: number) {
 	const window_x = window.innerWidth - 2;
-	const window_y = window.innerHeight - 2 - 50 - 50 - 100; // border + header + toolbar + under
+	const window_y = window.innerHeight - 2 - 50 - 50 - elementPanelHeight; // border + header + toolbar + under
 	if (window_x < 0 || window_y < 0) return 0;
 	const max_screen_size_x = Math.max(game_screen_size.x, form_size.x);
 	const max_screen_size_y = Math.max(game_screen_size.y, form_size.y);
@@ -23,27 +78,30 @@ function getScale(game_screen_size: { x: number; y: number }, form_size: { x: nu
 }
 //スクリーン
 const Screen: React.FC<{
-	formIdState: String;
-	themeColorState: "Light" | "Dark";
-	formSizeState: {
-		x: number;
-		y: number;
+	props: {
+		formId: String;
+		themeColor: "Light" | "Dark";
+		formSize: {
+			x: number;
+			y: number;
+		};
+		gameScreenSize: {
+			x: number;
+			y: number;
+		};
+		screenZoomRatio: number;
+		setScreenZoomRatio: React.Dispatch<React.SetStateAction<number>>;
+		scale: number;
+		setScale: React.Dispatch<React.SetStateAction<number>>;
 	};
-	gameScreenSizeState: {
-		x: number;
-		y: number;
-	};
-	screenZoomRatio: number;
-	setScreenZoomRatio: React.Dispatch<React.SetStateAction<number>>;
 	children: React.ReactNode;
-}> = ({ formSizeState, gameScreenSizeState, formIdState, themeColorState, screenZoomRatio, setScreenZoomRatio, children }) => {
+}> = ({ props, children }) => {
 	const border_style = {
 		border: "solid 1px",
 	};
 
-	const scale = getScale(gameScreenSizeState, formSizeState);
-	const form_size = { x: formSizeState.x * scale * screenZoomRatio, y: formSizeState.y * scale * screenZoomRatio };
-	const game_screen_size = { x: gameScreenSizeState.x * scale * screenZoomRatio, y: gameScreenSizeState.y * scale * screenZoomRatio };
+	const form_size = { x: props.formSize.x * props.scale * props.screenZoomRatio, y: props.formSize.y * props.scale * props.screenZoomRatio };
+	const game_screen_size = { x: props.gameScreenSize.x * props.scale * props.screenZoomRatio, y: props.gameScreenSize.y * props.scale * props.screenZoomRatio };
 
 	return (
 		<div
@@ -60,7 +118,7 @@ const Screen: React.FC<{
 					...border_style,
 					width: `${game_screen_size.x}px`,
 					height: `${game_screen_size.y}px`,
-					backgroundColor: theme_color_dict[themeColorState].screen.gameArea,
+					backgroundColor: theme_color_dict[props.themeColor].screen.gameArea,
 					display: "flex",
 					justifyContent: "center",
 					alignItems: "center",
@@ -72,7 +130,7 @@ const Screen: React.FC<{
 						...border_style,
 						width: `${form_size.x}px`,
 						height: `${form_size.y}px`,
-						backgroundColor: theme_color_dict[themeColorState].screen.formArea,
+						backgroundColor: theme_color_dict[props.themeColor].screen.formArea,
 					}}
 				>
 					<div></div>
@@ -100,44 +158,125 @@ const Header: React.FC = () => {
 	);
 };
 
+function createFormElement(): formElementsTypes.elementPropertiesTypes.all {
+	return { h: 30, w: 30, x: 0, y: 0, text: "element", texture: "", hover_text: "", is_show_button: false, is_show_close: false, is_show_image: false, is_show_text: true };
+}
 //ツールバー
-const ToolBar: React.FC = () => {
+const ToolBar: React.FC<{
+	props: {
+		formElements: formElementsTypes.elementPropertiesTypes.all[];
+		setFormElements: React.Dispatch<React.SetStateAction<formElementsTypes.elementPropertiesTypes.all[]>>;
+	};
+}> = ({ props }) => {
 	return (
 		<div id="toolbar" style={{ width: "100%", height: "50px", margin: 0, borderBottom: "solid 1px" }}>
-			<div style={{ margin: "0 0 0 10px" }}>
+			<div style={{ margin: "0 0 0 10px", display: "flex" }}>
 				<p style={{ margin: 0, fontSize: 24 }}>toolbar</p>
+				<button
+					onClick={() => {
+						const form_elements = JSON.parse(JSON.stringify(props.formElements));
+						form_elements.push(createFormElement());
+						props.setFormElements(form_elements);
+					}}
+				>
+					add
+				</button>
 			</div>
+		</div>
+	);
+};
+
+const ElementsGenerator: React.FC<{
+	props: {
+		formElements: formElementsTypes.elementPropertiesTypes.all[];
+		setFormElements: React.Dispatch<React.SetStateAction<formElementsTypes.elementPropertiesTypes.all[]>>;
+		scale: number;
+		setScale: React.Dispatch<React.SetStateAction<number>>;
+		screenZoomRatio: number;
+		setScreenZoomRatio: React.Dispatch<React.SetStateAction<number>>;
+	};
+}> = ({ props }) => {
+	function elementGenerator(form_element: formElementsTypes.elementPropertiesTypes.all) {
+		return (
+			<div
+				className="form_element moveable"
+				style={{
+					width: `${form_element.w * props.scale * props.screenZoomRatio - 2}px`,
+					height: `${form_element.h * props.scale * props.screenZoomRatio - 2}px`,
+					position: "absolute",
+					border: "solid 1px",
+					letterSpacing: `${-0.75 * props.scale * props.screenZoomRatio}px`,
+					fontSize: `${(10 * props.scale * props.screenZoomRatio) / 1.2}px`,
+				}}
+			>
+				{!form_element.is_show_text ? null : (
+					<div>
+						<p>{form_element.text}</p>
+					</div>
+				)}
+				{!form_element.is_show_image ? null : (
+					<div>
+						<img></img>
+					</div>
+				)}
+			</div>
+		);
+	}
+	return (
+		<div className="form_elements ">
+			{props.formElements.map((form_element, index) => (
+				<React.Fragment key={index}>{elementGenerator(form_element)}</React.Fragment>
+			))}
 		</div>
 	);
 };
 
 function App() {
 	//State: サイトのテーマカラー
-	const [themeColorState, setThemeColorState] = useState<"Light" | "Dark">("Light");
+	const [themeColor, setThemeColor] = useState<"Light" | "Dark">("Light");
 	//State: ゲームスクリーンサイズ
-	const [gameScreenSizeState, setGameScreenSizeState] = useState({ x: 450, y: 180 });
+	const [gameScreenSize, setGameScreenSize] = useState({ x: 450, y: 180 });
 	//State: フォームサイズ
-	const [formSizeState, setFormSizeState] = useState({ x: 300, y: 180 });
+	const [formSize, setFormSize] = useState({ x: 300, y: 180 });
 	//State: スケール
-	const [scaleState, setScaleState] = useState(getScale(gameScreenSizeState, formSizeState));
+	const [scale, setScale] = useState(0);
 	//State: フォームid
-	const [FormIdState, setFormIdState] = useState("custom_form");
+	const [formId, setFormId] = useState("custom_form");
 	//State: ターゲットエレメント
-	const [targetElement, setTargetElement] = useState<null | HTMLElement>(null);
+	const [targetFormElement, setTargetFormElement] = useState<null | HTMLElement>(null);
+	//State: エレメントのリスト
+	const [formElements, setFormElements] = useState<formElementsTypes.elementPropertiesTypes.all[]>([]);
 	//State: ズーム倍率
 	const [screenZoomRatio, setScreenZoomRatio] = useState(1);
+	//State: エレメントパネルの高さ
+	const [elementPanelHeight, setElementPanelHeight] = useState(0);
 
 	//初回またはターゲット要素変更時にMoveableのtarget更新
 	useEffect(() => {
-		setTargetElement(document.querySelector(".moveable") as HTMLElement);
-	}, [targetElement]);
+		setTargetFormElement(document.querySelector(".moveable") as HTMLElement);
+	}, [targetFormElement]);
+
+	//初回だけ実行?
+	useEffect(() => {
+		getScale(gameScreenSize, formSize, elementPanelHeight);
+		// 横 = ((ウィンドウの幅 - 左右) / マスのサイズ横)
+		// Math.ceil(配列の数 / 横) * マスのサイズ縦 +上下
+		setElementPanelHeight(Math.ceil((formElements.length / ((window.innerWidth - 20) / 100)) * 100 + 20));
+	});
 
 	//ウィンドウサイズ変更時に実行
 	window.onresize = () => {
-		const update_scale = getScale(gameScreenSizeState, formSizeState);
-		if (Math.abs(update_scale - scaleState) < 0.05) return;
-		setScaleState(update_scale);
+		const update_scale = getScale(gameScreenSize, formSize, elementPanelHeight);
+		if (Math.abs(update_scale - scale) < 0.05) return;
+		setScale(update_scale);
+		setElementPanelHeight(Math.ceil((formElements.length / ((window.innerWidth - 20) / 100)) * 100 + 20));
 	};
+
+	//テキストエリア用のステート
+	const [formElementsCopy, setFormElementsCopy] = useState<string>("");
+	useEffect(() => {
+		setFormElementsCopy(JSON.stringify(formElements, null, 2));
+	}, [formElements]);
 
 	//ズーム倍率更新関数
 	const updateZoomRatio = (diff: number) => {
@@ -150,16 +289,20 @@ function App() {
 	return (
 		<div className="App">
 			<Header />
-			<ToolBar />
-			<div id="dev_info" style={{ maxHeight: "100px" }}>
+			<ToolBar props={{ formElements, setFormElements }} />
+			<Screen props={{ formId, themeColor, gameScreenSize, formSize, screenZoomRatio, setScreenZoomRatio, scale, setScale }}>
+				<ElementsGenerator props={{ formElements, setFormElements, scale, setScale, screenZoomRatio, setScreenZoomRatio }} />
+				<MoveableElement targetFormElement={targetFormElement} setTargetFormElement={setTargetFormElement} />
+			</Screen>
+			<div id="dev_info" /*style={{ maxHeight: "100px" }}*/>
 				<p>
 					window:{window.innerWidth}/{window.innerHeight}
 				</p>
 				<p>
-					game:{gameScreenSizeState.x}/{gameScreenSizeState.y}
+					game:{gameScreenSize.x}/{gameScreenSize.y}
 				</p>
 				<p>
-					form:{formSizeState.x}/{formSizeState.y}
+					form:{formSize.x}/{formSize.y}
 				</p>
 				{/*TODO Inputにして入力でもzoomできるようにする*/}
 				<p>zoom:{(screenZoomRatio * 100).toFixed(0)}%</p>
@@ -178,20 +321,60 @@ function App() {
 					</button>
 				</div>
 			</div>
-			<Screen
-				formIdState={FormIdState}
-				themeColorState={themeColorState}
-				gameScreenSizeState={gameScreenSizeState}
-				formSizeState={formSizeState}
-				screenZoomRatio={screenZoomRatio}
-				setScreenZoomRatio={setScreenZoomRatio}
-			>
-				<div className="moveable" style={{ margin: "0", border: "solid 1px" }}>
-					<p style={{ whiteSpace: "pre-wrap", textAlign: "center" }}>{"移動可能要素のはず"}</p>
-				</div>
-				{/*TODO 操作できる要素を生成する関数か何かを書く*/}
-				<MoveableElement targetElement={targetElement} setTargetElement={setTargetElement} />
-			</Screen>
+			<div>
+				<button
+					onClick={(e) => {
+						try {
+							const form_elements = JSON.parse(((e.target as HTMLButtonElement).parentElement?.querySelector("textarea") as HTMLTextAreaElement).value);
+							let index_count = 0;
+							for (let form_element of form_elements) {
+								const element_type: formElementsTypes.elementPropertiesTypes.all = {
+									h: 0,
+									w: 0,
+									x: 0,
+									y: 0,
+									hover_text: "",
+									texture: "",
+									text: "",
+									is_show_button: true,
+									is_show_close: true,
+									is_show_image: true,
+									is_show_text: true,
+								};
+								if (Object.keys(form_element).length !== Object.keys(element_type).length) throw new Error(`キーの数が異常です。index:${index_count}`);
+								for (let key of Object.keys(form_element)) {
+									if (!Object.keys(element_type).includes(key)) throw new Error(`キーが異常です。index:${index_count},key:${key}`);
+									const typed_key = key as
+										| "h"
+										| "w"
+										| "x"
+										| "y"
+										| "hover_text"
+										| "texture"
+										| "text"
+										| "is_show_button"
+										| "is_show_close"
+										| "is_show_image"
+										| "is_show_text";
+									if (typeof form_element[key] !== typeof element_type[typed_key]) throw new Error(`値の型が異常です。index:${index_count},key:${key}`);
+								}
+								console.log(Object.keys(form_element));
+								index_count += 1;
+							}
+							setFormElements(form_elements);
+						} catch (e) {
+							window.alert(`テキストエリアからの読み込み中にエラー:\n${e}`);
+						}
+					}}
+				>
+					ロード
+				</button>
+				<textarea
+					value={formElementsCopy}
+					onChange={(e) => setFormElementsCopy(e.target.value)}
+					style={{ fontSize: 12, height: `${((JSON.stringify(formElements, null, 2).match(/\n/g)?.length ?? 0) + 1) * 12}px`, width: "calc(100% - 10px)" }}
+				></textarea>
+			</div>
 		</div>
 	);
 }

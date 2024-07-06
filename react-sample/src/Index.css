@@ -2,8 +2,16 @@ body {
 	margin: 0;
 }
 
-p {
+.form_element > div > p {
 	white-space: nowrap;
-	overflow: hidden;
-	text-overflow: ellipsis;
+	margin: 0;
+	pointer-events: none;
+	user-select: none;
+}
+
+.form_element {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
 }
