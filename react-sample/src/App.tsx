@@ -2,66 +2,12 @@ import { useEffect, useState } from "react";
 import { default as MoveableElement } from "./MoveableElement";
 import { useWindowSize } from "react-use";
 import React from "react";
+import { formElementsTypes } from "./formElementTypes";
 
 const theme_color_dict: { [theme: string]: { screen: { gameArea: string; formArea: string }; element_panel: { background: string } } } = {
 	Light: { screen: { gameArea: "#dddddd", formArea: "#fdfdfd" }, element_panel: { background: "#dddddd" } },
 	Dark: { screen: { gameArea: "#303030", formArea: "#a1a1a1" }, element_panel: { background: "#303030" } },
 };
-
-export namespace formElementsTypes {
-	interface basePropertiesType {
-		w: number;
-		h: number;
-		x: number;
-		y: number;
-	}
-	export namespace elementPropertiesOption {
-		export interface buttonOption {
-			// is_show_button?: boolean;
-		}
-		export interface closeButtonOption {
-			// is_show_close?: boolean;
-		}
-		export interface textOption {
-			text: string;
-			// is_show_text?: boolean;
-		}
-		export interface imageOption {
-			texture: string;
-			// is_show_image?: boolean;
-		}
-		export interface hoverTextOption {
-			hover_text: string;
-			// is_show_hover?: boolean; //実際は使っていない、falseならhover_textを""にするだけ
-		}
-		export interface customOption {
-			buttonOption?: buttonOption;
-			closeButtonOption?: closeButtonOption;
-			textOption?: textOption;
-			imageOption?: imageOption;
-			hoverTextOption?: hoverTextOption;
-		}
-	}
-	export namespace elementPropertiesTypes {
-		export interface addButton extends basePropertiesType, elementPropertiesOption.buttonOption {}
-		export interface addCloseButton extends basePropertiesType, elementPropertiesOption.closeButtonOption {}
-		export interface addText extends basePropertiesType, elementPropertiesOption.textOption {}
-		export interface addImage extends basePropertiesType, elementPropertiesOption.imageOption {}
-		export interface addHoverText extends basePropertiesType, elementPropertiesOption.hoverTextOption {}
-		export interface all
-			extends basePropertiesType,
-				elementPropertiesOption.buttonOption,
-				elementPropertiesOption.closeButtonOption,
-				elementPropertiesOption.hoverTextOption,
-				elementPropertiesOption.imageOption,
-				elementPropertiesOption.textOption {
-			is_show_button: boolean;
-			is_show_close: boolean;
-			is_show_text: boolean;
-			is_show_image: boolean;
-		}
-	}
-}
 
 //ウィンドウサイズとゲームスクリーンサイズの比を返す関数
 function getScale(game_screen_size: { x: number; y: number }, form_size: { x: number; y: number }, elementPanelHeight: number) {
@@ -74,7 +20,8 @@ function getScale(game_screen_size: { x: number; y: number }, form_size: { x: nu
 	const scaleY = window_y / max_screen_size_y;
 
 	const minScale = Math.min(scaleX, scaleY);
-	return Number((minScale * 10).toFixed(1)) * 0.1; //o.oo
+	// return Number((Math.floor(minScale) * 10).toFixed(1)) / 10; //o.oo
+	return 1;
 }
 //スクリーン
 const Screen: React.FC<{
@@ -93,11 +40,19 @@ const Screen: React.FC<{
 		setScreenZoomRatio: React.Dispatch<React.SetStateAction<number>>;
 		scale: number;
 		setScale: React.Dispatch<React.SetStateAction<number>>;
+		targetFormElementIndex: number | null;
+		setTargetFormElementIndex: React.Dispatch<React.SetStateAction<number | null>>;
 	};
 	children: React.ReactNode;
 }> = ({ props, children }) => {
-	const form_size = { x: props.formSize.x * props.scale * props.screenZoomRatio, y: props.formSize.y * props.scale * props.screenZoomRatio };
-	const game_screen_size = { x: props.gameScreenSize.x * props.scale * props.screenZoomRatio, y: props.gameScreenSize.y * props.scale * props.screenZoomRatio };
+	const form_size = {
+		x: props.formSize.x * props.scale * props.screenZoomRatio,
+		y: props.formSize.y * props.scale * props.screenZoomRatio,
+	};
+	const game_screen_size = {
+		x: props.gameScreenSize.x * props.scale * props.screenZoomRatio,
+		y: props.gameScreenSize.y * props.scale * props.screenZoomRatio,
+	};
 
 	return (
 		<div
@@ -122,6 +77,7 @@ const Screen: React.FC<{
 			>
 				<div
 					id="form_screen"
+					onClick={() => props.setTargetFormElementIndex(null)}
 					style={{
 						width: `${form_size.x}px`,
 						height: `${form_size.y}px`,
@@ -139,7 +95,7 @@ const Screen: React.FC<{
 
 //ヘッダー
 const Header: React.FC = () => {
-	const header_height = 50;
+	const header_height = 50 - 1;
 	return (
 		<div id="header" style={{ width: "100%", height: `${header_height}px`, margin: 0, borderBottom: "solid 1px black", display: "flex", justifyContent: "space-between" }}>
 			<div className="title" style={{ margin: "0 0 0 10px" }}>
@@ -162,10 +118,12 @@ const ToolBar: React.FC<{
 	props: {
 		formElements: formElementsTypes.elementPropertiesTypes.all[];
 		setFormElements: React.Dispatch<React.SetStateAction<formElementsTypes.elementPropertiesTypes.all[]>>;
+		targetFormElementIndex: number | null;
+		setTargetFormElementIndex: React.Dispatch<React.SetStateAction<number | null>>;
 	};
 }> = ({ props }) => {
 	return (
-		<div id="toolbar" style={{ width: "100%", height: "50px", margin: 0, borderBottom: "solid 1px black" }}>
+		<div id="toolbar" style={{ width: "100%", height: `${50 - 1}px`, margin: 0, borderBottom: "solid 1px black" }}>
 			<div style={{ margin: "0 0 0 10px", display: "flex" }}>
 				<p style={{ margin: 0, fontSize: 24 }}>toolbar</p>
 				<button
@@ -177,11 +135,36 @@ const ToolBar: React.FC<{
 				>
 					add
 				</button>
+				<button
+					onClick={() => {
+						const index = props.targetFormElementIndex;
+						if (index === null) return;
+						const form_elements = JSON.parse(JSON.stringify(props.formElements));
+						form_elements.splice(index, 1);
+						props.setTargetFormElementIndex(null);
+						props.setFormElements(form_elements);
+					}}
+				>
+					remove
+				</button>
+				<button
+					onClick={() => {
+						const index = props.targetFormElementIndex;
+						if (index === null) return;
+						const form_elements = JSON.parse(JSON.stringify(props.formElements));
+						form_elements.push(form_elements[index]);
+						props.setTargetFormElementIndex(form_elements.length - 1);
+						props.setFormElements(form_elements);
+					}}
+				>
+					copy
+				</button>
 			</div>
 		</div>
 	);
 };
 
+//エレメントジェネレーター
 const ElementsGenerator: React.FC<{
 	props: {
 		formElements: formElementsTypes.elementPropertiesTypes.all[];
@@ -202,10 +185,12 @@ const ElementsGenerator: React.FC<{
 				style={{
 					width: `${form_element.w * props.scale * props.screenZoomRatio - 2}px`,
 					height: `${form_element.h * props.scale * props.screenZoomRatio - 2}px`,
+					transform: `translate(${form_element.x * props.scale * props.screenZoomRatio}px, ${form_element.y * props.scale * props.screenZoomRatio}px)`,
 					position: "absolute",
 					letterSpacing: `${-0.75 * props.scale * props.screenZoomRatio}px`,
 					fontSize: `${(10 * props.scale * props.screenZoomRatio) / 1.2}px`,
 					border: `${index === props.targetFormElementIndex ? "solid 1px red" : "solid 1px black"}`,
+					zIndex: `${index === props.targetFormElementIndex ? 1 : 0}`,
 
 					display: "flex",
 					alignItems: "center",
@@ -219,9 +204,9 @@ const ElementsGenerator: React.FC<{
 							style={{
 								whiteSpace: "nowrap",
 								margin: 0,
+								textAlign: "center",
 								pointerEvents: "none",
 								userSelect: "none",
-								textAlign: "center",
 							}}
 						>
 							{form_element.text}
@@ -245,6 +230,7 @@ const ElementsGenerator: React.FC<{
 	);
 };
 
+//エレメントパネル
 const ElementPanel: React.FC<{
 	props: {
 		themeColor: "Light" | "Dark";
@@ -283,6 +269,8 @@ const ElementPanel: React.FC<{
 						overflow: "hidden",
 						textOverflow: "ellipsis",
 						margin: 0,
+						pointerEvents: "none",
+						userSelect: "none",
 					}}
 				>
 					{form_element.text}
@@ -344,7 +332,6 @@ function App() {
 		const update_scale = getScale(gameScreenSize, formSize, elementPanelHeight);
 		if (Math.abs(update_scale - scale) >= 0.05) setScale(update_scale);
 
-		getScale(gameScreenSize, formSize, elementPanelHeight);
 		// 横 = ((ウィンドウの幅 - 左右) / マスのサイズ横)
 		// Math.ceil(配列の数 / 横) * マスのサイズ縦 +上下
 		setElementPanelHeight(Math.ceil(formElements.length / Math.floor((window.innerWidth - 20) / 100)) * 100 + 20);
@@ -375,12 +362,14 @@ function App() {
 	return (
 		<div className="App">
 			<Header />
-			<ToolBar props={{ formElements, setFormElements }} />
-			<Screen props={{ formId, themeColor, gameScreenSize, formSize, screenZoomRatio, setScreenZoomRatio, scale, setScale }}>
+			<ToolBar props={{ formElements, setFormElements, setTargetFormElementIndex, targetFormElementIndex }} />
+			<Screen
+				props={{ formId, themeColor, gameScreenSize, formSize, screenZoomRatio, setScreenZoomRatio, scale, setScale, targetFormElementIndex, setTargetFormElementIndex }}
+			>
 				<ElementsGenerator
 					props={{ formElements, setFormElements, scale, setScale, screenZoomRatio, setScreenZoomRatio, targetFormElementIndex, setTargetFormElementIndex }}
 				/>
-				<MoveableElement targetFormElement={targetFormElement} setTargetFormElement={setTargetFormElement} />
+				<MoveableElement props={{ targetFormElement, setTargetFormElement, screenZoomRatio, formSize, gameScreenSize, scale, setScale, formElements, setFormElements }} />
 			</Screen>
 			<ElementPanel props={{ themeColor, elementPanelHeight, formElements, targetFormElement, setTargetFormElement, targetFormElementIndex, setTargetFormElementIndex }} />
 			<div id="dev_info" /*style={{ maxHeight: "100px" }}*/>
