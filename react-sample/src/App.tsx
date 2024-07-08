@@ -65,12 +65,12 @@ const Screen: React.FC<{
 		<div
 			id="screen"
 			style={{
-				display: "flex",
-				justifyContent: "center",
-				alignItems: "center",
-				flexShrink: 0,
+				//display: "flex",
+				//justifyContent: "center",
+				//alignItems: "center",
+				//flexShrink: 0,
 				overflow: "auto",
-				height: `${window.innerHeight - 50 - 50 - props.elementPanelHeight - 20}px`,
+				maxHeight: `${window.innerHeight - 50 - 50 - props.elementPanelHeight - 20}px`,
 				width: `${window.innerWidth - 20}px`,
 				boxShadow: "0 0 0 2px #666666 inset",
 			}}
@@ -315,6 +315,20 @@ const ElementPanel: React.FC<{
 	);
 };
 
+const ControlPanel: React.FC<{
+	props: {
+		themeColor: "Light" | "Dark";
+		elementPanelHeight: number;
+		formElements: formElementsTypes.elementPropertiesTypes.all[];
+		targetFormElement: null | HTMLElement;
+		setTargetFormElement: React.Dispatch<React.SetStateAction<HTMLElement | null>>;
+		targetFormElementIndex: number | null;
+		setTargetFormElementIndex: React.Dispatch<React.SetStateAction<number | null>>;
+	};
+}> = ({ props }) => {
+	return <></>;
+};
+
 function App() {
 	//State: サイトのテーマカラー
 	const [themeColor, setThemeColor] = useState<"Light" | "Dark">("Light");
@@ -371,12 +385,27 @@ function App() {
 		<div className="App">
 			<Header />
 			<ToolBar props={{ formElements, setFormElements, setTargetFormElementIndex, targetFormElementIndex }} />
-			<Screen
-				props={{ formId, themeColor, gameScreenSize, formSize, screenZoomRatio, setScreenZoomRatio, targetFormElementIndex, setTargetFormElementIndex, elementPanelHeight }}
-			>
-				<ElementsGenerator props={{ formElements, setFormElements, screenZoomRatio, setScreenZoomRatio, targetFormElementIndex, setTargetFormElementIndex }} />
-				<MoveableElement props={{ targetFormElement, setTargetFormElement, screenZoomRatio, formSize, gameScreenSize, formElements, setFormElements, editMode }} />
-			</Screen>
+			<div style={{ display: "flex", flexDirection: "row" }}>
+				<Screen
+					props={{
+						formId,
+						themeColor,
+						gameScreenSize,
+						formSize,
+						screenZoomRatio,
+						setScreenZoomRatio,
+						targetFormElementIndex,
+						setTargetFormElementIndex,
+						elementPanelHeight,
+					}}
+				>
+					<ElementsGenerator props={{ formElements, setFormElements, screenZoomRatio, setScreenZoomRatio, targetFormElementIndex, setTargetFormElementIndex }} />
+					<MoveableElement props={{ targetFormElement, setTargetFormElement, screenZoomRatio, formSize, gameScreenSize, formElements, setFormElements, editMode }} />
+				</Screen>
+				<ControlPanel
+					props={{ themeColor, elementPanelHeight, formElements, targetFormElement, setTargetFormElement, targetFormElementIndex, setTargetFormElementIndex }}
+				/>
+			</div>
 			<ElementPanel props={{ themeColor, elementPanelHeight, formElements, targetFormElement, setTargetFormElement, targetFormElementIndex, setTargetFormElementIndex }} />
 			<div id="dev_info" /*style={{ maxHeight: "100px" }}*/>
 				<p>
