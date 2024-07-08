@@ -4,14 +4,14 @@ import { useWindowSize } from "react-use";
 import React from "react";
 import { formElementsTypes } from "./formElementTypes";
 
-const theme_color_dict: { [theme: string]: { screen: { gameArea: string; formArea: string }; element_panel: { background: string } } } = {
-	Light: { screen: { gameArea: "#dddddd", formArea: "#fdfdfd" }, element_panel: { background: "#dddddd" } },
-	Dark: { screen: { gameArea: "#303030", formArea: "#a1a1a1" }, element_panel: { background: "#303030" } },
+const theme_color_dict: { [theme: string]: { screen: { gameArea: string; formArea: string }; element_panel: { background: string }; control_panel: { background: string } } } = {
+	Light: { screen: { gameArea: "#dddddd", formArea: "#fdfdfd" }, element_panel: { background: "#efefef" }, control_panel: { background: "#efefef" } },
+	Dark: { screen: { gameArea: "#303030", formArea: "#a1a1a1" }, element_panel: { background: "#303030" }, control_panel: { background: "#303030" } },
 };
 
 //ウィンドウサイズとゲームスクリーンサイズの比を返す関数
 function getScale(game_screen_size: { x: number; y: number }, form_size: { x: number; y: number }, elementPanelHeight: number) {
-	const window_x = window.innerWidth - 20; //余分
+	const window_x = window.innerWidth - 20 - 200; //余分 + コントロールパネル
 	const window_y = window.innerHeight - 50 - 50 - elementPanelHeight - 20; //  header + toolbar + under + 余分
 	if (window_x < 0 || window_y < 0) return 0;
 	const max_screen_size_x = Math.max(game_screen_size.x, form_size.x);
@@ -71,8 +71,7 @@ const Screen: React.FC<{
 				//flexShrink: 0,
 				overflow: "auto",
 				maxHeight: `${window.innerHeight - 50 - 50 - props.elementPanelHeight - 20}px`,
-				width: `${window.innerWidth - 20}px`,
-				boxShadow: "0 0 0 2px #666666 inset",
+				width: `${window.innerWidth - 20 - 200}px`,
 			}}
 		>
 			<div
@@ -324,9 +323,106 @@ const ControlPanel: React.FC<{
 		setTargetFormElement: React.Dispatch<React.SetStateAction<HTMLElement | null>>;
 		targetFormElementIndex: number | null;
 		setTargetFormElementIndex: React.Dispatch<React.SetStateAction<number | null>>;
+		formSize: {
+			x: number;
+			y: number;
+		};
+		setFormSize: React.Dispatch<
+			React.SetStateAction<{
+				x: number;
+				y: number;
+			}>
+		>;
+		gameScreenSize: {
+			x: number;
+			y: number;
+		};
+		setGameScreenSize: React.Dispatch<
+			React.SetStateAction<{
+				x: number;
+				y: number;
+			}>
+		>;
 	};
 }> = ({ props }) => {
-	return <></>;
+	const input_style = { width: "30px" };
+	let setting_components;
+	if (props.targetFormElementIndex === null) {
+		//スクリーン自体の設定を表示する
+		setting_components = (
+			<>
+				<div id="div_info_gameScreenSize">
+					<a>game:</a>
+					<input
+						style={{ ...input_style }}
+						value={props.gameScreenSize.x}
+						onChange={(e) => {
+							const input_value = Number(e.target.value);
+							if (Number.isNaN(input_value)) return;
+							props.setGameScreenSize({ x: input_value, y: props.gameScreenSize.y });
+						}}
+					/>
+					<a>px/</a>
+					<input
+						style={{ ...input_style }}
+						value={props.gameScreenSize.y}
+						onChange={(e) => {
+							const input_value = Number(e.target.value);
+							if (Number.isNaN(input_value)) return;
+							props.setGameScreenSize({ x: props.gameScreenSize.x, y: input_value });
+						}}
+					/>
+					<a>px</a>
+					<a
+						title="Minecraftの画面のサイズ。&#13;&#10;横幅は470弱でほぼ固定。&#13;&#10;縦幅はPCフルスクリーンで約240&#13;&#10;スマホは機種によるが180前後"
+					>
+						？
+					</a>
+				</div>
+				<div id="div_info_formSize">
+					<a>form:</a>
+					<input
+						style={{ ...input_style }}
+						value={props.formSize.x}
+						onChange={(e) => {
+							const input_value = Number(e.target.value);
+							if (Number.isNaN(input_value)) return;
+							props.setFormSize({ x: input_value, y: props.formSize.y });
+						}}
+					/>
+					<a>px/</a>
+					<input
+						style={{ ...input_style }}
+						value={props.formSize.y}
+						onChange={(e) => {
+							const input_value = Number(e.target.value);
+							if (Number.isNaN(input_value)) return;
+							props.setFormSize({ x: props.formSize.x, y: input_value });
+						}}
+					/>
+					<a>px</a>
+					<a
+						title="フォームのサイズ。&#13;&#10;ゲームスクリーンサイズより大きくなると表示されなかったりタップできなくなったりする。&#13;&#10;横300縦180辺りが無難?"
+					>
+						？
+					</a>
+				</div>
+				{/*TODO フォームの名前とか変数とか*/}
+			</>
+		);
+	} else {
+		//その要素の設定を表示する
+		const form_element = props.formElements[props.targetFormElementIndex];
+		if (form_element === undefined) throw new Error("form element is not found!(control_panel)");
+		setting_components = <></>;
+	}
+
+	return (
+		<div id="control_panel" style={{ width: 200, boxShadow: "0 0 0 1px black inset", backgroundColor: theme_color_dict[props.themeColor].control_panel.background }}>
+			<p style={{ fontSize: "24px", margin: 0, textAlign: "center" }}>設定</p>
+			{setting_components}
+		</div>
+	);
 };
 
 function App() {
@@ -385,7 +481,7 @@ function App() {
 		<div className="App">
 			<Header />
 			<ToolBar props={{ formElements, setFormElements, setTargetFormElementIndex, targetFormElementIndex }} />
-			<div style={{ display: "flex", flexDirection: "row" }}>
+			<div style={{ display: "flex", flexDirection: "row", borderBottom: "solid 1px black" }}>
 				<Screen
 					props={{
 						formId,
@@ -403,7 +499,19 @@ function App() {
 					<MoveableElement props={{ targetFormElement, setTargetFormElement, screenZoomRatio, formSize, gameScreenSize, formElements, setFormElements, editMode }} />
 				</Screen>
 				<ControlPanel
-					props={{ themeColor, elementPanelHeight, formElements, targetFormElement, setTargetFormElement, targetFormElementIndex, setTargetFormElementIndex }}
+					props={{
+						themeColor,
+						elementPanelHeight,
+						formElements,
+						targetFormElement,
+						setTargetFormElement,
+						targetFormElementIndex,
+						setTargetFormElementIndex,
+						formSize,
+						setFormSize,
+						gameScreenSize,
+						setGameScreenSize,
+					}}
 				/>
 			</div>
 			<ElementPanel props={{ themeColor, elementPanelHeight, formElements, targetFormElement, setTargetFormElement, targetFormElementIndex, setTargetFormElementIndex }} />
