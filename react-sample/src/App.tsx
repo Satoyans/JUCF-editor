@@ -72,7 +72,7 @@ const Screen: React.FC<{
 				overflow: "auto",
 				height: `${window.innerHeight - 50 - 50 - props.elementPanelHeight - 20}px`,
 				width: `${window.innerWidth - 20}px`,
-				border: "solid 2px #666666",
+				boxShadow: "0 0 0 2px #666666 inset",
 			}}
 		>
 			<div
@@ -86,7 +86,7 @@ const Screen: React.FC<{
 					// alignItems: "center",
 					// flexShrink: 0,
 					margin: "auto",
-					border: "solid 1px black",
+					boxShadow: "0 0 0 1px black inset",
 				}}
 			>
 				<div
@@ -101,7 +101,7 @@ const Screen: React.FC<{
 						// alignItems: "center",
 						// flexShrink: 0,
 						margin: "auto",
-						border: "solid 1px black",
+						boxShadow: "0 0 0 1px black inset",
 					}}
 				>
 					{children}
@@ -115,7 +115,7 @@ const Screen: React.FC<{
 const Header: React.FC = () => {
 	const header_height = 50 - 1;
 	return (
-		<div id="header" style={{ width: "100%", height: `${header_height}px`, margin: 0, borderBottom: "solid 1px black", display: "flex", justifyContent: "space-between" }}>
+		<div id="header" style={{ width: "100%", height: `${header_height}px`, margin: 0, boxShadow: "0 -1px 0 0 black inset", display: "flex", justifyContent: "space-between" }}>
 			<div className="title" style={{ margin: "0 0 0 10px" }}>
 				<p style={{ margin: 0, fontSize: 36 }}>JUCF-editor</p>
 			</div>
@@ -141,7 +141,7 @@ const ToolBar: React.FC<{
 	};
 }> = ({ props }) => {
 	return (
-		<div id="toolbar" style={{ width: "100%", height: `${50 - 1}px`, margin: 0, borderBottom: "solid 1px black" }}>
+		<div id="toolbar" style={{ width: "100%", height: `${50 - 1}px`, margin: 0, boxShadow: "0 -1px 0 0 black inset" }}>
 			<div style={{ margin: "0 0 0 10px", display: "flex" }}>
 				<p style={{ margin: 0, fontSize: 24 }}>toolbar</p>
 				<button
@@ -206,7 +206,7 @@ const ElementsGenerator: React.FC<{
 					position: "absolute",
 					letterSpacing: `${-0.75 * props.screenZoomRatio}px`,
 					fontSize: `${(10 * props.screenZoomRatio) / 1.2}px`,
-					border: `${index === props.targetFormElementIndex ? "solid 1px red" : "solid 1px black"}`,
+					boxShadow: `${index === props.targetFormElementIndex ? "0 0 0 1px red inset" : "0 0 0 1px black inset"}`,
 					zIndex: `${index === props.targetFormElementIndex ? 1 : 0}`,
 
 					display: "flex",
@@ -271,7 +271,7 @@ const ElementPanel: React.FC<{
 					display: "flex",
 					justifyContent: " center",
 					alignItems: "center",
-					border: `${index === props.targetFormElementIndex ? "solid 1px red" : "solid 1px black"}`,
+					boxShadow: `${index === props.targetFormElementIndex ? "0 0 0 1px red inset" : "0 0 0 1px black inset"}`,
 				}}
 				id={`in_panel_element${index}`}
 				onClick={(e) => {
