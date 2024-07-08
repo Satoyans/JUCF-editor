@@ -21,11 +21,15 @@ function getScale(game_screen_size: { x: number; y: number }, form_size: { x: nu
 
 	const minScale = Math.min(scaleX, scaleY);
 	console.log(minScale);
-	return Number((minScale * 10).toFixed(1)) * 0.1; //o.oo
+	return Number(Math.floor(minScale * 10)) * 0.1; //o.oo
 }
 //フォームエレメントからエレメントパネルの高さを求める関数
 function getElementPanelHeight(form_elements: formElementsTypes.elementPropertiesTypes.all[]) {
-	return Math.ceil(form_elements.length / Math.floor((window.innerWidth - 20) / 100)) * 100;
+	if (form_elements.length === 0) return 100;
+	const width_element_count = Math.floor((window.innerWidth - 20) / 100); //横方向に何個並べられるか
+	const height_element_count = Math.ceil(form_elements.length / width_element_count); //縦方向に何列必要か
+	if (height_element_count > 2) return 200;
+	return height_element_count * 100;
 }
 //スクリーン
 const Screen: React.FC<{
@@ -64,9 +68,11 @@ const Screen: React.FC<{
 				display: "flex",
 				justifyContent: "center",
 				alignItems: "center",
-				// overflow: "scroll",
+				flexShrink: 0,
+				overflow: "auto",
 				height: `${window.innerHeight - 50 - 50 - props.elementPanelHeight - 20}px`,
 				width: `${window.innerWidth - 20}px`,
+				border: "solid 2px #666666",
 			}}
 		>
 			<div
@@ -75,9 +81,11 @@ const Screen: React.FC<{
 					width: `${game_screen_size.x - 2}px`, //ボーダー込みでサイズを設定
 					height: `${game_screen_size.y - 2}px`, //ボーダー込みでサイズを設定
 					backgroundColor: theme_color_dict[props.themeColor].screen.gameArea,
-					display: "flex",
-					justifyContent: "center",
-					alignItems: "center",
+					// display: "flex",
+					// justifyContent: "center",
+					// alignItems: "center",
+					// flexShrink: 0,
+					margin: "auto",
 					border: "solid 1px black",
 				}}
 			>
@@ -88,6 +96,11 @@ const Screen: React.FC<{
 						width: `${form_size.x - 2}px`, //ボーダー込みでサイズを設定
 						height: `${form_size.y - 2}px`, //ボーダー込みでサイズを設定
 						backgroundColor: theme_color_dict[props.themeColor].screen.formArea,
+						// display: "flex",
+						// justifyContent: "center",
+						// alignItems: "center",
+						// flexShrink: 0,
+						margin: "auto",
 						border: "solid 1px black",
 					}}
 				>
@@ -136,6 +149,7 @@ const ToolBar: React.FC<{
 						const form_elements = JSON.parse(JSON.stringify(props.formElements));
 						form_elements.push(createFormElement());
 						props.setFormElements(form_elements);
+						props.setTargetFormElementIndex(form_elements.length - 1);
 					}}
 				>
 					add
@@ -291,6 +305,7 @@ const ElementPanel: React.FC<{
 				height: `${props.elementPanelHeight}px`,
 				display: "flex",
 				flexFlow: "wrap",
+				overflowY: "auto",
 			}}
 		>
 			{props.formElements.map((form_element, index) => (
@@ -319,9 +334,11 @@ function App() {
 	const [elementPanelHeight, setElementPanelHeight] = useState(0);
 	//State: ズーム倍率
 	const [screenZoomRatio, setScreenZoomRatio] = useState(getScale(gameScreenSize, formSize, elementPanelHeight));
+	//State: 操作モード
+	const [editMode, setEditMode] = useState<"drag" | "resize">("drag");
 
 	//フォームエレメント更新時にエレメントパネルの高さ更新
-	useEffect(() => setElementPanelHeight(getElementPanelHeight(formElements)), [formElements]);
+	useEffect(() => setElementPanelHeight(getElementPanelHeight(formElements)), [formElements, screenZoomRatio]);
 
 	//ターゲットインデックス更新時にターゲットを更新
 	useEffect(() => {
@@ -358,7 +375,7 @@ function App() {
 				props={{ formId, themeColor, gameScreenSize, formSize, screenZoomRatio, setScreenZoomRatio, targetFormElementIndex, setTargetFormElementIndex, elementPanelHeight }}
 			>
 				<ElementsGenerator props={{ formElements, setFormElements, screenZoomRatio, setScreenZoomRatio, targetFormElementIndex, setTargetFormElementIndex }} />
-				<MoveableElement props={{ targetFormElement, setTargetFormElement, screenZoomRatio, formSize, gameScreenSize, formElements, setFormElements }} />
+				<MoveableElement props={{ targetFormElement, setTargetFormElement, screenZoomRatio, formSize, gameScreenSize, formElements, setFormElements, editMode }} />
 			</Screen>
 			<ElementPanel props={{ themeColor, elementPanelHeight, formElements, targetFormElement, setTargetFormElement, targetFormElementIndex, setTargetFormElementIndex }} />
 			<div id="dev_info" /*style={{ maxHeight: "100px" }}*/>
