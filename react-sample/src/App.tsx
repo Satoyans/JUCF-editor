@@ -11,8 +11,8 @@ const theme_color_dict: { [theme: string]: { screen: { gameArea: string; formAre
 
 //ウィンドウサイズとゲームスクリーンサイズの比を返す関数
 function getScale(game_screen_size: { x: number; y: number }, form_size: { x: number; y: number }, elementPanelHeight: number) {
-	const window_x = window.innerWidth - 2 - 20; //余分
-	const window_y = window.innerHeight - 2 - 50 - 50 - elementPanelHeight - 20; // border + header + toolbar + under + 余分
+	const window_x = window.innerWidth - 20; //余分
+	const window_y = window.innerHeight - 50 - 50 - elementPanelHeight - 20; //  header + toolbar + under + 余分
 	if (window_x < 0 || window_y < 0) return 0;
 	const max_screen_size_x = Math.max(game_screen_size.x, form_size.x);
 	const max_screen_size_y = Math.max(game_screen_size.y, form_size.y);
@@ -78,8 +78,8 @@ const Screen: React.FC<{
 			<div
 				id="game_screen"
 				style={{
-					width: `${game_screen_size.x - 2}px`, //ボーダー込みでサイズを設定
-					height: `${game_screen_size.y - 2}px`, //ボーダー込みでサイズを設定
+					width: `${game_screen_size.x}px`,
+					height: `${game_screen_size.y}px`,
 					backgroundColor: theme_color_dict[props.themeColor].screen.gameArea,
 					// display: "flex",
 					// justifyContent: "center",
@@ -93,8 +93,8 @@ const Screen: React.FC<{
 					id="form_screen"
 					onClick={() => props.setTargetFormElementIndex(null)}
 					style={{
-						width: `${form_size.x - 2}px`, //ボーダー込みでサイズを設定
-						height: `${form_size.y - 2}px`, //ボーダー込みでサイズを設定
+						width: `${form_size.x}px`,
+						height: `${form_size.y}px`,
 						backgroundColor: theme_color_dict[props.themeColor].screen.formArea,
 						// display: "flex",
 						// justifyContent: "center",
@@ -200,8 +200,8 @@ const ElementsGenerator: React.FC<{
 				id={`form_element${index}`}
 				className={`form_element`}
 				style={{
-					width: `${form_element.w * props.screenZoomRatio - 2}px`,
-					height: `${form_element.h * props.screenZoomRatio - 2}px`,
+					width: `${form_element.w * props.screenZoomRatio}px`,
+					height: `${form_element.h * props.screenZoomRatio}px`,
 					transform: `translate(${form_element.x * props.screenZoomRatio}px, ${form_element.y * props.screenZoomRatio}px)`,
 					position: "absolute",
 					letterSpacing: `${-0.75 * props.screenZoomRatio}px`,
