@@ -11,8 +11,8 @@ const theme_color_dict: { [theme: string]: { screen: { gameArea: string; formAre
 
 //ウィンドウサイズとゲームスクリーンサイズの比を返す関数
 function getScale(game_screen_size: { x: number; y: number }, form_size: { x: number; y: number }, elementPanelHeight: number) {
-	const window_x = window.innerWidth - 2;
-	const window_y = window.innerHeight - 2 - 50 - 50 - elementPanelHeight; // border + header + toolbar + under
+	const window_x = window.innerWidth - 2 - 20; //余分
+	const window_y = window.innerHeight - 2 - 50 - 50 - elementPanelHeight - 20; // border + header + toolbar + under + 余分
 	if (window_x < 0 || window_y < 0) return 0;
 	const max_screen_size_x = Math.max(game_screen_size.x, form_size.x);
 	const max_screen_size_y = Math.max(game_screen_size.y, form_size.y);
@@ -20,8 +20,12 @@ function getScale(game_screen_size: { x: number; y: number }, form_size: { x: nu
 	const scaleY = window_y / max_screen_size_y;
 
 	const minScale = Math.min(scaleX, scaleY);
-	// return Number((Math.floor(minScale) * 10).toFixed(1)) / 10; //o.oo
-	return 1;
+	console.log(minScale);
+	return Number((minScale * 10).toFixed(1)) * 0.1; //o.oo
+}
+//フォームエレメントからエレメントパネルの高さを求める関数
+function getElementPanelHeight(form_elements: formElementsTypes.elementPropertiesTypes.all[]) {
+	return Math.ceil(form_elements.length / Math.floor((window.innerWidth - 20) / 100)) * 100;
 }
 //スクリーン
 const Screen: React.FC<{
@@ -38,20 +42,19 @@ const Screen: React.FC<{
 		};
 		screenZoomRatio: number;
 		setScreenZoomRatio: React.Dispatch<React.SetStateAction<number>>;
-		scale: number;
-		setScale: React.Dispatch<React.SetStateAction<number>>;
 		targetFormElementIndex: number | null;
 		setTargetFormElementIndex: React.Dispatch<React.SetStateAction<number | null>>;
+		elementPanelHeight: number;
 	};
 	children: React.ReactNode;
 }> = ({ props, children }) => {
 	const form_size = {
-		x: props.formSize.x * props.scale * props.screenZoomRatio,
-		y: props.formSize.y * props.scale * props.screenZoomRatio,
+		x: props.formSize.x * props.screenZoomRatio,
+		y: props.formSize.y * props.screenZoomRatio,
 	};
 	const game_screen_size = {
-		x: props.gameScreenSize.x * props.scale * props.screenZoomRatio,
-		y: props.gameScreenSize.y * props.scale * props.screenZoomRatio,
+		x: props.gameScreenSize.x * props.screenZoomRatio,
+		y: props.gameScreenSize.y * props.screenZoomRatio,
 	};
 
 	return (
@@ -61,13 +64,16 @@ const Screen: React.FC<{
 				display: "flex",
 				justifyContent: "center",
 				alignItems: "center",
+				// overflow: "scroll",
+				height: `${window.innerHeight - 50 - 50 - props.elementPanelHeight - 20}px`,
+				width: `${window.innerWidth - 20}px`,
 			}}
 		>
 			<div
 				id="game_screen"
 				style={{
-					width: `${game_screen_size.x}px`,
-					height: `${game_screen_size.y}px`,
+					width: `${game_screen_size.x - 2}px`, //ボーダー込みでサイズを設定
+					height: `${game_screen_size.y - 2}px`, //ボーダー込みでサイズを設定
 					backgroundColor: theme_color_dict[props.themeColor].screen.gameArea,
 					display: "flex",
 					justifyContent: "center",
@@ -79,13 +85,12 @@ const Screen: React.FC<{
 					id="form_screen"
 					onClick={() => props.setTargetFormElementIndex(null)}
 					style={{
-						width: `${form_size.x}px`,
-						height: `${form_size.y}px`,
+						width: `${form_size.x - 2}px`, //ボーダー込みでサイズを設定
+						height: `${form_size.y - 2}px`, //ボーダー込みでサイズを設定
 						backgroundColor: theme_color_dict[props.themeColor].screen.formArea,
 						border: "solid 1px black",
 					}}
 				>
-					<div></div>
 					{children}
 				</div>
 			</div>
@@ -169,8 +174,6 @@ const ElementsGenerator: React.FC<{
 	props: {
 		formElements: formElementsTypes.elementPropertiesTypes.all[];
 		setFormElements: React.Dispatch<React.SetStateAction<formElementsTypes.elementPropertiesTypes.all[]>>;
-		scale: number;
-		setScale: React.Dispatch<React.SetStateAction<number>>;
 		screenZoomRatio: number;
 		setScreenZoomRatio: React.Dispatch<React.SetStateAction<number>>;
 		targetFormElementIndex: number | null;
@@ -183,12 +186,12 @@ const ElementsGenerator: React.FC<{
 				id={`form_element${index}`}
 				className={`form_element`}
 				style={{
-					width: `${form_element.w * props.scale * props.screenZoomRatio - 2}px`,
-					height: `${form_element.h * props.scale * props.screenZoomRatio - 2}px`,
-					transform: `translate(${form_element.x * props.scale * props.screenZoomRatio}px, ${form_element.y * props.scale * props.screenZoomRatio}px)`,
+					width: `${form_element.w * props.screenZoomRatio - 2}px`,
+					height: `${form_element.h * props.screenZoomRatio - 2}px`,
+					transform: `translate(${form_element.x * props.screenZoomRatio}px, ${form_element.y * props.screenZoomRatio}px)`,
 					position: "absolute",
-					letterSpacing: `${-0.75 * props.scale * props.screenZoomRatio}px`,
-					fontSize: `${(10 * props.scale * props.screenZoomRatio) / 1.2}px`,
+					letterSpacing: `${-0.75 * props.screenZoomRatio}px`,
+					fontSize: `${(10 * props.screenZoomRatio) / 1.2}px`,
 					border: `${index === props.targetFormElementIndex ? "solid 1px red" : "solid 1px black"}`,
 					zIndex: `${index === props.targetFormElementIndex ? 1 : 0}`,
 
@@ -304,8 +307,6 @@ function App() {
 	const [gameScreenSize, setGameScreenSize] = useState({ x: 450, y: 180 });
 	//State: フォームサイズ
 	const [formSize, setFormSize] = useState({ x: 300, y: 180 });
-	//State: スケール
-	const [scale, setScale] = useState(0);
 	//State: フォームid
 	const [formId, setFormId] = useState("custom_form");
 	//State: ターゲットエレメントインデックス
@@ -314,10 +315,13 @@ function App() {
 	const [targetFormElement, setTargetFormElement] = useState<null | HTMLElement>(null);
 	//State: エレメントのリスト
 	const [formElements, setFormElements] = useState<formElementsTypes.elementPropertiesTypes.all[]>([]);
-	//State: ズーム倍率
-	const [screenZoomRatio, setScreenZoomRatio] = useState(1);
 	//State: エレメントパネルの高さ
 	const [elementPanelHeight, setElementPanelHeight] = useState(0);
+	//State: ズーム倍率
+	const [screenZoomRatio, setScreenZoomRatio] = useState(getScale(gameScreenSize, formSize, elementPanelHeight));
+
+	//フォームエレメント更新時にエレメントパネルの高さ更新
+	useEffect(() => setElementPanelHeight(getElementPanelHeight(formElements)), [formElements]);
 
 	//ターゲットインデックス更新時にターゲットを更新
 	useEffect(() => {
@@ -327,22 +331,9 @@ function App() {
 		setTargetFormElement(form_elements_div.children[targetFormElementIndex] as HTMLElement);
 	}, [targetFormElementIndex]);
 
-	//初回だけ実行?
-	useEffect(() => {
-		const update_scale = getScale(gameScreenSize, formSize, elementPanelHeight);
-		if (Math.abs(update_scale - scale) >= 0.05) setScale(update_scale);
-
-		// 横 = ((ウィンドウの幅 - 左右) / マスのサイズ横)
-		// Math.ceil(配列の数 / 横) * マスのサイズ縦 +上下
-		setElementPanelHeight(Math.ceil(formElements.length / Math.floor((window.innerWidth - 20) / 100)) * 100 + 20);
-	});
-
-	//ウィンドウサイズ変更時に実行
+	// ウィンドウサイズ変更時に実行;
 	window.onresize = () => {
-		const update_scale = getScale(gameScreenSize, formSize, elementPanelHeight);
-		if (Math.abs(update_scale - scale) < 0.05) return;
-		setScale(update_scale);
-		setElementPanelHeight(Math.ceil(formElements.length / Math.floor((window.innerWidth - 20) / 100)) * 100 + 20);
+		setScreenZoomRatio(getScale(gameScreenSize, formSize, elementPanelHeight));
 	};
 
 	//テキストエリア用のステート
@@ -364,37 +355,69 @@ function App() {
 			<Header />
 			<ToolBar props={{ formElements, setFormElements, setTargetFormElementIndex, targetFormElementIndex }} />
 			<Screen
-				props={{ formId, themeColor, gameScreenSize, formSize, screenZoomRatio, setScreenZoomRatio, scale, setScale, targetFormElementIndex, setTargetFormElementIndex }}
+				props={{ formId, themeColor, gameScreenSize, formSize, screenZoomRatio, setScreenZoomRatio, targetFormElementIndex, setTargetFormElementIndex, elementPanelHeight }}
 			>
-				<ElementsGenerator
-					props={{ formElements, setFormElements, scale, setScale, screenZoomRatio, setScreenZoomRatio, targetFormElementIndex, setTargetFormElementIndex }}
-				/>
-				<MoveableElement props={{ targetFormElement, setTargetFormElement, screenZoomRatio, formSize, gameScreenSize, scale, setScale, formElements, setFormElements }} />
+				<ElementsGenerator props={{ formElements, setFormElements, screenZoomRatio, setScreenZoomRatio, targetFormElementIndex, setTargetFormElementIndex }} />
+				<MoveableElement props={{ targetFormElement, setTargetFormElement, screenZoomRatio, formSize, gameScreenSize, formElements, setFormElements }} />
 			</Screen>
 			<ElementPanel props={{ themeColor, elementPanelHeight, formElements, targetFormElement, setTargetFormElement, targetFormElementIndex, setTargetFormElementIndex }} />
 			<div id="dev_info" /*style={{ maxHeight: "100px" }}*/>
 				<p>
 					window:{window.innerWidth}/{window.innerHeight}
 				</p>
-				<p>
-					game:{gameScreenSize.x}/{gameScreenSize.y}
-				</p>
-				<p>
-					form:{formSize.x}/{formSize.y}
-				</p>
+				<div id="div_info_gameScreenSize">
+					<a>game:</a>
+					<input
+						value={gameScreenSize.x}
+						onChange={(e) => {
+							const input_value = Number(e.target.value);
+							if (Number.isNaN(input_value)) return;
+							setGameScreenSize({ x: input_value, y: gameScreenSize.y });
+						}}
+					/>
+					<a>/</a>
+					<input
+						value={gameScreenSize.y}
+						onChange={(e) => {
+							const input_value = Number(e.target.value);
+							if (Number.isNaN(input_value)) return;
+							setGameScreenSize({ x: gameScreenSize.x, y: input_value });
+						}}
+					/>
+				</div>
+				<div id="div_info_formSize">
+					<a>form:</a>
+					<input
+						value={formSize.x}
+						onChange={(e) => {
+							const input_value = Number(e.target.value);
+							if (Number.isNaN(input_value)) return;
+							setFormSize({ x: input_value, y: formSize.y });
+						}}
+					/>
+					<a>/</a>
+					<input
+						value={formSize.y}
+						onChange={(e) => {
+							const input_value = Number(e.target.value);
+							if (Number.isNaN(input_value)) return;
+							setFormSize({ x: formSize.x, y: input_value });
+						}}
+					/>
+				</div>
 				{/*TODO Inputにして入力でもzoomできるようにする*/}
 				<p>zoom:{(screenZoomRatio * 100).toFixed(0)}%</p>
 				<div>
-					<button type="button" onClick={(e) => updateZoomRatio(-10)}>
+					<button type="button" onClick={(e) => updateZoomRatio(-50)}>
 						{"<<"}
 					</button>
-					<button type="button" onClick={(e) => updateZoomRatio(-5)}>
+					<button type="button" onClick={(e) => updateZoomRatio(-10)}>
 						{"<"}
 					</button>
-					<button type="button" onClick={(e) => updateZoomRatio(5)}>
+					<button type="button" onClick={(e) => updateZoomRatio(10)}>
 						{">"}
 					</button>
-					<button type="button" onClick={(e) => updateZoomRatio(10)}>
+					<button type="button" onClick={(e) => updateZoomRatio(50)}>
 						{">>"}
 					</button>
 				</div>
