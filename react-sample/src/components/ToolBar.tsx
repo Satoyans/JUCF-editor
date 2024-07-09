@@ -12,10 +12,12 @@ export const ToolBar: React.FC<{
 		setTargetFormElementIndex: React.Dispatch<React.SetStateAction<number | null>>;
 	};
 }> = ({ props }) => {
+	const tab_div_style = { width: "100px", marginTop: "10px", border: "solid 1px ", borderBottom: "none", borderRadius: "5px 5px 0 0" };
+	const tab_p_style = { textAlign: "center", marginTop: "10px", pointerEvents: "none", userSelect: "none" } as const;
 	return (
-		<div id="toolbar" style={{ width: "100%", height: `${50 - 1}px`, margin: 0, boxShadow: "0 -1px 0 0 black inset" }}>
-			<div style={{ margin: "0 0 0 10px", display: "flex" }}>
-				<p style={{ margin: 0, fontSize: 24 }}>toolbar</p>
+		<div id="toolbar" style={{ width: "100%", height: `${50 - 1}px`, margin: 0, boxShadow: "0 -1px 0 0 black inset", display: "flex", justifyContent: "space-between" }}>
+			<div id="toolbar_buttons" style={{ margin: "0 0 0 10px", display: "flex" }}>
+				{/* <p style={{ margin: 0, fontSize: 24 }}>toolbar</p> */}
 				<button
 					onClick={() => {
 						const form_elements = JSON.parse(JSON.stringify(props.formElements));
@@ -50,6 +52,17 @@ export const ToolBar: React.FC<{
 				>
 					copy
 				</button>
+			</div>
+			<div id="toolbar_tabs" style={{ display: "flex", justifyContent: "space-between" }}>
+				<div style={{ ...tab_div_style }} id="toolbar_tab1">
+					<p style={{ ...tab_p_style }}>スクリーン</p>
+				</div>
+				<div style={{ ...tab_div_style }} id="toolbar_tab2">
+					<p style={{ ...tab_p_style }}>画像</p>
+				</div>
+				<div style={{ ...tab_div_style }} id="toolbar_tab3">
+					<p style={{ ...tab_p_style }}>変数</p>
+				</div>
 			</div>
 		</div>
 	);
