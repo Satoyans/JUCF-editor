@@ -34,6 +34,10 @@ export const ControlPanel: React.FC<{
 		>;
 		editMode: "drag" | "resize";
 		setEditMode: React.Dispatch<React.SetStateAction<"drag" | "resize">>;
+		showFormFrame: boolean;
+		setShowFormFrame: React.Dispatch<React.SetStateAction<boolean>>;
+		formName: string;
+		setFormName: React.Dispatch<React.SetStateAction<string>>;
 	};
 }> = ({ props }) => {
 	const input_style = { width: "30px" };
@@ -42,7 +46,7 @@ export const ControlPanel: React.FC<{
 		//スクリーン自体の設定を表示する
 		setting_components = (
 			<>
-				<div id="control_panel_game">
+				<div id="control_panel_gamesize">
 					<a>game:</a>
 					<input
 						style={{ ...input_style }}
@@ -65,12 +69,12 @@ export const ControlPanel: React.FC<{
 					/>
 					<a>px</a>
 					<a
-						title="Minecraftの画面のサイズ。&#13;&#10;横幅は470弱でほぼ固定。&#13;&#10;縦幅はPCフルスクリーンで約240&#13;&#10;スマホは機種によるが180前後"
+						title="Minecraftの画面のサイズ&#13;&#10;横幅は470弱でほぼ固定。&#13;&#10;縦幅はPCフルスクリーンで約240&#13;&#10;スマホは機種によるが180前後"
 					>
 						？
 					</a>
 				</div>
-				<div id="control_panel_form">
+				<div id="control_panel_formsize">
 					<a>form:</a>
 					<input
 						style={{ ...input_style }}
@@ -93,10 +97,34 @@ export const ControlPanel: React.FC<{
 					/>
 					<a>px</a>
 					<a
-						title="フォームのサイズ。&#13;&#10;ゲームスクリーンサイズより大きくなると表示されなかったりタップできなくなったりする。&#13;&#10;横300縦180辺りが無難?"
+						title="フォームのサイズ&#13;&#10;ゲームスクリーンサイズより大きくなると表示されなかったりタップできなくなったりする。&#13;&#10;横300縦180辺りが無難?"
 					>
 						？
 					</a>
+				</div>
+				<div id="control_panel_showformframe">
+					<a>showFormFrame:</a>
+					<input
+						type="checkbox"
+						checked={props.showFormFrame}
+						onClick={(e) => {
+							props.setShowFormFrame((e.target as HTMLInputElement).checked);
+						}}
+					/>
+
+					<a title="フォームの枠を表示するか">？</a>
+				</div>
+				<div id="control_panel_formname">
+					<a>formName:</a>
+					<input
+						style={{ width: "80px" }}
+						value={props.formName}
+						onClick={(e) => {
+							props.setShowFormFrame((e.target as HTMLInputElement).checked);
+						}}
+					/>
+
+					<a title="コマンドで呼び出す際のフォームの名前">？</a>
 				</div>
 				{/*TODO フォームの名前とか変数とか*/}
 			</>
