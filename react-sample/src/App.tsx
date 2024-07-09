@@ -251,7 +251,7 @@ function App() {
 	return (
 		<div className="App">
 			<Header />
-			<ToolBar props={{ formElements, setFormElements, setTargetFormElementIndex, targetFormElementIndex }} />
+			<ToolBar props={{ formElements, setFormElements, setTargetFormElementIndex, targetFormElementIndex, selectedTab, setSelectedTab, themeColor }} />
 			{return_components}
 		</div>
 	);
