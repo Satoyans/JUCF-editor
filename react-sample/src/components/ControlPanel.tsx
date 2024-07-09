@@ -1,5 +1,5 @@
 import { formElementsTypes } from "../formElementTypes";
-import { theme_color_dict } from "./themeColor";
+import { themeColors } from "./themeColor";
 
 //コントロールパネル
 export const ControlPanel: React.FC<{
@@ -236,10 +236,7 @@ export const ControlPanel: React.FC<{
 	}
 
 	return (
-		<div
-			id="control_panel"
-			style={{ width: 200, boxShadow: "0 0 0 1px black inset", backgroundColor: theme_color_dict[props.themeColor].control_panel.background, padding: "2px" }}
-		>
+		<div id="control_panel" style={{ width: 200, boxShadow: "0 0 0 1px black inset", backgroundColor: themeColors[props.themeColor].control_panel.background, padding: "2px" }}>
 			{setting_components}
 		</div>
 	);

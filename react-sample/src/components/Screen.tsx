@@ -1,4 +1,4 @@
-import { theme_color_dict } from "./themeColor";
+import { themeColors } from "./themeColor";
 
 //スクリーン
 export const Screen: React.FC<{
@@ -48,7 +48,7 @@ export const Screen: React.FC<{
 				style={{
 					width: `${game_screen_size.x}px`,
 					height: `${game_screen_size.y}px`,
-					backgroundColor: theme_color_dict[props.themeColor].screen.gameArea,
+					backgroundColor: themeColors[props.themeColor].screen.gameArea,
 					// display: "flex",
 					// justifyContent: "center",
 					// alignItems: "center",
@@ -63,7 +63,7 @@ export const Screen: React.FC<{
 					style={{
 						width: `${form_size.x}px`,
 						height: `${form_size.y}px`,
-						backgroundColor: theme_color_dict[props.themeColor].screen.formArea,
+						backgroundColor: themeColors[props.themeColor].screen.formArea,
 						// display: "flex",
 						// justifyContent: "center",
 						// alignItems: "center",

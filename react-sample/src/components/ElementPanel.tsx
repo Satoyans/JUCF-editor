@@ -1,6 +1,6 @@
 import React from "react";
 import { formElementsTypes } from "../formElementTypes";
-import { theme_color_dict } from "./themeColor";
+import { themeColors } from "./themeColor";
 
 //エレメントパネル
 export const ElementPanel: React.FC<{
@@ -55,7 +55,7 @@ export const ElementPanel: React.FC<{
 		<div
 			id="element_panel"
 			style={{
-				backgroundColor: theme_color_dict[props.themeColor].element_panel.background,
+				backgroundColor: themeColors[props.themeColor].element_panel.background,
 				width: "100%",
 				height: `${props.elementPanelHeight}px`,
 				display: "flex",

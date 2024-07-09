@@ -1,4 +1,4 @@
-export const theme_color_dict: {
+export const themeColors: {
 	[theme: string]: { screen: { gameArea: string; formArea: string }; element_panel: { background: string }; control_panel: { background: string } };
 } = {
 	Light: { screen: { gameArea: "#dddddd", formArea: "#fdfdfd" }, element_panel: { background: "#efefef" }, control_panel: { background: "#efefef" } },
