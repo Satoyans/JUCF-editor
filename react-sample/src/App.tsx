@@ -8,6 +8,7 @@ import { ElementPanel } from "./components/ElementPanel";
 import { Header } from "./components/Header";
 import { ToolBar } from "./components/ToolBar";
 import { Screen } from "./components/Screen";
+import { Output } from "./components/Output";
 
 //ウィンドウサイズとゲームスクリーンサイズの比を返す関数
 function getScale(game_screen_size: { x: number; y: number }, form_size: { x: number; y: number }, elementPanelHeight: number) {
@@ -72,12 +73,6 @@ function App() {
 		setScreenZoomRatio(getScale(gameScreenSize, formSize, elementPanelHeight));
 	};
 
-	//テキストエリア用のステート
-	const [formElementsCopy, setFormElementsCopy] = useState<string>("");
-	useEffect(() => {
-		setFormElementsCopy(JSON.stringify(formElements, null, 2));
-	}, [formElements]);
-
 	//ズーム倍率更新関数
 	const updateZoomRatio = (diff: number) => {
 		const after = screenZoomRatio + diff * 0.01;
@@ -130,6 +125,7 @@ function App() {
 				<ElementPanel
 					props={{ themeColor, elementPanelHeight, formElements, targetFormElement, setTargetFormElement, targetFormElementIndex, setTargetFormElementIndex }}
 				/>
+				<Output props={{ formElements, setFormElements }} />
 				{/* <div id="dev_info" style={{ maxHeight: "100px" }}>
 					<p>
 						window:{window.innerWidth}/{window.innerHeight}
@@ -190,60 +186,6 @@ function App() {
 						</button>
 					</div>
 				</div> */}
-				<div>
-					<button
-						onClick={(e) => {
-							try {
-								const form_elements = JSON.parse(((e.target as HTMLButtonElement).parentElement?.querySelector("textarea") as HTMLTextAreaElement).value);
-								let index_count = 0;
-								for (let form_element of form_elements) {
-									const element_type: formElementsTypes.elementPropertiesTypes.all = {
-										h: 0,
-										w: 0,
-										x: 0,
-										y: 0,
-										hover_text: "",
-										texture: "",
-										text: "",
-										is_show_button: true,
-										is_show_close: true,
-										is_show_image: true,
-										is_show_text: true,
-									};
-									if (Object.keys(form_element).length !== Object.keys(element_type).length) throw new Error(`キーの数が異常です。index:${index_count}`);
-									for (let key of Object.keys(form_element)) {
-										if (!Object.keys(element_type).includes(key)) throw new Error(`キーが異常です。index:${index_count},key:${key}`);
-										const typed_key = key as
-											| "h"
-											| "w"
-											| "x"
-											| "y"
-											| "hover_text"
-											| "texture"
-											| "text"
-											| "is_show_button"
-											| "is_show_close"
-											| "is_show_image"
-											| "is_show_text";
-										if (typeof form_element[key] !== typeof element_type[typed_key]) throw new Error(`値の型が異常です。index:${index_count},key:${key}`);
-									}
-									console.log(Object.keys(form_element));
-									index_count += 1;
-								}
-								setFormElements(form_elements);
-							} catch (e) {
-								window.alert(`テキストエリアからの読み込み中にエラー:\n${e}`);
-							}
-						}}
-					>
-						ロード
-					</button>
-					<textarea
-						value={formElementsCopy}
-						onChange={(e) => setFormElementsCopy(e.target.value)}
-						style={{ fontSize: 12, height: `${((JSON.stringify(formElements, null, 2).match(/\n/g)?.length ?? 0) + 1) * 12}px`, width: "calc(100% - 10px)" }}
-					></textarea>
-				</div>
 			</>
 		);
 	}
