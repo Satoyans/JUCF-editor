@@ -4,6 +4,7 @@ export namespace formElementsTypes {
 		h: number;
 		x: number;
 		y: number;
+		label?: string;
 	}
 	export namespace elementPropertiesOption {
 		export interface buttonOption {
