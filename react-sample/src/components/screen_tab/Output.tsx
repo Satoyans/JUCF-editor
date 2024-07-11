@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { formElementsTypes } from "../../formElementTypes";
 
 export const Output: React.FC<{
@@ -14,9 +14,10 @@ export const Output: React.FC<{
 	};
 }> = ({ props }) => {
 	//テキストエリア用のステート
-	const [formElementsCopy, setFormElementsCopy] = useState<string>("");
+	console.log("レンダリング");
+	const textareaFormElements = useRef<HTMLTextAreaElement>(null!);
 	useEffect(() => {
-		setFormElementsCopy(JSON.stringify(props.formElements, null, 2));
+		textareaFormElements.current.value = JSON.stringify(props.formElements, null, 2);
 	}, [props.formElements]);
 
 	const textarea_style = { fontSize: 12, width: "calc(100% - 10px)" };
@@ -27,7 +28,8 @@ export const Output: React.FC<{
 				<button
 					onClick={(e) => {
 						try {
-							const form_elements = JSON.parse(((e.target as HTMLButtonElement).parentElement?.querySelector("textarea") as HTMLTextAreaElement).value);
+							// const form_elements = JSON.parse(((e.target as HTMLButtonElement).parentElement?.querySelector("textarea") as HTMLTextAreaElement).value);
+							const form_elements = JSON.parse(textareaFormElements.current.value);
 							let index_count = 0;
 							for (let form_element of form_elements) {
 								const element_type: formElementsTypes.elementPropertiesTypes.all = {
@@ -72,10 +74,8 @@ export const Output: React.FC<{
 					ロード
 				</button>
 				<textarea
-					value={formElementsCopy}
-					onChange={(e) => {
-						setFormElementsCopy(e.target.value);
-					}}
+					defaultValue={JSON.stringify(props.formElements, null, 2)}
+					ref={textareaFormElements}
 					style={{ ...textarea_style, height: `${((JSON.stringify(props.formElements, null, 2).match(/\n/g)?.length ?? 0) + 1) * 12}px` }}
 				></textarea>
 			</div>
