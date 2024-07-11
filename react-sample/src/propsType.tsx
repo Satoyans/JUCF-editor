@@ -44,4 +44,16 @@ export type propsType = {
 	setScreenZoomRatio: React.Dispatch<React.SetStateAction<number>>;
 	editMode: "drag" | "resize";
 	setEditMode: React.Dispatch<React.SetStateAction<"drag" | "resize">>;
+	uploadingImages: {
+		path: string;
+		base64: string;
+	}[];
+	setUploadingImages: React.Dispatch<
+		React.SetStateAction<
+			{
+				path: string;
+				base64: string;
+			}[]
+		>
+	>;
 };

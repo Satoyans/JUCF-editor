@@ -41,7 +41,7 @@ function App() {
 	//State: フォームの枠を表示するか
 	const [formName, setFormName] = useState("custom_form");
 	//State: 選択されているタブ
-	const [selectedTab, setSelectedTab] = useState<"screen" | "image" | "variable">("screen");
+	const [selectedTab, setSelectedTab] = useState<"screen" | "image" | "variable">("image");
 	//State: サイトのテーマカラー
 	const [themeColor, setThemeColor] = useState<"Light" | "Dark">("Light");
 	//State: ゲームスクリーンサイズ
@@ -62,6 +62,13 @@ function App() {
 	const [screenZoomRatio, setScreenZoomRatio] = useState(getScale(gameScreenSize, formSize, elementPanelHeight));
 	//State: 操作モード
 	const [editMode, setEditMode] = useState<"drag" | "resize">("drag");
+	//State: 保存したbase64の画像たち
+	const [uploadingImages, setUploadingImages] = useState<
+		{
+			path: string;
+			base64: string;
+		}[]
+	>([]);
 
 	const props = {
 		showFormFrame,
@@ -90,6 +97,8 @@ function App() {
 		setScreenZoomRatio,
 		editMode,
 		setEditMode,
+		uploadingImages,
+		setUploadingImages,
 	};
 
 	//フォームエレメント更新時にエレメントパネルの高さ更新
