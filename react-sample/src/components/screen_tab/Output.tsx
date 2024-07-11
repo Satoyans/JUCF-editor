@@ -11,6 +11,7 @@ export const Output: React.FC<{
 			y: number;
 		};
 		showFormFrame: boolean;
+		setTargetFormElementIndex: React.Dispatch<React.SetStateAction<number | null>>;
 	};
 }> = ({ props }) => {
 	//テキストエリア用のステート
@@ -66,6 +67,7 @@ export const Output: React.FC<{
 								index_count += 1;
 							}
 							props.setFormElements(form_elements);
+							props.setTargetFormElementIndex(null);
 						} catch (e) {
 							window.alert(`テキストエリアからの読み込み中にエラー:\n${e}`);
 						}
