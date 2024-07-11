@@ -1,5 +1,5 @@
 import Moveable, { OnDrag, OnResize } from "react-moveable";
-import { formElementsTypes } from "../formElementTypes";
+import { formElementsTypes } from "../../formElementTypes";
 
 const MoveableElement: React.FC<{
 	props: {

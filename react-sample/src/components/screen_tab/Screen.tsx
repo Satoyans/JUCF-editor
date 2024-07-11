@@ -1,4 +1,4 @@
-import { themeColors } from "./themeColor";
+import { themeColors } from "../themeColor";
 
 //スクリーン
 export const Screen: React.FC<{

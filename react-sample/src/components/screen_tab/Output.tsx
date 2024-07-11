@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { formElementsTypes } from "../formElementTypes";
+import { formElementsTypes } from "../../formElementTypes";
 
 export const Output: React.FC<{
 	props: {

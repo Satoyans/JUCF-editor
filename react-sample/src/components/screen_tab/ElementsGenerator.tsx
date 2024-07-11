@@ -1,5 +1,5 @@
 import React from "react";
-import { formElementsTypes } from "../formElementTypes";
+import { formElementsTypes } from "../../formElementTypes";
 
 //エレメントジェネレーター
 export const ElementsGenerator: React.FC<{

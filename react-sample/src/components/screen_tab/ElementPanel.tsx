@@ -1,6 +1,6 @@
 import React from "react";
-import { formElementsTypes } from "../formElementTypes";
-import { themeColors } from "./themeColor";
+import { formElementsTypes } from "../../formElementTypes";
+import { themeColors } from "../themeColor";
 
 //エレメントパネル
 export const ElementPanel: React.FC<{

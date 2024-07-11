@@ -1,5 +1,5 @@
-import { formElementsTypes } from "../formElementTypes";
-import { themeColors } from "./themeColor";
+import { formElementsTypes } from "../../formElementTypes";
+import { themeColors } from "../themeColor";
 
 //コントロールパネル
 export const ControlPanel: React.FC<{

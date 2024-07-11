@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
-import { default as MoveableElement } from "./components/MoveableElement";
+import { default as MoveableElement } from "./components/screen_tab/MoveableElement";
 import React from "react";
 import { formElementsTypes } from "./formElementTypes";
-import { ElementsGenerator } from "./components/ElementsGenerator";
-import { ControlPanel } from "./components/ControlPanel";
-import { ElementPanel } from "./components/ElementPanel";
+import { ElementsGenerator } from "./components/screen_tab/ElementsGenerator";
+import { ControlPanel } from "./components/screen_tab/ControlPanel";
+import { ElementPanel } from "./components/screen_tab/ElementPanel";
 import { Header } from "./components/Header";
 import { ToolBar } from "./components/ToolBar";
-import { Screen } from "./components/Screen";
-import { Output } from "./components/Output";
+import { Screen } from "./components/screen_tab/Screen";
+import { Output } from "./components/screen_tab/Output";
 
 //ウィンドウサイズとゲームスクリーンサイズの比を返す関数
 function getScale(game_screen_size: { x: number; y: number }, form_size: { x: number; y: number }, elementPanelHeight: number) {
