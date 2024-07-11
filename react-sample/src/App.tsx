@@ -133,7 +133,7 @@ function App() {
 				<ElementPanel
 					props={{ themeColor, elementPanelHeight, formElements, targetFormElement, setTargetFormElement, targetFormElementIndex, setTargetFormElementIndex }}
 				/>
-				<Output props={{ formElements, setFormElements }} />
+				<Output props={{ formElements, setFormElements, formName, formSize, showFormFrame }} />
 				{/* <div id="dev_info" style={{ maxHeight: "100px" }}>
 					<p>
 						window:{window.innerWidth}/{window.innerHeight}
