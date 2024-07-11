@@ -9,6 +9,8 @@ import { Header } from "./components/Header";
 import { ToolBar } from "./components/ToolBar";
 import { Screen } from "./components/screen_tab/Screen";
 import { Output } from "./components/screen_tab/Output";
+import { ScreenTab } from "./components/screen_tab/ScreenTab";
+import { ImageTab } from "./components/image_tab/ImageTab";
 
 //ウィンドウサイズとゲームスクリーンサイズの比を返す関数
 function getScale(game_screen_size: { x: number; y: number }, form_size: { x: number; y: number }, elementPanelHeight: number) {
@@ -61,6 +63,35 @@ function App() {
 	//State: 操作モード
 	const [editMode, setEditMode] = useState<"drag" | "resize">("drag");
 
+	const props = {
+		showFormFrame,
+		setShowFormFrame,
+		formName,
+		setFormName,
+		selectedTab,
+		setSelectedTab,
+		themeColor,
+		setThemeColor,
+		gameScreenSize,
+		setGameScreenSize,
+		formSize,
+		setFormSize,
+		formId,
+		setFormId,
+		targetFormElementIndex,
+		setTargetFormElementIndex,
+		targetFormElement,
+		setTargetFormElement,
+		formElements,
+		setFormElements,
+		elementPanelHeight,
+		setElementPanelHeight,
+		screenZoomRatio,
+		setScreenZoomRatio,
+		editMode,
+		setEditMode,
+	};
+
 	//フォームエレメント更新時にエレメントパネルの高さ更新
 	useEffect(() => setElementPanelHeight(getElementPanelHeight(formElements)), [formElements, screenZoomRatio]);
 
@@ -88,116 +119,13 @@ function App() {
 	let return_components;
 
 	if (selectedTab === "screen") {
-		return_components = (
-			<>
-				<div style={{ display: "flex", flexDirection: "row", borderBottom: "solid 1px black" }}>
-					<Screen
-						props={{
-							formId,
-							themeColor,
-							gameScreenSize,
-							formSize,
-							screenZoomRatio,
-							setScreenZoomRatio,
-							targetFormElementIndex,
-							setTargetFormElementIndex,
-							elementPanelHeight,
-						}}
-					>
-						<ElementsGenerator props={{ formElements, setFormElements, screenZoomRatio, setScreenZoomRatio, targetFormElementIndex, setTargetFormElementIndex }} />
-						<MoveableElement props={{ targetFormElement, setTargetFormElement, screenZoomRatio, formSize, gameScreenSize, formElements, setFormElements, editMode }} />
-					</Screen>
-					<ControlPanel
-						props={{
-							themeColor,
-							elementPanelHeight,
-							formElements,
-							setFormElements,
-							targetFormElement,
-							setTargetFormElement,
-							targetFormElementIndex,
-							setTargetFormElementIndex,
-							formSize,
-							setFormSize,
-							gameScreenSize,
-							setGameScreenSize,
-							editMode,
-							setEditMode,
-							showFormFrame,
-							setShowFormFrame,
-							formName,
-							setFormName,
-						}}
-					/>
-				</div>
-				<ElementPanel
-					props={{ themeColor, elementPanelHeight, formElements, targetFormElement, setTargetFormElement, targetFormElementIndex, setTargetFormElementIndex }}
-				/>
-				<Output props={{ formElements, setFormElements, formName, formSize, showFormFrame }} />
-				{/* <div id="dev_info" style={{ maxHeight: "100px" }}>
-					<p>
-						window:{window.innerWidth}/{window.innerHeight}
-					</p>
-					<div id="div_info_gameScreenSize">
-						<a>game:</a>
-						<input
-							value={gameScreenSize.x}
-							onChange={(e) => {
-								const input_value = Number(e.target.value);
-								if (Number.isNaN(input_value)) return;
-								setGameScreenSize({ x: input_value, y: gameScreenSize.y });
-							}}
-						/>
-						<a>/</a>
-						<input
-							value={gameScreenSize.y}
-							onChange={(e) => {
-								const input_value = Number(e.target.value);
-								if (Number.isNaN(input_value)) return;
-								setGameScreenSize({ x: gameScreenSize.x, y: input_value });
-							}}
-						/>
-					</div>
-					<div id="div_info_formSize">
-						<a>form:</a>
-						<input
-							value={formSize.x}
-							onChange={(e) => {
-								const input_value = Number(e.target.value);
-								if (Number.isNaN(input_value)) return;
-								setFormSize({ x: input_value, y: formSize.y });
-							}}
-						/>
-						<a>/</a>
-						<input
-							value={formSize.y}
-							onChange={(e) => {
-								const input_value = Number(e.target.value);
-								if (Number.isNaN(input_value)) return;
-								setFormSize({ x: formSize.x, y: input_value });
-							}}
-						/>
-					</div>
-					<p>zoom:{(screenZoomRatio * 100).toFixed(0)}%</p>
-					<div>
-						<button type="button" onClick={(e) => updateZoomRatio(-50)}>
-							{"<<"}
-						</button>
-						<button type="button" onClick={(e) => updateZoomRatio(-10)}>
-							{"<"}
-						</button>
-						<button type="button" onClick={(e) => updateZoomRatio(10)}>
-							{">"}
-						</button>
-						<button type="button" onClick={(e) => updateZoomRatio(50)}>
-							{">>"}
-						</button>
-					</div>
-				</div> */}
-			</>
-		);
+		return_components = <ScreenTab props={{ ...props }} />;
 	}
-
+	if (selectedTab === "image") {
+		return_components = <ImageTab props={{ ...props }} />;
+	}
+	if (selectedTab === "variable") {
+	}
 	return (
 		<div className="App">
 			<Header />
