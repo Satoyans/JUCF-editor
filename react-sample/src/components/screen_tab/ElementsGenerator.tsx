@@ -10,6 +10,9 @@ export const ElementsGenerator: React.FC<{
 		setScreenZoomRatio: React.Dispatch<React.SetStateAction<number>>;
 		targetFormElementIndex: number | null;
 		setTargetFormElementIndex: React.Dispatch<React.SetStateAction<number | null>>;
+		uploadingImages: {
+			[path: string]: string;
+		};
 	};
 }> = ({ props }) => {
 	function elementGenerator(form_element: formElementsTypes.elementPropertiesTypes.all, index: number) {
@@ -33,12 +36,21 @@ export const ElementsGenerator: React.FC<{
 					flexDirection: "column",
 				}}
 			>
-				{!form_element.is_show_text ? null : (
-					<div>
+				<div
+					style={{
+						zIndex: 1,
+						width: `${form_element.w * props.screenZoomRatio}px`,
+						height: `${form_element.h * props.screenZoomRatio}px`,
+						transform: `translate(${form_element.x * props.screenZoomRatio}px, ${form_element.y * props.screenZoomRatio}px)`,
+						position: "absolute",
+					}}
+				>
+					{!form_element.is_show_text ? null : (
+						//TODO改行とかの処理
 						<p
 							style={{
 								whiteSpace: "nowrap",
-								margin: 0,
+								margin: "auto",
 								textAlign: "center",
 								pointerEvents: "none",
 								userSelect: "none",
@@ -46,13 +58,21 @@ export const ElementsGenerator: React.FC<{
 						>
 							{form_element.text}
 						</p>
-					</div>
-				)}
-				{!form_element.is_show_image ? null : (
-					<div>
-						<img></img>
-					</div>
-				)}
+					)}
+				</div>
+				<div
+					style={{
+						zIndex: 0,
+						width: `${form_element.w * props.screenZoomRatio}px`,
+						height: `${form_element.h * props.screenZoomRatio}px`,
+						transform: `translate(${form_element.x * props.screenZoomRatio}px, ${form_element.y * props.screenZoomRatio}px)`,
+						position: "absolute",
+					}}
+				>
+					{!form_element.is_show_image ? null : (
+						<img style={{ imageRendering: "pixelated", width: "100%", height: "100%" }} src={`data:image/png;base64,${props.uploadingImages[form_element.texture]}`} />
+					)}
+				</div>
 			</div>
 		);
 	}

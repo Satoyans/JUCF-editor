@@ -45,15 +45,11 @@ export type propsType = {
 	editMode: "drag" | "resize";
 	setEditMode: React.Dispatch<React.SetStateAction<"drag" | "resize">>;
 	uploadingImages: {
-		path: string;
-		base64: string;
-	}[];
+		[path: string]: string;
+	};
 	setUploadingImages: React.Dispatch<
-		React.SetStateAction<
-			{
-				path: string;
-				base64: string;
-			}[]
-		>
+		React.SetStateAction<{
+			[path: string]: string;
+		}>
 	>;
 };

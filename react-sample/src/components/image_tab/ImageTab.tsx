@@ -60,17 +60,11 @@ export const ImageTab: React.FC<{
 								})
 						)
 					);
-					const uploading_images = [...props.uploadingImages, ...base64_images.flat()];
-
-					const result: { [path: string]: string } = {};
-					for (let uploading_image of uploading_images) {
+					const result: { [path: string]: string } = props.uploadingImages;
+					for (let uploading_image of base64_images.flat()) {
 						result[uploading_image.path] = uploading_image.base64;
 					}
-					props.setUploadingImages(
-						Object.keys(result).map((v) => {
-							return { path: v, base64: result[v] };
-						})
-					);
+					props.setUploadingImages(result);
 				}}
 				onClick={(e) => (e.target as HTMLDivElement).querySelector("input")?.click()}
 			>
@@ -83,7 +77,7 @@ export const ImageTab: React.FC<{
 					flexDirection: "column",
 				}}
 			>
-				{props.uploadingImages.map((image, i) => (
+				{Object.keys(props.uploadingImages).map((path, i) => (
 					<React.Fragment key={i}>
 						{
 							<div
@@ -105,22 +99,21 @@ export const ImageTab: React.FC<{
 								>
 									<img
 										style={{ width: "50px", height: "50px", margin: "5px", imageRendering: "pixelated", border: "solid 1px" }}
-										src={`data:image/png;base64,${image.base64}`}
+										src={`data:image/png;base64,${props.uploadingImages[path]}`}
 									/>
-									<a>{image.path}</a>
+									<a>{path}</a>
 								</div>
 								<div style={{ margin: "10px" }}>
 									<button
-										id={`uploading_images_${i}`}
+										id={`uploading_images_${path}`}
 										style={{ width: "40px", height: "40px" }}
 										onClick={(e) => {
 											const target = e.target as HTMLButtonElement;
 											const id = target.id;
 											console.log(id);
-											const index = Number(id.replace("uploading_images_", ""));
-											if (Number.isNaN(index)) return;
-											const uploading_images = Array.from(props.uploadingImages);
-											uploading_images.splice(index, 1);
+											const remove_image_path = id.replace("uploading_images_", "");
+											const uploading_images = JSON.parse(JSON.stringify(props.uploadingImages));
+											delete uploading_images[remove_image_path];
 											props.setUploadingImages(uploading_images);
 										}}
 									>

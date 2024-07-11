@@ -63,12 +63,7 @@ function App() {
 	//State: 操作モード
 	const [editMode, setEditMode] = useState<"drag" | "resize">("drag");
 	//State: 保存したbase64の画像たち
-	const [uploadingImages, setUploadingImages] = useState<
-		{
-			path: string;
-			base64: string;
-		}[]
-	>([]);
+	const [uploadingImages, setUploadingImages] = useState<{ [path: string]: string }>({});
 
 	const props = {
 		showFormFrame,
