@@ -18,6 +18,9 @@ export const ImageList: React.FC<{
 		if (!editNameImage) return;
 		ref.current.value = editNameImage.replace("uploaded_images_", "");
 	}, [editNameImage]);
+	useEffect(() => {
+		setEditNameImage(null);
+	}, [Object.keys(props.uploadedImages).length]);
 
 	return (
 		<div
