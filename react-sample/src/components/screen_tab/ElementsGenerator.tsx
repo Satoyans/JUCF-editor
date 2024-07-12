@@ -25,8 +25,8 @@ export const ElementsGenerator: React.FC<{
 					height: `${form_element.h * props.screenZoomRatio}px`,
 					transform: `translate(${form_element.x * props.screenZoomRatio}px, ${form_element.y * props.screenZoomRatio}px)`,
 					position: "absolute",
-					letterSpacing: `${-0.75 * props.screenZoomRatio}px`,
-					fontSize: `${(10 * props.screenZoomRatio) / 1.2}px`,
+					// letterSpacing: `${-0.75 * props.screenZoomRatio}px`,
+					fontSize: `${10 * props.screenZoomRatio}px`,
 					boxShadow: `${index === props.targetFormElementIndex ? "0 0 0 1px red inset" : "0 0 0 1px black inset"}`,
 					zIndex: `${index === props.targetFormElementIndex ? 1 : 0}`,
 
@@ -39,33 +39,40 @@ export const ElementsGenerator: React.FC<{
 				<div
 					style={{
 						zIndex: 1,
-						width: `${form_element.w * props.screenZoomRatio}px`,
+						// width: `${form_element.w * props.screenZoomRatio}px`,
+
 						height: `${form_element.h * props.screenZoomRatio}px`,
-						transform: `translate(${form_element.x * props.screenZoomRatio}px, ${form_element.y * props.screenZoomRatio}px)`,
 						position: "absolute",
+						display: "flex",
+						alignContent: "center",
+						justifyContent: "center",
 					}}
 				>
-					{!form_element.is_show_text ? null : (
-						//TODO改行とかの処理
-						<p
-							style={{
-								whiteSpace: "nowrap",
-								margin: "auto",
-								textAlign: "center",
-								pointerEvents: "none",
-								userSelect: "none",
-							}}
-						>
-							{form_element.text}
-						</p>
-					)}
+					{!form_element.is_show_text
+						? null
+						: form_element.text.split("\\n").map((text, i) => (
+								<React.Fragment key={i}>
+									<p
+										style={{
+											whiteSpace: "nowrap",
+											margin: 0,
+											textAlign: "left",
+											pointerEvents: "none",
+											userSelect: "none",
+											lineHeight: `${10 * props.screenZoomRatio}px`,
+											height: `${10 * props.screenZoomRatio}px`,
+										}}
+									>
+										{text}
+									</p>
+								</React.Fragment>
+						  ))}
 				</div>
 				<div
 					style={{
 						zIndex: 0,
 						width: `${form_element.w * props.screenZoomRatio}px`,
 						height: `${form_element.h * props.screenZoomRatio}px`,
-						transform: `translate(${form_element.x * props.screenZoomRatio}px, ${form_element.y * props.screenZoomRatio}px)`,
 						position: "absolute",
 					}}
 				>
