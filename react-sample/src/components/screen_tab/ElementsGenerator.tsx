@@ -46,6 +46,7 @@ export const ElementsGenerator: React.FC<{
 						display: "flex",
 						alignContent: "center",
 						justifyContent: "center",
+						flexDirection: "column",
 					}}
 				>
 					{!form_element.is_show_text
