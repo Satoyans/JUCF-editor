@@ -63,7 +63,7 @@ function App() {
 	//State: 操作モード
 	const [editMode, setEditMode] = useState<"drag" | "resize">("drag");
 	//State: 保存したbase64の画像たち
-	const [uploadingImages, setUploadingImages] = useState<{ [path: string]: string }>({});
+	const [uploadedImages, setUploadedImages] = useState<{ [path: string]: string }>({});
 
 	const props = {
 		showFormFrame,
@@ -92,8 +92,8 @@ function App() {
 		setScreenZoomRatio,
 		editMode,
 		setEditMode,
-		uploadingImages,
-		setUploadingImages,
+		uploadedImages,
+		setUploadedImages,
 	};
 
 	//フォームエレメント更新時にエレメントパネルの高さ更新

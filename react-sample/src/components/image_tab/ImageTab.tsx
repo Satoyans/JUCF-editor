@@ -17,7 +17,7 @@ export const ImageTab: React.FC<{
 					flexDirection: "column",
 				}}
 			>
-				{Object.keys(props.uploadingImages).map((path, i) => (
+				{Object.keys(props.uploadedImages).map((path, i) => (
 					<React.Fragment key={i}>
 						{
 							<div
@@ -39,22 +39,22 @@ export const ImageTab: React.FC<{
 								>
 									<img
 										style={{ width: "50px", height: "50px", margin: "5px", imageRendering: "pixelated", border: "solid 1px" }}
-										src={`data:image/png;base64,${props.uploadingImages[path]}`}
+										src={`data:image/png;base64,${props.uploadedImages[path]}`}
 									/>
 									<a>{path}</a>
 								</div>
 								<div style={{ margin: "10px" }}>
 									<button
-										id={`uploading_images_${path}`}
+										id={`uploaded_images_${path}`}
 										style={{ width: "40px", height: "40px" }}
 										onClick={(e) => {
 											const target = e.target as HTMLButtonElement;
 											const id = target.id;
 											console.log(id);
-											const remove_image_path = id.replace("uploading_images_", "");
-											const uploading_images = JSON.parse(JSON.stringify(props.uploadingImages));
-											delete uploading_images[remove_image_path];
-											props.setUploadingImages(uploading_images);
+											const remove_image_path = id.replace("uploaded_images_", "");
+											const uploaded_images = JSON.parse(JSON.stringify(props.uploadedImages));
+											delete uploaded_images[remove_image_path];
+											props.setUploadedImages(uploaded_images);
 										}}
 									>
 										<a style={{ fontSize: "24px", userSelect: "none", pointerEvents: "none" }}>🗑</a>

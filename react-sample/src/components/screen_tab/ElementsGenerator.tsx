@@ -10,7 +10,7 @@ export const ElementsGenerator: React.FC<{
 		setScreenZoomRatio: React.Dispatch<React.SetStateAction<number>>;
 		targetFormElementIndex: number | null;
 		setTargetFormElementIndex: React.Dispatch<React.SetStateAction<number | null>>;
-		uploadingImages: {
+		uploadedImages: {
 			[path: string]: string;
 		};
 	};
@@ -77,7 +77,7 @@ export const ElementsGenerator: React.FC<{
 					}}
 				>
 					{!form_element.is_show_image ? null : (
-						<img style={{ imageRendering: "pixelated", width: "100%", height: "100%" }} src={`data:image/png;base64,${props.uploadingImages[form_element.texture]}`} />
+						<img style={{ imageRendering: "pixelated", width: "100%", height: "100%" }} src={`data:image/png;base64,${props.uploadedImages[form_element.texture]}`} />
 					)}
 				</div>
 			</div>
