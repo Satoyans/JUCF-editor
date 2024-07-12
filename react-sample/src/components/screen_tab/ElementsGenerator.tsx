@@ -27,7 +27,7 @@ export const ElementsGenerator: React.FC<{
 					position: "absolute",
 					// letterSpacing: `${-0.75 * props.screenZoomRatio}px`,
 					fontSize: `${10 * props.screenZoomRatio}px`,
-					boxShadow: `${index === props.targetFormElementIndex ? "0 0 0 1px red inset" : "0 0 0 1px black inset"}`,
+					boxShadow: `${index === props.targetFormElementIndex ? "0 0 0 2px red inset" : "0 0 0 2px black inset"}`,
 					zIndex: `${index === props.targetFormElementIndex ? 1 : 0}`,
 
 					display: "flex",
@@ -56,10 +56,10 @@ export const ElementsGenerator: React.FC<{
 									<p
 										style={{
 											whiteSpace: "nowrap",
-											margin: 0,
-											textAlign: "left",
 											pointerEvents: "none",
 											userSelect: "none",
+											margin: 0,
+											textAlign: "left",
 											lineHeight: `${10 * props.screenZoomRatio}px`,
 											height: `${10 * props.screenZoomRatio}px`,
 										}}
@@ -71,9 +71,11 @@ export const ElementsGenerator: React.FC<{
 				</div>
 				<div
 					style={{
+						pointerEvents: "none",
+						userSelect: "none",
 						zIndex: 0,
-						width: `${form_element.w * props.screenZoomRatio}px`,
-						height: `${form_element.h * props.screenZoomRatio}px`,
+						width: `${form_element.w * props.screenZoomRatio - 4}px`,
+						height: `${form_element.h * props.screenZoomRatio - 4}px`,
 						position: "absolute",
 					}}
 				>
