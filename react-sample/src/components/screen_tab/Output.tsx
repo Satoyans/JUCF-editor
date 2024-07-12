@@ -15,7 +15,6 @@ export const Output: React.FC<{
 	};
 }> = ({ props }) => {
 	//テキストエリア用のステート
-	console.log("レンダリング");
 	const textareaFormElements = useRef<HTMLTextAreaElement>(null!);
 	useEffect(() => {
 		textareaFormElements.current.value = JSON.stringify(props.formElements, null, 2);
@@ -63,7 +62,6 @@ export const Output: React.FC<{
 										| "is_show_text";
 									if (typeof form_element[key] !== typeof element_type[typed_key]) throw new Error(`値の型が異常です。index:${index_count},key:${key}`);
 								}
-								console.log(Object.keys(form_element));
 								index_count += 1;
 							}
 							props.setFormElements(form_elements);

@@ -23,7 +23,6 @@ function getScale(game_screen_size: { x: number; y: number }, form_size: { x: nu
 	const scaleY = window_y / max_screen_size_y;
 
 	const minScale = Math.min(scaleX, scaleY);
-	console.log(minScale);
 	return Number(Math.floor(minScale * 10)) * 0.1; //o.oo
 }
 //フォームエレメントからエレメントパネルの高さを求める関数
