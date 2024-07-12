@@ -50,6 +50,7 @@ export const ImageList: React.FC<{
 										display: "flex",
 										flexDirection: "row",
 										alignItems: "center",
+										width: "80%",
 									}}
 								>
 									<img
@@ -59,10 +60,10 @@ export const ImageList: React.FC<{
 									{(() => {
 										if (editNameImage !== `uploaded_images_${path}`) return <p>{path}</p>;
 										return (
-											<div style={{ height: "25px" }}>
-												<input style={{ height: "calc(100% - 6px)", fontSize: "16px" }} type="text" ref={ref} />
+											<div style={{ height: "25px", width: "80%", display: "flex", justifyContent: "space-between" }}>
+												<input style={{ height: "calc(100% - 6px)", fontSize: "16px", width: "100%" }} type="text" ref={ref} />
 												<button
-													style={{ height: "100%" }}
+													style={{ height: "100%", width: "60px" }}
 													onClick={(e) => {
 														const new_key = ref.current.value;
 														if (new_key === "") return;
