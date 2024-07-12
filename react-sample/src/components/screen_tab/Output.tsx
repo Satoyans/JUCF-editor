@@ -88,11 +88,12 @@ export const Output: React.FC<{
 						value={`/tag @p add {"form_name":${props.formName},"form_size":{"x":${props.formSize.x},"y":${props.formSize.y}},"showFormFrame":${
 							props.showFormFrame
 						},"elements":${JSON.stringify(props.formElements)}}`.replaceAll('"', "'")}
+						readOnly={true}
 					/>
 				</div>
 				<div>
 					<a>2.</a>
-					<textarea style={{ width: "calc(100% - 50px)" }} value={"/scriptevent cf:tag"} onChange={(e) => e.preventDefault()} />
+					<textarea style={{ width: "calc(100% - 50px)" }} value={"/scriptevent cf:tag"} onChange={(e) => e.preventDefault()} readOnly={true} />
 				</div>
 			</div>
 		</div>

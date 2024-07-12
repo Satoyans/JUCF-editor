@@ -107,7 +107,7 @@ export const ControlPanel: React.FC<{
 					<input
 						type="checkbox"
 						checked={props.showFormFrame}
-						onClick={(e) => {
+						onChange={(e) => {
 							props.setShowFormFrame((e.target as HTMLInputElement).checked);
 						}}
 					/>
@@ -119,7 +119,7 @@ export const ControlPanel: React.FC<{
 					<input
 						style={{ width: "80px" }}
 						value={props.formName}
-						onClick={(e) => {
+						onChange={(e) => {
 							props.setShowFormFrame((e.target as HTMLInputElement).checked);
 						}}
 					/>
