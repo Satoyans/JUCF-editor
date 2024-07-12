@@ -12,6 +12,9 @@ export const ElementPanel: React.FC<{
 		setTargetFormElement: React.Dispatch<React.SetStateAction<HTMLElement | null>>;
 		targetFormElementIndex: number | null;
 		setTargetFormElementIndex: React.Dispatch<React.SetStateAction<number | null>>;
+		uploadedImages: {
+			[path: string]: string;
+		};
 	};
 }> = ({ props }) => {
 	const row_count = Math.floor((window.innerWidth - 20) / 100);
@@ -35,19 +38,62 @@ export const ElementPanel: React.FC<{
 					props.setTargetFormElementIndex(form_element_index);
 				}}
 			>
-				<p
+				<div
 					style={{
-						whiteSpace: "nowrap",
-						overflow: "hidden",
-						textOverflow: "ellipsis",
-						margin: 0,
 						pointerEvents: "none",
 						userSelect: "none",
+						zIndex: 1,
+						position: "absolute",
+						display: "flex",
+						alignContent: "center",
+						justifyContent: "center",
+						flexDirection: "column",
 					}}
 				>
-					{form_element.text}
-				</p>
-				<img></img>
+					{!form_element.is_show_text
+						? null
+						: form_element.text.split("\\n").map((text, i) => (
+								<React.Fragment key={i}>
+									<p
+										style={{
+											width: "100%",
+											whiteSpace: "nowrap",
+											margin: 0,
+											textAlign: "left",
+											lineHeight: `20px`,
+											height: `20px`,
+											fontSize: "20px",
+											overflow: "hidden",
+											textOverflow: "ellipsis",
+										}}
+									>
+										{text}
+									</p>
+								</React.Fragment>
+						  ))}
+				</div>
+
+				<div
+					style={{
+						pointerEvents: "none",
+						userSelect: "none",
+						width: "78px",
+						height: "78px",
+						zIndex: 0,
+						position: "absolute",
+					}}
+				>
+					{!form_element.is_show_image ? null : (
+						<img
+							style={{
+								width: "100%",
+								height: "100%",
+								imageRendering: "pixelated",
+							}}
+							src={`data:image/png;base64,${props.uploadedImages[form_element.texture]}`}
+						/>
+					)}
+				</div>
 			</div>
 		);
 	}
