@@ -38,6 +38,7 @@ export const ControlPanel: React.FC<{
 		setShowFormFrame: React.Dispatch<React.SetStateAction<boolean>>;
 		formName: string;
 		setFormName: React.Dispatch<React.SetStateAction<string>>;
+		screenZoomRatio: number;
 	};
 }> = ({ props }) => {
 	const input_style = { width: "30px" };
@@ -207,29 +208,6 @@ export const ControlPanel: React.FC<{
 						？
 					</a>
 				</div>
-				<div id="control_panel_text">
-					<a>text:</a>
-					<input style={{ width: "135px" }} value={form_element.text} onChange={(e) => inputOnChange(e, "text")} />
-					<a title="要素の中央に表示される文字">？</a>
-				</div>
-				<div id="control_panel_texture">
-					<a>texture:</a>
-					<input style={{ width: "110px" }} value={form_element.texture} onChange={(e) => inputOnChange(e, "texture")} />
-					<a
-						title="要素のサイズに拡大縮小され表示される画像のパス&#13;&#10;textures/...."
-					>
-						？
-					</a>
-				</div>
-				<div id="control_panel_hovertext">
-					<a>hover_text:</a>
-					<input style={{ width: "175px" }} value={form_element.hover_text} onChange={(e) => inputOnChange(e, "hover_text")} />
-					<a
-						title="カーソルを要素に合わせた時もしくはタップした時に&#13;&#10;表示されるテキスト"
-					>
-						？
-					</a>
-				</div>
 				<div id="control_panel_is_show_text">
 					<a>is_show_text:</a>
 					<input type="checkbox" checked={form_element.is_show_text} onChange={(e) => inputOnChange(e, "is_show_text")} />
@@ -254,6 +232,29 @@ export const ControlPanel: React.FC<{
 						？
 					</a>
 				</div>
+				<div id="control_panel_text">
+					<a>text:</a>
+					<input style={{ width: "135px" }} value={form_element.text} onChange={(e) => inputOnChange(e, "text")} />
+					<a title="要素の中央に表示される文字">？</a>
+				</div>
+				<div id="control_panel_texture">
+					<a>texture:</a>
+					<input style={{ width: "110px" }} value={form_element.texture} onChange={(e) => inputOnChange(e, "texture")} />
+					<a
+						title="要素のサイズに拡大縮小され表示される画像のパス&#13;&#10;textures/...."
+					>
+						？
+					</a>
+				</div>
+				<div id="control_panel_hovertext">
+					<a>hover:</a>
+					<input style={{ width: "120px" }} value={form_element.hover_text} onChange={(e) => inputOnChange(e, "hover_text")} />
+					<a
+						title="カーソルを要素に合わせた時もしくはタップした時に&#13;&#10;表示されるテキスト"
+					>
+						？
+					</a>
+				</div>
 				<div id="control_panel_label">
 					<a>label:</a>
 					<input style={{ width: "130px" }} checked={form_element.is_show_close} onChange={(e) => inputOnChange(e, "label")} />
@@ -264,7 +265,17 @@ export const ControlPanel: React.FC<{
 	}
 
 	return (
-		<div id="control_panel" style={{ width: 200, boxShadow: "0 0 0 1px black inset", backgroundColor: themeColors[props.themeColor].control_panel.background, padding: "2px" }}>
+		<div
+			id="control_panel"
+			style={{
+				width: 220,
+				boxShadow: "0 0 0 1px black inset",
+				backgroundColor: themeColors[props.themeColor].control_panel.background,
+				padding: "2px",
+				maxHeight: `${Math.min(props.gameScreenSize.y * props.screenZoomRatio, props.formSize.y * props.screenZoomRatio)}px`,
+				overflowY: "scroll",
+			}}
+		>
 			{setting_components}
 		</div>
 	);
