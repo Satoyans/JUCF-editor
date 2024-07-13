@@ -43,10 +43,6 @@ function App() {
 	const [selectedTab, setSelectedTab] = useState<"screen" | "image" | "variable">("screen");
 	//State: サイトのテーマカラー
 	const [themeColor, setThemeColor] = useState<"Light" | "Dark">("Light");
-	//State: ゲームスクリーンサイズ
-	const [gameScreenSize, setGameScreenSize] = useState({ x: 450, y: 180 });
-	//State: フォームサイズ
-	const [formSize, setFormSize] = useState({ x: 300, y: 180 });
 	//State: フォームid
 	const [formId, setFormId] = useState("custom_form");
 	//State: ターゲットエレメントインデックス
@@ -57,12 +53,45 @@ function App() {
 	const [formElements, setFormElements] = useState<formElementsTypes.elementPropertiesTypes.all[]>([]);
 	//State: エレメントパネルの高さ
 	const [elementPanelHeight, setElementPanelHeight] = useState(0);
-	//State: ズーム倍率
-	const [screenZoomRatio, setScreenZoomRatio] = useState(getScale(gameScreenSize, formSize, elementPanelHeight));
 	//State: 操作モード
 	const [editMode, setEditMode] = useState<"drag" | "resize">("drag");
 	//State: 保存したbase64の画像たち
 	const [uploadedImages, setUploadedImages] = useState<{ [path: string]: string }>({});
+
+	//変数
+	//State: ゲームスクリーンサイズ変数
+	const [gameScreenSizeVariable, setGameScreenSizeVariable] = useState({ x: "450", y: "180" });
+	useEffect(() => {
+		//TODO 変数置き換え
+		const { x, y } = gameScreenSizeVariable;
+		const x_num = Number(x);
+		const y_num = Number(y);
+
+		const set_value = { x: Number.isNaN(x_num) ? 0 : x_num, y: Number.isNaN(y_num) ? 0 : y_num };
+		setGameScreenSize(set_value);
+	}, [gameScreenSizeVariable]);
+	//State: フォームサイズ変数
+	const [formSizeVariable, setFormSizeVariable] = useState({ x: "300", y: "180" });
+	useEffect(() => {
+		const { x, y } = formSizeVariable;
+		const x_num = Number(x);
+		const y_num = Number(y);
+
+		const set_value = { x: Number.isNaN(x_num) ? 0 : x_num, y: Number.isNaN(y_num) ? 0 : y_num };
+		setFormSize(set_value);
+	}, [formSizeVariable]);
+
+	//State: ゲームスクリーンサイズ
+	const [gameScreenSize, setGameScreenSize] = useState({ x: 450, y: 180 });
+	//State: フォームサイズ
+	const [formSize, setFormSize] = useState({ x: 300, y: 180 });
+	//State: ズーム倍率
+	const [screenZoomRatio, setScreenZoomRatio] = useState(getScale(gameScreenSize, formSize, elementPanelHeight));
+
+	// ウィンドウサイズ変更時にズーム倍率変更
+	window.onresize = () => {
+		setScreenZoomRatio(getScale(gameScreenSize, formSize, elementPanelHeight));
+	};
 
 	const props = {
 		showFormFrame,
@@ -105,11 +134,6 @@ function App() {
 		if (form_elements_div === null) throw new Error("form_elements_div is null");
 		setTargetFormElement(form_elements_div.children[targetFormElementIndex] as HTMLElement);
 	}, [targetFormElementIndex]);
-
-	// ウィンドウサイズ変更時に実行;
-	window.onresize = () => {
-		setScreenZoomRatio(getScale(gameScreenSize, formSize, elementPanelHeight));
-	};
 
 	//ズーム倍率更新関数
 	const updateZoomRatio = (diff: number) => {
