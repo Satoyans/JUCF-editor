@@ -40,7 +40,7 @@ function App() {
 	//State: フォームの枠を表示するか
 	const [formName, setFormName] = useState("custom_form");
 	//State: 選択されているタブ
-	const [selectedTab, setSelectedTab] = useState<"screen" | "image" | "variable">("image");
+	const [selectedTab, setSelectedTab] = useState<"screen" | "image" | "variable">("screen");
 	//State: サイトのテーマカラー
 	const [themeColor, setThemeColor] = useState<"Light" | "Dark">("Light");
 	//State: ゲームスクリーンサイズ
