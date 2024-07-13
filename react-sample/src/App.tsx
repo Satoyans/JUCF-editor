@@ -122,6 +122,10 @@ function App() {
 		setEditMode,
 		uploadedImages,
 		setUploadedImages,
+		formSizeVariable,
+		setFormSizeVariable,
+		gameScreenSizeVariable,
+		setGameScreenSizeVariable,
 	};
 
 	//フォームエレメント更新時にエレメントパネルの高さ更新

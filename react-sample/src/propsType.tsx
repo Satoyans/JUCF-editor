@@ -52,4 +52,24 @@ export type propsType = {
 			[path: string]: string;
 		}>
 	>;
+	gameScreenSizeVariable: {
+		x: string;
+		y: string;
+	};
+	setGameScreenSizeVariable: React.Dispatch<
+		React.SetStateAction<{
+			x: string;
+			y: string;
+		}>
+	>;
+	formSizeVariable: {
+		x: string;
+		y: string;
+	};
+	setFormSizeVariable: React.Dispatch<
+		React.SetStateAction<{
+			x: string;
+			y: string;
+		}>
+	>;
 };
