@@ -1,8 +1,8 @@
 import { formElementsTypes } from "./formElementTypes";
 
 export type propsType = {
-	showFormFrame: boolean;
-	setShowFormFrame: React.Dispatch<React.SetStateAction<boolean>>;
+	showFormFrame: string;
+	setShowFormFrame: React.Dispatch<React.SetStateAction<string>>;
 	formName: string;
 	setFormName: React.Dispatch<React.SetStateAction<string>>;
 	selectedTab: "screen" | "image" | "variable";
@@ -70,6 +70,14 @@ export type propsType = {
 		React.SetStateAction<{
 			x: string;
 			y: string;
+		}>
+	>;
+	variable: {
+		[key: string]: string | number | boolean;
+	};
+	setVariable: React.Dispatch<
+		React.SetStateAction<{
+			[key: string]: string | number | boolean;
 		}>
 	>;
 };

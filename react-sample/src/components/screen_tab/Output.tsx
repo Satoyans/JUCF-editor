@@ -10,7 +10,7 @@ export const Output: React.FC<{
 			x: number;
 			y: number;
 		};
-		showFormFrame: boolean;
+		showFormFrame: string;
 		setTargetFormElementIndex: React.Dispatch<React.SetStateAction<number | null>>;
 	};
 }> = ({ props }) => {
