@@ -1,45 +1,11 @@
 import { formElementsTypes } from "../../formElementTypes";
+import { propsType } from "../../propsType";
+import { variableReplacer } from "../../variableReplacer";
 import { themeColors } from "../themeColor";
 
 //コントロールパネル
 export const ControlPanel: React.FC<{
-	props: {
-		themeColor: "Light" | "Dark";
-		elementPanelHeight: number;
-		formElements: formElementsTypes.elementPropertiesTypes.all[];
-		setFormElements: React.Dispatch<React.SetStateAction<formElementsTypes.elementPropertiesTypes.all[]>>;
-		targetFormElement: null | HTMLElement;
-		setTargetFormElement: React.Dispatch<React.SetStateAction<HTMLElement | null>>;
-		targetFormElementIndex: number | null;
-		setTargetFormElementIndex: React.Dispatch<React.SetStateAction<number | null>>;
-		formSize: {
-			x: number;
-			y: number;
-		};
-		setFormSize: React.Dispatch<
-			React.SetStateAction<{
-				x: number;
-				y: number;
-			}>
-		>;
-		gameScreenSize: {
-			x: number;
-			y: number;
-		};
-		setGameScreenSize: React.Dispatch<
-			React.SetStateAction<{
-				x: number;
-				y: number;
-			}>
-		>;
-		editMode: "drag" | "resize";
-		setEditMode: React.Dispatch<React.SetStateAction<"drag" | "resize">>;
-		showFormFrame: boolean;
-		setShowFormFrame: React.Dispatch<React.SetStateAction<boolean>>;
-		formName: string;
-		setFormName: React.Dispatch<React.SetStateAction<string>>;
-		screenZoomRatio: number;
-	};
+	props: propsType;
 }> = ({ props }) => {
 	const input_style = { width: "30px" };
 	let setting_components;
@@ -48,78 +14,106 @@ export const ControlPanel: React.FC<{
 		setting_components = (
 			<>
 				<div id="control_panel_gamesize">
-					<a>game:</a>
-					<input
-						style={{ ...input_style }}
-						value={props.gameScreenSize.x}
-						onChange={(e) => {
-							const input_value = Number(e.target.value);
-							if (Number.isNaN(input_value)) return;
-							props.setGameScreenSize({ x: input_value, y: props.gameScreenSize.y });
-						}}
-					/>
-					<a>px/</a>
-					<input
-						style={{ ...input_style }}
-						value={props.gameScreenSize.y}
-						onChange={(e) => {
-							const input_value = Number(e.target.value);
-							if (Number.isNaN(input_value)) return;
-							props.setGameScreenSize({ x: props.gameScreenSize.x, y: input_value });
-						}}
-					/>
-					<a>px</a>
+					<a>game screen size</a>
 					<Hint
 						title="Minecraftの画面のサイズ&#13;&#10;横幅は470弱でほぼ固定。&#13;&#10;縦幅はPCフルスクリーンで約240&#13;&#10;スマホは機種によるが180前後"
 					/>
+					<p style={{ margin: 0, fontSize: "12px" }}>
+						{props.gameScreenSize.x}px/{props.gameScreenSize.y}px
+					</p>
+					<div style={{ width: "calc(100% - 20px)" }}>
+						<a>x:</a>
+						<input
+							style={{ width: "calc(100% - 30px)" }}
+							value={props.gameScreenSizeVariable.x}
+							onChange={(e) => {
+								const input_value = e.target.value;
+								props.setGameScreenSizeVariable({ x: input_value, y: props.gameScreenSizeVariable.y });
+							}}
+						/>
+					</div>
+					<div style={{ width: "calc(100% - 20px)" }}>
+						<a>y:</a>
+						<input
+							style={{ width: "calc(100% - 30px)" }}
+							value={props.gameScreenSizeVariable.y}
+							onChange={(e) => {
+								const input_value = e.target.value;
+								props.setGameScreenSizeVariable({ x: props.gameScreenSizeVariable.x, y: input_value });
+							}}
+						/>
+					</div>
 				</div>
+				<Partition />
 				<div id="control_panel_formsize">
-					<a>form:</a>
-					<input
-						style={{ ...input_style }}
-						value={props.formSize.x}
-						onChange={(e) => {
-							const input_value = Number(e.target.value);
-							if (Number.isNaN(input_value)) return;
-							props.setFormSize({ x: input_value, y: props.formSize.y });
-						}}
-					/>
-					<a>px/</a>
-					<input
-						style={{ ...input_style }}
-						value={props.formSize.y}
-						onChange={(e) => {
-							const input_value = Number(e.target.value);
-							if (Number.isNaN(input_value)) return;
-							props.setFormSize({ x: props.formSize.x, y: input_value });
-						}}
-					/>
-					<a>px</a>
+					<a>form size</a>
 					<Hint
 						title="フォームのサイズ&#13;&#10;ゲームスクリーンサイズより大きくなると表示されなかったりタップできなくなったりする。&#13;&#10;横300縦180辺りが無難?"
 					/>
+					<p style={{ margin: 0, fontSize: "12px" }}>
+						{props.formSize.x}px/{props.formSize.y}px
+					</p>
+					<div style={{ width: "calc(100% - 20px)" }}>
+						<a>x:</a>
+						<input
+							style={{ width: "calc(100% - 30px)" }}
+							value={props.formSizeVariable.x}
+							onChange={(e) => {
+								const input_value = e.target.value;
+								props.setFormSizeVariable({ x: input_value, y: props.formSizeVariable.y });
+							}}
+						/>
+					</div>
+					<div style={{ width: "calc(100% - 20px)" }}>
+						<a>y:</a>
+						<input
+							style={{ width: "calc(100% - 30px)" }}
+							value={props.formSizeVariable.y}
+							onChange={(e) => {
+								const input_value = e.target.value;
+								props.setFormSizeVariable({ x: props.formSizeVariable.x, y: input_value });
+							}}
+						/>
+					</div>
 				</div>
+				<Partition />
 				<div id="control_panel_showformframe">
-					<a>showFormFrame:</a>
-					<input
-						type="checkbox"
-						checked={props.showFormFrame}
-						onChange={(e) => {
-							props.setShowFormFrame((e.target as HTMLInputElement).checked);
-						}}
+					<a>showFormFrame</a>
+					<Hint
+						title="フォームの枠を表示するか&#13;&#10;'true'の場合に表示されます。"
 					/>
-					<Hint title="フォームの枠を表示するか" />
+					<div style={{ width: "calc(100% - 30px)" }}>
+						<input
+							type="checkbox"
+							checked={variableReplacer(props.showFormFrame, props.variable) === "true"}
+							onChange={(e) => {
+								(e.target as HTMLInputElement).checked = variableReplacer(props.showFormFrame, props.variable) === "true";
+							}}
+						/>
+						<input
+							style={{ width: "calc(100% - 30px)" }}
+							value={props.showFormFrame}
+							onChange={(e) => {
+								const input_value = e.target.value;
+								props.setShowFormFrame(input_value);
+							}}
+						/>
+					</div>
 				</div>
+				<Partition />
 				<div id="control_panel_formname">
-					<a>formName:</a>
+					<a>formName</a>
+					<Hint
+						title="コマンドで呼び出す際のフォームの名前&#13;&#10;変数は使用できません。"
+					/>
+					<p style={{ margin: 0, fontSize: "12px" }}>{variableReplacer(props.formName, props.variable)}</p>
 					<input
-						style={{ width: "80px" }}
+						style={{ width: "calc(100% - 20px)" }}
 						value={props.formName}
 						onChange={(e) => {
-							props.setShowFormFrame((e.target as HTMLInputElement).checked);
+							props.setFormName(e.target.value);
 						}}
 					/>
-					<Hint title="コマンドで呼び出す際のフォームの名前" />
 				</div>
 				{/*TODO フォームの名前とか変数とか*/}
 			</>
