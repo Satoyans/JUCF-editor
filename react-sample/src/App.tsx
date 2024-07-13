@@ -11,6 +11,7 @@ import { Screen } from "./components/screen_tab/Screen";
 import { Output } from "./components/screen_tab/Output";
 import { ScreenTab } from "./components/screen_tab/ScreenTab";
 import { ImageTab } from "./components/image_tab/ImageTab";
+import { variableReplacer } from "./variableReplacer";
 
 //ウィンドウサイズとゲームスクリーンサイズの比を返す関数
 function getScale(game_screen_size: { x: number; y: number }, form_size: { x: number; y: number }, elementPanelHeight: number) {
@@ -36,7 +37,7 @@ function getElementPanelHeight(form_elements: formElementsTypes.elementPropertie
 
 function App() {
 	//State: フォームの枠を表示するか
-	const [showFormFrame, setShowFormFrame] = useState(true);
+	const [showFormFrame, setShowFormFrame] = useState("true");
 	//State: フォームの枠を表示するか
 	const [formName, setFormName] = useState("custom_form");
 	//State: 選択されているタブ
@@ -59,13 +60,14 @@ function App() {
 	const [uploadedImages, setUploadedImages] = useState<{ [path: string]: string }>({});
 
 	//変数
+	const [variable, setVariable] = useState<{ [key: string]: string | number | boolean }>({ 変数: "置換" });
+
 	//State: ゲームスクリーンサイズ変数
 	const [gameScreenSizeVariable, setGameScreenSizeVariable] = useState({ x: "450", y: "180" });
 	useEffect(() => {
-		//TODO 変数置き換え
 		const { x, y } = gameScreenSizeVariable;
-		const x_num = Number(x);
-		const y_num = Number(y);
+		const x_num = Number(variableReplacer(x, variable));
+		const y_num = Number(variableReplacer(y, variable));
 
 		const set_value = { x: Number.isNaN(x_num) ? 0 : x_num, y: Number.isNaN(y_num) ? 0 : y_num };
 		setGameScreenSize(set_value);
@@ -74,8 +76,8 @@ function App() {
 	const [formSizeVariable, setFormSizeVariable] = useState({ x: "300", y: "180" });
 	useEffect(() => {
 		const { x, y } = formSizeVariable;
-		const x_num = Number(x);
-		const y_num = Number(y);
+		const x_num = Number(variableReplacer(x, variable));
+		const y_num = Number(variableReplacer(y, variable));
 
 		const set_value = { x: Number.isNaN(x_num) ? 0 : x_num, y: Number.isNaN(y_num) ? 0 : y_num };
 		setFormSize(set_value);
@@ -126,6 +128,8 @@ function App() {
 		setFormSizeVariable,
 		gameScreenSizeVariable,
 		setGameScreenSizeVariable,
+		variable,
+		setVariable,
 	};
 
 	//フォームエレメント更新時にエレメントパネルの高さ更新
