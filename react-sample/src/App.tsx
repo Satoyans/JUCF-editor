@@ -60,7 +60,7 @@ function App() {
 	const [uploadedImages, setUploadedImages] = useState<{ [path: string]: string }>({});
 
 	//変数
-	const [variable, setVariable] = useState<{ [key: string]: string | number | boolean }>({ 変数: "置換" });
+	const [variable, setVariable] = useState<{ [key: string]: string | number | boolean }>({});
 
 	//State: ゲームスクリーンサイズ変数
 	const [gameScreenSizeVariable, setGameScreenSizeVariable] = useState({ x: "450", y: "180" });
