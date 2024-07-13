@@ -69,11 +69,9 @@ export const ControlPanel: React.FC<{
 						}}
 					/>
 					<a>px</a>
-					<a
+					<Hint
 						title="Minecraftの画面のサイズ&#13;&#10;横幅は470弱でほぼ固定。&#13;&#10;縦幅はPCフルスクリーンで約240&#13;&#10;スマホは機種によるが180前後"
-					>
-						？
-					</a>
+					/>
 				</div>
 				<div id="control_panel_formsize">
 					<a>form:</a>
@@ -97,11 +95,9 @@ export const ControlPanel: React.FC<{
 						}}
 					/>
 					<a>px</a>
-					<a
+					<Hint
 						title="フォームのサイズ&#13;&#10;ゲームスクリーンサイズより大きくなると表示されなかったりタップできなくなったりする。&#13;&#10;横300縦180辺りが無難?"
-					>
-						？
-					</a>
+					/>
 				</div>
 				<div id="control_panel_showformframe">
 					<a>showFormFrame:</a>
@@ -112,8 +108,7 @@ export const ControlPanel: React.FC<{
 							props.setShowFormFrame((e.target as HTMLInputElement).checked);
 						}}
 					/>
-
-					<a title="フォームの枠を表示するか">？</a>
+					<Hint title="フォームの枠を表示するか" />
 				</div>
 				<div id="control_panel_formname">
 					<a>formName:</a>
@@ -124,8 +119,7 @@ export const ControlPanel: React.FC<{
 							props.setShowFormFrame((e.target as HTMLInputElement).checked);
 						}}
 					/>
-
-					<a title="コマンドで呼び出す際のフォームの名前">？</a>
+					<Hint title="コマンドで呼び出す際のフォームの名前" />
 				</div>
 				{/*TODO フォームの名前とか変数とか*/}
 			</>
@@ -168,97 +162,89 @@ export const ControlPanel: React.FC<{
 						resize
 					</button>
 				</div>
+				<Partition />
 				<div id="control_panel_w">
 					<a>w:</a>
 					<input style={input_style} value={form_element.w} onChange={(e) => inputOnChange(e, "w")} />
 					<a>px</a>
-					<a
+					<Hint
 						title="width&#13;&#10;要素の横の大きさ"
-					>
-						？
-					</a>
+					/>
 				</div>
 				<div id="control_panel_h">
 					<a>h:</a>
 					<input style={input_style} value={form_element.h} onChange={(e) => inputOnChange(e, "h")} />
 					<a>px</a>
-					<a
+					<Hint
 						title="height&#13;&#10;要素の縦の大きさ"
-					>
-						？
-					</a>
+					/>
 				</div>
 				<div id="control_panel_x">
 					<a>x:</a>
 					<input style={input_style} value={form_element.x} onChange={(e) => inputOnChange(e, "x")} />
 					<a>px</a>
-					<a
+					<Hint
 						title="フォームの左上が基準の右向きを正とした時の&#13;&#10;要素の左上の点の位置"
-					>
-						？
-					</a>
+					/>
 				</div>
 				<div id="control_panel_y">
 					<a>y:</a>
 					<input style={input_style} value={form_element.y} onChange={(e) => inputOnChange(e, "y")} />
 					<a>px</a>
-					<a
+					<Hint
 						title="フォームの左上が基準の下向きを正とした時の&#13;&#10;要素の左上の点の位置"
-					>
-						？
-					</a>
+					/>
 				</div>
+				<Partition />
 				<div id="control_panel_is_show_text">
 					<a>is_show_text:</a>
 					<input type="checkbox" checked={form_element.is_show_text} onChange={(e) => inputOnChange(e, "is_show_text")} />
-					<a title="textで指定した文字を表示するか">？</a>
+					<Hint title="textで指定した文字を表示するか" />
 				</div>
 				<div id="control_panel_is_show_image">
 					<a>is_show_image:</a>
 					<input type="checkbox" checked={form_element.is_show_image} onChange={(e) => inputOnChange(e, "is_show_image")} />
-					<a title="textureで指定した画像を表示するか">？</a>
+					<Hint title="textureで指定した画像を表示するか" />
 				</div>
 				<div id="control_panel_is_show_button">
 					<a>is_show_button:</a>
 					<input type="checkbox" checked={form_element.is_show_button} onChange={(e) => inputOnChange(e, "is_show_button")} />
-					<a title="ボタンとして押せるようにするか">？</a>
+					<Hint title="ボタンとして押せるようにするか" />
 				</div>
 				<div id="control_panel_is_show_close">
 					<a>is_show_close:</a>
 					<input type="checkbox" checked={form_element.is_show_close} onChange={(e) => inputOnChange(e, "is_show_close")} />
-					<a
+					<Hint
 						title="フォーム右上にある閉じるボタンをその要素に表示するか&#13;&#10;既存の閉じるボタンを使用するため、サイズや位置、画像は調整できません。&#13;&#10;フォームの外枠に使用しています。"
-					>
-						？
-					</a>
+					/>
 				</div>
+				<Partition />
 				<div id="control_panel_text">
-					<a>text:</a>
-					<input style={{ width: "135px" }} value={form_element.text} onChange={(e) => inputOnChange(e, "text")} />
-					<a title="要素の中央に表示される文字">？</a>
+					<a>text</a>
+					<Hint title="要素の中央に表示される文字" />
+					<input style={{ width: "calc(100% - 20px)" }} value={form_element.text} onChange={(e) => inputOnChange(e, "text")} />
 				</div>
+				<Partition />
 				<div id="control_panel_texture">
-					<a>texture:</a>
-					<input style={{ width: "110px" }} value={form_element.texture} onChange={(e) => inputOnChange(e, "texture")} />
-					<a
+					<a>texture</a>
+					<Hint
 						title="要素のサイズに拡大縮小され表示される画像のパス&#13;&#10;textures/...."
-					>
-						？
-					</a>
+					/>
+					<input style={{ width: "110px" }} value={form_element.texture} onChange={(e) => inputOnChange(e, "texture")} />
 				</div>
+				<Partition />
 				<div id="control_panel_hovertext">
-					<a>hover:</a>
-					<input style={{ width: "120px" }} value={form_element.hover_text} onChange={(e) => inputOnChange(e, "hover_text")} />
-					<a
+					<a>hover</a>
+					<Hint
 						title="カーソルを要素に合わせた時もしくはタップした時に&#13;&#10;表示されるテキスト"
-					>
-						？
-					</a>
+					/>
+					<input style={{ width: "120px" }} value={form_element.hover_text} onChange={(e) => inputOnChange(e, "hover_text")} />
 				</div>
+				<Partition />
 				<div id="control_panel_label">
-					<a>label:</a>
+					<a>label</a>
+					<Hint title="ボタンが押された時にscriptAPIで取得できる値" />
 					<input style={{ width: "130px" }} checked={form_element.is_show_close} onChange={(e) => inputOnChange(e, "label")} />
-					<a title="ボタンが押された時にscriptAPIで取得できる値">？</a>
 				</div>
 			</>
 		);
@@ -268,10 +254,10 @@ export const ControlPanel: React.FC<{
 		<div
 			id="control_panel"
 			style={{
-				width: 220,
+				width: 200,
 				boxShadow: "0 0 0 1px black inset",
 				backgroundColor: themeColors[props.themeColor].control_panel.background,
-				padding: "2px",
+				paddingLeft: "5px",
 				maxHeight: `${Math.min(props.gameScreenSize.y * props.screenZoomRatio, props.formSize.y * props.screenZoomRatio)}px`,
 				overflowY: "scroll",
 			}}
@@ -280,3 +266,10 @@ export const ControlPanel: React.FC<{
 		</div>
 	);
 };
+
+const Partition: React.FC = () => <div style={{ borderTop: "solid 1px #aaaaaa", width: "calc(100% - 10px)", height: "1px", margin: "3px 5px" }} />;
+const Hint: React.FC<{ title: string }> = ({ title }) => (
+	<a style={{ fontSize: "12px" }} title={title}>
+		？
+	</a>
+);
