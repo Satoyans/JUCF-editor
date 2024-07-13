@@ -38,6 +38,7 @@ export const ImageList: React.FC<{
 								id={`uploaded_images_${path}`}
 								style={{
 									margin: "5px",
+									marginBottom: 0,
 									height: "60px",
 									border: "solid 1px black",
 									backgroundColor: themeColors[props.themeColor].image_panel.background,
