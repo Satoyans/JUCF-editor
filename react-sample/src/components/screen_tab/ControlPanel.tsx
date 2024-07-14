@@ -14,7 +14,7 @@ export const ControlPanel: React.FC<{
 		setting_components = (
 			<>
 				<div id="control_panel_gamesize">
-					<a>game screen size</a>
+					<span>game screen size</span>
 					<Hint
 						title="Minecraftの画面のサイズ&#13;&#10;横幅は470弱でほぼ固定。&#13;&#10;縦幅はPCフルスクリーンで約240&#13;&#10;スマホは機種によるが180前後"
 					/>
@@ -22,7 +22,7 @@ export const ControlPanel: React.FC<{
 						{props.gameScreenSize.x}px/{props.gameScreenSize.y}px
 					</p>
 					<div style={{ width: "calc(100% - 20px)" }}>
-						<a>x:</a>
+						<span>x:</span>
 						<input
 							style={{ width: "calc(100% - 30px)" }}
 							value={props.gameScreenSizeVariable.x}
@@ -33,7 +33,7 @@ export const ControlPanel: React.FC<{
 						/>
 					</div>
 					<div style={{ width: "calc(100% - 20px)" }}>
-						<a>y:</a>
+						<span>y:</span>
 						<input
 							style={{ width: "calc(100% - 30px)" }}
 							value={props.gameScreenSizeVariable.y}
@@ -46,7 +46,7 @@ export const ControlPanel: React.FC<{
 				</div>
 				<Partition />
 				<div id="control_panel_formsize">
-					<a>form size</a>
+					<span>form size</span>
 					<Hint
 						title="フォームのサイズ&#13;&#10;ゲームスクリーンサイズより大きくなると表示されなかったりタップできなくなったりする。&#13;&#10;横300縦180辺りが無難?"
 					/>
@@ -54,7 +54,7 @@ export const ControlPanel: React.FC<{
 						{props.formSize.x}px/{props.formSize.y}px
 					</p>
 					<div style={{ width: "calc(100% - 20px)" }}>
-						<a>x:</a>
+						<span>x:</span>
 						<input
 							style={{ width: "calc(100% - 30px)" }}
 							value={props.formSizeVariable.x}
@@ -65,7 +65,7 @@ export const ControlPanel: React.FC<{
 						/>
 					</div>
 					<div style={{ width: "calc(100% - 20px)" }}>
-						<a>y:</a>
+						<span>y:</span>
 						<input
 							style={{ width: "calc(100% - 30px)" }}
 							value={props.formSizeVariable.y}
@@ -78,7 +78,7 @@ export const ControlPanel: React.FC<{
 				</div>
 				<Partition />
 				<div id="control_panel_showformframe">
-					<a>showFormFrame</a>
+					<span>showFormFrame</span>
 					<Hint
 						title="フォームの枠を表示するか&#13;&#10;'true'の場合に表示されます。"
 					/>
@@ -102,7 +102,7 @@ export const ControlPanel: React.FC<{
 				</div>
 				<Partition />
 				<div id="control_panel_formname">
-					<a>formName</a>
+					<span>formName</span>
 					<Hint
 						title="コマンドで呼び出す際のフォームの名前&#13;&#10;変数は使用できません。"
 					/>
@@ -157,7 +157,7 @@ export const ControlPanel: React.FC<{
 		setting_components = (
 			<>
 				<div id="control_panel_editmode">
-					<a>操作モード:</a>
+					<span>操作モード:</span>
 					<button disabled={props.editMode === "drag"} onClick={(e) => props.setEditMode("drag")}>
 						drag
 					</button>
@@ -167,50 +167,50 @@ export const ControlPanel: React.FC<{
 				</div>
 				<Partition />
 				<div id="control_panel_w">
-					<a>w:</a>
+					<span>w:</span>
 					<input style={input_style} value={form_element.w} onChange={(e) => inputOnChange(e, "w")} />
-					<a>px</a>
+					<span>px</span>
 					<Hint
 						title="width&#13;&#10;要素の横の大きさ"
 					/>
 				</div>
 				<div id="control_panel_h">
-					<a>h:</a>
+					<span>h:</span>
 					<input style={input_style} value={form_element.h} onChange={(e) => inputOnChange(e, "h")} />
-					<a>px</a>
+					<span>px</span>
 					<Hint
 						title="height&#13;&#10;要素の縦の大きさ"
 					/>
 				</div>
 				<div id="control_panel_x">
-					<a>x:</a>
+					<span>x:</span>
 					<input style={input_style} value={form_element.x} onChange={(e) => inputOnChange(e, "x")} />
-					<a>px</a>
+					<span>px</span>
 					<Hint
 						title="フォームの左上が基準の右向きを正とした時の&#13;&#10;要素の左上の点の位置"
 					/>
 				</div>
 				<div id="control_panel_y">
-					<a>y:</a>
+					<span>y:</span>
 					<input style={input_style} value={form_element.y} onChange={(e) => inputOnChange(e, "y")} />
-					<a>px</a>
+					<span>px</span>
 					<Hint
 						title="フォームの左上が基準の下向きを正とした時の&#13;&#10;要素の左上の点の位置"
 					/>
 				</div>
 				<Partition />
 				<div id="control_panel_is_show_text">
-					<a>is_show_text:</a>
+					<span>is_show_text:</span>
 					<input type="checkbox" checked={variableReplacer(form_element.is_show_text, props.variable) === "true"} onChange={(e) => inputOnChange(e, "is_show_text")} />
 					<Hint title="textで指定した文字を表示するか" />
 				</div>
 				<div id="control_panel_is_show_image">
-					<a>is_show_image:</a>
+					<span>is_show_image:</span>
 					<input type="checkbox" checked={variableReplacer(form_element.is_show_image, props.variable) === "true"} onChange={(e) => inputOnChange(e, "is_show_image")} />
 					<Hint title="textureで指定した画像を表示するか" />
 				</div>
 				<div id="control_panel_is_show_button">
-					<a>is_show_button:</a>
+					<span>is_show_button:</span>
 					<input
 						type="checkbox"
 						checked={variableReplacer(form_element.is_show_button, props.variable) === "true"}
@@ -219,7 +219,7 @@ export const ControlPanel: React.FC<{
 					<Hint title="ボタンとして押せるようにするか" />
 				</div>
 				<div id="control_panel_is_show_close">
-					<a>is_show_close:</a>
+					<span>is_show_close:</span>
 					<input type="checkbox" checked={variableReplacer(form_element.is_show_close, props.variable) === "true"} onChange={(e) => inputOnChange(e, "is_show_close")} />
 					<Hint
 						title="フォーム右上にある閉じるボタンをその要素に表示するか&#13;&#10;既存の閉じるボタンを使用するため、サイズや位置、画像は調整できません。&#13;&#10;フォームの外枠に使用しています。"
@@ -227,13 +227,13 @@ export const ControlPanel: React.FC<{
 				</div>
 				<Partition />
 				<div id="control_panel_text">
-					<a>text</a>
+					<span>text</span>
 					<Hint title="要素の中央に表示される文字" />
 					<input style={{ width: "calc(100% - 20px)" }} value={form_element.text} onChange={(e) => inputOnChange(e, "text")} />
 				</div>
 				<Partition />
 				<div id="control_panel_texture">
-					<a>texture</a>
+					<span>texture</span>
 					<Hint
 						title="要素のサイズに拡大縮小され表示される画像のパス&#13;&#10;textures/...."
 					/>
@@ -241,7 +241,7 @@ export const ControlPanel: React.FC<{
 				</div>
 				<Partition />
 				<div id="control_panel_hovertext">
-					<a>hover</a>
+					<span>hover</span>
 					<Hint
 						title="カーソルを要素に合わせた時もしくはタップした時に&#13;&#10;表示されるテキスト"
 					/>
@@ -249,7 +249,7 @@ export const ControlPanel: React.FC<{
 				</div>
 				<Partition />
 				<div id="control_panel_label">
-					<a>label</a>
+					<span>label</span>
 					<Hint title="ボタンが押された時にscriptAPIで取得できる値" />
 					<input style={{ width: "130px" }} value={form_element.label} onChange={(e) => inputOnChange(e, "label")} />
 				</div>
@@ -276,7 +276,7 @@ export const ControlPanel: React.FC<{
 
 const Partition: React.FC = () => <div style={{ borderTop: "solid 1px #aaaaaa", width: "calc(100% - 10px)", height: "1px", margin: "3px 5px" }} />;
 const Hint: React.FC<{ title: string }> = ({ title }) => (
-	<a style={{ fontSize: "12px" }} title={title}>
+	<span style={{ fontSize: "12px" }} title={title}>
 		？
-	</a>
+	</span>
 );

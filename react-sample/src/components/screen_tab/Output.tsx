@@ -24,7 +24,7 @@ export const Output: React.FC<{
 	return (
 		<div>
 			<div>
-				<a>復元コード(このサイト用)</a>
+				<span>復元コード(このサイト用)</span>
 				<button
 					onClick={(e) => {
 						try {
@@ -82,7 +82,7 @@ export const Output: React.FC<{
 			<div>
 				<p style={{ margin: 0 }}>追加コマンド(コマンドブロック推奨)</p>
 				<div>
-					<a>1.</a>
+					<span>1.</span>
 					<textarea
 						style={{ width: "calc(100% - 50px)" }}
 						value={`/tag @p add {"form_name":${props.formName},"form_size":{"x":${props.formSize.x},"y":${props.formSize.y}},"showFormFrame":${
@@ -92,7 +92,7 @@ export const Output: React.FC<{
 					/>
 				</div>
 				<div>
-					<a>2.</a>
+					<span>2.</span>
 					<textarea style={{ width: "calc(100% - 50px)" }} value={"/scriptevent cf:tag"} onChange={(e) => e.preventDefault()} readOnly={true} />
 				</div>
 			</div>

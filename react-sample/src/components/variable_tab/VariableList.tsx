@@ -19,9 +19,9 @@ export const VariableList: React.FC<{
 				.map((key, i) => (
 					<React.Fragment key={i}>
 						<div>
-							<a>{key}</a>
-							<a>:</a>
-							<a>{props.variable[key]}</a>
+							<span>{key}</span>
+							<span>:</span>
+							<span>{props.variable[key]}</span>
 						</div>
 					</React.Fragment>
 				))}
