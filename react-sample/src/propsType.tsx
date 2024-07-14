@@ -1,4 +1,4 @@
-import { formElementsTypes } from "./formElementTypes";
+import { formElementsTypes, formElementsVariableTypes } from "./formElementTypes";
 
 export type propsType = {
 	showFormFrame: string;
@@ -36,8 +36,8 @@ export type propsType = {
 	setTargetFormElementIndex: React.Dispatch<React.SetStateAction<number | null>>;
 	targetFormElement: HTMLElement | null;
 	setTargetFormElement: React.Dispatch<React.SetStateAction<HTMLElement | null>>;
-	formElements: formElementsTypes.elementPropertiesTypes.all[];
-	setFormElements: React.Dispatch<React.SetStateAction<formElementsTypes.elementPropertiesTypes.all[]>>;
+	formElements: formElementsVariableTypes.elementPropertiesTypes.all[];
+	setFormElements: React.Dispatch<React.SetStateAction<formElementsVariableTypes.elementPropertiesTypes.all[]>>;
 	elementPanelHeight: number;
 	setElementPanelHeight: React.Dispatch<React.SetStateAction<number>>;
 	screenZoomRatio: number;

@@ -1,11 +1,12 @@
 import React from "react";
-import { formElementsTypes } from "../../formElementTypes";
+import { formElementsTypes, formElementsVariableTypes } from "../../formElementTypes";
+import { variableReplacer } from "../../variableReplacer";
 
 //エレメントジェネレーター
 export const ElementsGenerator: React.FC<{
 	props: {
-		formElements: formElementsTypes.elementPropertiesTypes.all[];
-		setFormElements: React.Dispatch<React.SetStateAction<formElementsTypes.elementPropertiesTypes.all[]>>;
+		formElements: formElementsVariableTypes.elementPropertiesTypes.all[];
+		setFormElements: React.Dispatch<React.SetStateAction<formElementsVariableTypes.elementPropertiesTypes.all[]>>;
 		screenZoomRatio: number;
 		setScreenZoomRatio: React.Dispatch<React.SetStateAction<number>>;
 		targetFormElementIndex: number | null;
@@ -13,17 +14,28 @@ export const ElementsGenerator: React.FC<{
 		uploadedImages: {
 			[path: string]: string;
 		};
+		variable: {
+			[key: string]: string | number | boolean;
+		};
 	};
 }> = ({ props }) => {
-	function elementGenerator(form_element: formElementsTypes.elementPropertiesTypes.all, index: number) {
+	function elementGenerator(form_element: formElementsVariableTypes.elementPropertiesTypes.all, index: number) {
+		const replaced_form_size_w = Number(variableReplacer(form_element.w, props.variable));
+		const replaced_form_size_h = Number(variableReplacer(form_element.h, props.variable));
+		const replaced_form_size_x = Number(variableReplacer(form_element.x, props.variable));
+		const replaced_form_size_y = Number(variableReplacer(form_element.y, props.variable));
+		const form_size_w = Number.isNaN(replaced_form_size_w) ? 0 : replaced_form_size_w * props.screenZoomRatio;
+		const form_size_h = Number.isNaN(replaced_form_size_h) ? 0 : replaced_form_size_h * props.screenZoomRatio;
+		const form_size_x = Number.isNaN(replaced_form_size_x) ? 0 : replaced_form_size_x * props.screenZoomRatio;
+		const form_size_y = Number.isNaN(replaced_form_size_y) ? 0 : replaced_form_size_y * props.screenZoomRatio;
 		return (
 			<div
 				id={`form_element${index}`}
 				className={`form_element`}
 				style={{
-					width: `${form_element.w * props.screenZoomRatio}px`,
-					height: `${form_element.h * props.screenZoomRatio}px`,
-					transform: `translate(${form_element.x * props.screenZoomRatio}px, ${form_element.y * props.screenZoomRatio}px)`,
+					width: `${form_size_w}px`,
+					height: `${form_size_h}px`,
+					transform: `translate(${form_size_x}px, ${form_size_y}px)`,
 					position: "absolute",
 					// letterSpacing: `${-0.75 * props.screenZoomRatio}px`,
 					fontSize: `${10 * props.screenZoomRatio}px`,
@@ -41,7 +53,7 @@ export const ElementsGenerator: React.FC<{
 						zIndex: 1,
 						// width: `${form_element.w * props.screenZoomRatio}px`,
 
-						height: `${form_element.h * props.screenZoomRatio}px`,
+						height: `${form_size_h}px`,
 						position: "absolute",
 						display: "flex",
 						alignContent: "center",
@@ -74,8 +86,8 @@ export const ElementsGenerator: React.FC<{
 						pointerEvents: "none",
 						userSelect: "none",
 						zIndex: 0,
-						width: `${form_element.w * props.screenZoomRatio - 4}px`,
-						height: `${form_element.h * props.screenZoomRatio - 4}px`,
+						width: `${form_size_w - 4}px`,
+						height: `${form_size_h - 4}px`,
 						position: "absolute",
 					}}
 				>

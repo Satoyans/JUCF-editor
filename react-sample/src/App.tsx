@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { default as MoveableElement } from "./components/screen_tab/MoveableElement";
 import React from "react";
-import { formElementsTypes } from "./formElementTypes";
+import { formElementsVariableTypes } from "./formElementTypes";
 import { ElementsGenerator } from "./components/screen_tab/ElementsGenerator";
 import { ControlPanel } from "./components/screen_tab/ControlPanel";
 import { ElementPanel } from "./components/screen_tab/ElementPanel";
@@ -27,7 +27,7 @@ function getScale(game_screen_size: { x: number; y: number }, form_size: { x: nu
 	return Number(Math.floor(minScale * 10)) * 0.1; //o.oo
 }
 //フォームエレメントからエレメントパネルの高さを求める関数
-function getElementPanelHeight(form_elements: formElementsTypes.elementPropertiesTypes.all[]) {
+function getElementPanelHeight(form_elements: formElementsVariableTypes.elementPropertiesTypes.all[]) {
 	if (form_elements.length === 0) return 100;
 	const width_element_count = Math.floor((window.innerWidth - 20) / 100); //横方向に何個並べられるか
 	const height_element_count = Math.ceil(form_elements.length / width_element_count); //縦方向に何列必要か
@@ -51,7 +51,7 @@ function App() {
 	//State: ターゲットエレメント
 	const [targetFormElement, setTargetFormElement] = useState<null | HTMLElement>(null);
 	//State: エレメントのリスト
-	const [formElements, setFormElements] = useState<formElementsTypes.elementPropertiesTypes.all[]>([]);
+	const [formElements, setFormElements] = useState<formElementsVariableTypes.elementPropertiesTypes.all[]>([]);
 	//State: エレメントパネルの高さ
 	const [elementPanelHeight, setElementPanelHeight] = useState(0);
 	//State: 操作モード

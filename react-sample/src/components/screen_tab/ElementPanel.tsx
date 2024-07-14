@@ -1,5 +1,5 @@
 import React from "react";
-import { formElementsTypes } from "../../formElementTypes";
+import { formElementsTypes, formElementsVariableTypes } from "../../formElementTypes";
 import { themeColors } from "../themeColor";
 
 //エレメントパネル
@@ -7,7 +7,7 @@ export const ElementPanel: React.FC<{
 	props: {
 		themeColor: "Light" | "Dark";
 		elementPanelHeight: number;
-		formElements: formElementsTypes.elementPropertiesTypes.all[];
+		formElements: formElementsVariableTypes.elementPropertiesTypes.all[];
 		targetFormElement: null | HTMLElement;
 		setTargetFormElement: React.Dispatch<React.SetStateAction<HTMLElement | null>>;
 		targetFormElementIndex: number | null;
@@ -18,7 +18,7 @@ export const ElementPanel: React.FC<{
 	};
 }> = ({ props }) => {
 	const row_count = Math.floor((window.innerWidth - 20) / 100);
-	function InPanelElement(form_element: formElementsTypes.elementPropertiesTypes.all, index: number) {
+	function InPanelElement(form_element: formElementsVariableTypes.elementPropertiesTypes.all, index: number) {
 		return (
 			<div
 				style={{

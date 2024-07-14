@@ -1,4 +1,4 @@
-import { formElementsTypes } from "../../formElementTypes";
+import { formElementsTypes, formElementsVariableTypes } from "../../formElementTypes";
 import { propsType } from "../../propsType";
 import { variableReplacer } from "../../variableReplacer";
 import { themeColors } from "../themeColor";
@@ -124,9 +124,11 @@ export const ControlPanel: React.FC<{
 		if (form_element === undefined) throw new Error("form element is not found!(control_panel)");
 
 		//変更があった時に良い感じにStateを更新する関数
-		const inputOnChange = (e: React.ChangeEvent<HTMLInputElement>, key: keyof formElementsTypes.elementPropertiesTypes.all) => {
+		const inputOnChange = (e: React.ChangeEvent<HTMLInputElement>, key: keyof formElementsVariableTypes.elementPropertiesTypes.all) => {
 			if (props.targetFormElementIndex === null) throw new Error("form element index is null");
-			const form_elements: formElementsTypes.elementPropertiesTypes.all[] = JSON.parse(JSON.stringify(props.formElements));
+			const form_elements: formElementsVariableTypes.elementPropertiesTypes.all[] = JSON.parse(JSON.stringify(props.formElements));
+			/*
+			変数のために全部stringで処理
 			if (key === "h" || key === "w" || key === "x" || key === "y") {
 				const value = Number(e.target.value);
 				if (Number.isNaN(value)) return;
@@ -139,6 +141,13 @@ export const ControlPanel: React.FC<{
 				} else {
 					form_element[key] = e.target.value;
 				}
+			} else {
+				form_element[key] = e.target.value;
+			}*/
+
+			//checkedかそれ以外か
+			if (key === "is_show_button" || key === "is_show_close" || key === "is_show_image" || key === "is_show_text") {
+				form_element[key] = String(e.target.checked);
 			} else {
 				form_element[key] = e.target.value;
 			}
@@ -192,22 +201,26 @@ export const ControlPanel: React.FC<{
 				<Partition />
 				<div id="control_panel_is_show_text">
 					<a>is_show_text:</a>
-					<input type="checkbox" checked={form_element.is_show_text} onChange={(e) => inputOnChange(e, "is_show_text")} />
+					<input type="checkbox" checked={variableReplacer(form_element.is_show_text, props.variable) === "true"} onChange={(e) => inputOnChange(e, "is_show_text")} />
 					<Hint title="textで指定した文字を表示するか" />
 				</div>
 				<div id="control_panel_is_show_image">
 					<a>is_show_image:</a>
-					<input type="checkbox" checked={form_element.is_show_image} onChange={(e) => inputOnChange(e, "is_show_image")} />
+					<input type="checkbox" checked={variableReplacer(form_element.is_show_image, props.variable) === "true"} onChange={(e) => inputOnChange(e, "is_show_image")} />
 					<Hint title="textureで指定した画像を表示するか" />
 				</div>
 				<div id="control_panel_is_show_button">
 					<a>is_show_button:</a>
-					<input type="checkbox" checked={form_element.is_show_button} onChange={(e) => inputOnChange(e, "is_show_button")} />
+					<input
+						type="checkbox"
+						checked={variableReplacer(form_element.is_show_button, props.variable) === "true"}
+						onChange={(e) => inputOnChange(e, "is_show_button")}
+					/>
 					<Hint title="ボタンとして押せるようにするか" />
 				</div>
 				<div id="control_panel_is_show_close">
 					<a>is_show_close:</a>
-					<input type="checkbox" checked={form_element.is_show_close} onChange={(e) => inputOnChange(e, "is_show_close")} />
+					<input type="checkbox" checked={variableReplacer(form_element.is_show_close, props.variable) === "true"} onChange={(e) => inputOnChange(e, "is_show_close")} />
 					<Hint
 						title="フォーム右上にある閉じるボタンをその要素に表示するか&#13;&#10;既存の閉じるボタンを使用するため、サイズや位置、画像は調整できません。&#13;&#10;フォームの外枠に使用しています。"
 					/>
@@ -238,7 +251,7 @@ export const ControlPanel: React.FC<{
 				<div id="control_panel_label">
 					<a>label</a>
 					<Hint title="ボタンが押された時にscriptAPIで取得できる値" />
-					<input style={{ width: "130px" }} checked={form_element.is_show_close} onChange={(e) => inputOnChange(e, "label")} />
+					<input style={{ width: "130px" }} value={form_element.label} onChange={(e) => inputOnChange(e, "label")} />
 				</div>
 			</>
 		);

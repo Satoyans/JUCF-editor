@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState } from "react";
-import { formElementsTypes } from "../../formElementTypes";
+import { formElementsTypes, formElementsVariableTypes } from "../../formElementTypes";
 
 export const Output: React.FC<{
 	props: {
-		setFormElements: React.Dispatch<React.SetStateAction<formElementsTypes.elementPropertiesTypes.all[]>>;
-		formElements: formElementsTypes.elementPropertiesTypes.all[];
+		setFormElements: React.Dispatch<React.SetStateAction<formElementsVariableTypes.elementPropertiesTypes.all[]>>;
+		formElements: formElementsVariableTypes.elementPropertiesTypes.all[];
 		formName: string;
 		formSize: {
 			x: number;
@@ -32,18 +32,18 @@ export const Output: React.FC<{
 							const form_elements = JSON.parse(textareaFormElements.current.value);
 							let index_count = 0;
 							for (let form_element of form_elements) {
-								const element_type: formElementsTypes.elementPropertiesTypes.all = {
-									h: 0,
-									w: 0,
-									x: 0,
-									y: 0,
+								const element_type: formElementsVariableTypes.elementPropertiesTypes.all = {
+									h: "0",
+									w: "0",
+									x: "0",
+									y: "0",
 									hover_text: "",
 									texture: "",
 									text: "",
-									is_show_button: true,
-									is_show_close: true,
-									is_show_image: true,
-									is_show_text: true,
+									is_show_button: "true",
+									is_show_close: "true",
+									is_show_image: "true",
+									is_show_text: "true",
 								};
 								if (Object.keys(form_element).length !== Object.keys(element_type).length) throw new Error(`キーの数が異常です。index:${index_count}`);
 								for (let key of Object.keys(form_element)) {

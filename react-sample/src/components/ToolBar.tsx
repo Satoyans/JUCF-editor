@@ -1,14 +1,26 @@
-import { formElementsTypes } from "../formElementTypes";
+import { formElementsTypes, formElementsVariableTypes } from "../formElementTypes";
 import { themeColors } from "./themeColor";
 
-function createFormElement(): formElementsTypes.elementPropertiesTypes.all {
-	return { h: 30, w: 30, x: 0, y: 0, text: "element", texture: "", hover_text: "", is_show_button: false, is_show_close: false, is_show_image: false, is_show_text: true };
+function createFormElement(): formElementsVariableTypes.elementPropertiesTypes.all {
+	return {
+		h: "30",
+		w: "30",
+		x: "0",
+		y: "0",
+		text: "element",
+		texture: "",
+		hover_text: "",
+		is_show_button: "false",
+		is_show_close: "false",
+		is_show_image: "false",
+		is_show_text: "true",
+	};
 }
 //ツールバー
 export const ToolBar: React.FC<{
 	props: {
-		formElements: formElementsTypes.elementPropertiesTypes.all[];
-		setFormElements: React.Dispatch<React.SetStateAction<formElementsTypes.elementPropertiesTypes.all[]>>;
+		formElements: formElementsVariableTypes.elementPropertiesTypes.all[];
+		setFormElements: React.Dispatch<React.SetStateAction<formElementsVariableTypes.elementPropertiesTypes.all[]>>;
 		targetFormElementIndex: number | null;
 		setTargetFormElementIndex: React.Dispatch<React.SetStateAction<number | null>>;
 		selectedTab: "screen" | "image" | "variable";
