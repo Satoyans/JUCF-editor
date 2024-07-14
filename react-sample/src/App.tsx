@@ -12,6 +12,7 @@ import { Output } from "./components/screen_tab/Output";
 import { ScreenTab } from "./components/screen_tab/ScreenTab";
 import { ImageTab } from "./components/image_tab/ImageTab";
 import { variableReplacer } from "./variableReplacer";
+import { VariableTab } from "./components/variable_tab/VariableTab";
 
 //ウィンドウサイズとゲームスクリーンサイズの比を返す関数
 function getScale(game_screen_size: { x: number; y: number }, form_size: { x: number; y: number }, elementPanelHeight: number) {
@@ -160,6 +161,7 @@ function App() {
 		return_components = <ImageTab props={{ ...props }} />;
 	}
 	if (selectedTab === "variable") {
+		return_components = <VariableTab props={{ ...props }} />;
 	}
 	return (
 		<div className="App">
