@@ -99,8 +99,10 @@ export const Output: React.FC<{
 									is_show_image: "true",
 									is_show_text: "true",
 								};
-								if (Object.keys(element).length !== Object.keys(element_type).length) throw new Error(`elements index:${index_count}\nキーの数が異常です。`);
+								if (Object.keys(element).length !== Object.keys(element_type).length && Object.keys(element).length - 1 !== Object.keys(element_type).length)
+									throw new Error(`elements index:${index_count}\nキーの数が異常です。`);
 								for (let key of Object.keys(element)) {
+									if (Object.keys(element).length - 1 === Object.keys(element_type).length && key === "label") continue;
 									if (!Object.keys(element_type).includes(key)) throw new Error(`elements index:${index_count}\nキーが異常です。,key:${key}`);
 									const typed_key = key as
 										| "h"
