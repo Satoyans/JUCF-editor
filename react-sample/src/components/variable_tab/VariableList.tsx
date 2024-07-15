@@ -73,6 +73,7 @@ export const VariableList: React.FC<{
 											delete new_variable[old_key];
 											new_variable[new_key] = new_value;
 											props.setVariable(new_variable);
+											setEditVariableKey(null);
 										}}
 									>
 										更新
