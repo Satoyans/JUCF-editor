@@ -87,7 +87,7 @@ export const ImageList: React.FC<{
 									})()}
 								</div>
 								<div style={{ display: "flex", flexDirection: "row" }}>
-									<div className="remove_button" style={{ margin: "10px" }}>
+									<div className="edit_button" style={{ margin: "10px" }}>
 										<button
 											id={`uploaded_images_${path}`}
 											style={{ width: "40px", height: "40px" }}
