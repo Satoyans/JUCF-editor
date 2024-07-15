@@ -19,5 +19,5 @@ export const variableReplacer = (original_text: string, variables: { [key: strin
 		if (variables[variable_text] === undefined) continue;
 		target_text = target_text.replace(`%${variable_text}%`, String(variables[variable_text]));
 	}
-	return target_text.replace("%", "").replace("\\%", "%");
+	return target_text.replaceAll("\\%", "%");
 };
