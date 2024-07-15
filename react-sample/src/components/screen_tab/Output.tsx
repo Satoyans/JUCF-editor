@@ -10,8 +10,11 @@ export const Output: React.FC<{
 			x: number;
 			y: number;
 		};
-		showFormFrame: string;
+		isShowFormFrame: string;
 		setTargetFormElementIndex: React.Dispatch<React.SetStateAction<number | null>>;
+		variable: {
+			[key: string]: string | number | boolean;
+		};
 	};
 }> = ({ props }) => {
 	//テキストエリア用のステート
@@ -85,9 +88,18 @@ export const Output: React.FC<{
 					<span>1.</span>
 					<textarea
 						style={{ width: "calc(100% - 50px)" }}
-						value={`/tag @p add {"form_name":${props.formName},"form_size":{"x":${props.formSize.x},"y":${props.formSize.y}},"showFormFrame":${
-							props.showFormFrame
-						},"elements":${JSON.stringify(props.formElements)}}`.replaceAll('"', "'")}
+						//value={`/tag @p add {"form_name":${props.formName},"form_size":{"x":${props.formSize.x},"y":${props.formSize.y}},"isShowFormFrame":${
+						//	props.isShowFormFrame
+						//},"elements":${JSON.stringify(props.formElements)}}`.replaceAll('"', "'")}
+						value={`/tag @p add "${JSON.stringify({
+							form_name: props.formName,
+							form_size: props.formSize,
+							is_show_form_frame: props.isShowFormFrame,
+							variables: props.variable,
+							elements: props.formElements,
+						})
+							.replace(/\\/g, "\\\\")
+							.replace(/"/g, '\\"')}"`}
 						readOnly={true}
 					/>
 				</div>
