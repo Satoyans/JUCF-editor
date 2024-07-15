@@ -3,7 +3,6 @@ import { themeColors } from "../themeColor";
 //スクリーン
 export const Screen: React.FC<{
 	props: {
-		formId: String;
 		themeColor: "Light" | "Dark";
 		formSize: {
 			x: number;
