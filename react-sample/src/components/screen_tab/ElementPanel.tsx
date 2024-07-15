@@ -94,7 +94,7 @@ export const ElementPanel: React.FC<{
 								height: "100%",
 								imageRendering: "pixelated",
 							}}
-							src={`data:image/png;base64,${props.uploadedImages[variableReplacer(form_element.texture, props.variable)]}`}
+							src={`data:image/png;base64,${getImage(props.uploadedImages, props.variable, form_element.texture)}`}
 						/>
 					)}
 				</div>
@@ -119,3 +119,20 @@ export const ElementPanel: React.FC<{
 		</div>
 	);
 };
+
+function getImage(
+	uploadedImages: {
+		[path: string]: string;
+	},
+	variable: {
+		[key: string]: string | number | boolean;
+	},
+	texture: string
+) {
+	const path = variableReplacer(texture, variable);
+	const path_png = path + ".png";
+	const path_jpg = path + ".jpg";
+	const path_jpeg = path + ".jpeg";
+	console.log(path, path_png, path_jpg, path_jpeg);
+	return uploadedImages[path] ?? uploadedImages[path_png] ?? uploadedImages[path_jpg] ?? uploadedImages[path_jpeg] ?? "";
+}
