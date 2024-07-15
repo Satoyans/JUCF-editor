@@ -78,24 +78,24 @@ export const ControlPanel: React.FC<{
 				</div>
 				<Partition />
 				<div id="control_panel_showformframe">
-					<span>showFormFrame</span>
+					<span>isShowFormFrame</span>
 					<Hint
 						title="フォームの枠を表示するか&#13;&#10;'true'の場合に表示されます。"
 					/>
 					<div style={{ width: "calc(100% - 30px)" }}>
 						<input
 							type="checkbox"
-							checked={variableReplacer(props.showFormFrame, props.variable) === "true"}
+							checked={variableReplacer(props.isShowFormFrame, props.variable) === "true"}
 							onChange={(e) => {
-								(e.target as HTMLInputElement).checked = variableReplacer(props.showFormFrame, props.variable) === "true";
+								(e.target as HTMLInputElement).checked = variableReplacer(props.isShowFormFrame, props.variable) === "true";
 							}}
 						/>
 						<input
 							style={{ width: "calc(100% - 30px)" }}
-							value={props.showFormFrame}
+							value={props.isShowFormFrame}
 							onChange={(e) => {
 								const input_value = e.target.value;
-								props.setShowFormFrame(input_value);
+								props.setIsShowFormFrame(input_value);
 							}}
 						/>
 					</div>

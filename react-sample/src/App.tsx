@@ -38,7 +38,7 @@ function getElementPanelHeight(form_elements: formElementsVariableTypes.elementP
 
 function App() {
 	//State: フォームの枠を表示するか
-	const [showFormFrame, setShowFormFrame] = useState("true");
+	const [isShowFormFrame, setIsShowFormFrame] = useState("true");
 	//State: フォームの枠を表示するか
 	const [formName, setFormName] = useState("custom_form");
 	//State: 選択されているタブ
@@ -97,8 +97,8 @@ function App() {
 	};
 
 	const props = {
-		showFormFrame,
-		setShowFormFrame,
+		isShowFormFrame,
+		setIsShowFormFrame,
 		formName,
 		setFormName,
 		selectedTab,

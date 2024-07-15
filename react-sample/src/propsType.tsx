@@ -1,8 +1,8 @@
 import { formElementsTypes, formElementsVariableTypes } from "./formElementTypes";
 
 export type propsType = {
-	showFormFrame: string;
-	setShowFormFrame: React.Dispatch<React.SetStateAction<string>>;
+	isShowFormFrame: string;
+	setIsShowFormFrame: React.Dispatch<React.SetStateAction<string>>;
 	formName: string;
 	setFormName: React.Dispatch<React.SetStateAction<string>>;
 	selectedTab: "screen" | "image" | "variable";
