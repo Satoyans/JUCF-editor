@@ -7,7 +7,6 @@ import { themeColors } from "../themeColor";
 export const ControlPanel: React.FC<{
 	props: propsType;
 }> = ({ props }) => {
-	const input_style = { width: "30px" };
 	let setting_components;
 	if (props.targetFormElementIndex === null) {
 		//スクリーン自体の設定を表示する
@@ -144,10 +143,12 @@ export const ControlPanel: React.FC<{
 			} else {
 				form_element[key] = e.target.value;
 			}*/
-
-			//checkedかそれ以外か
-			if (key === "is_show_button" || key === "is_show_close" || key === "is_show_image" || key === "is_show_text") {
-				form_element[key] = String(e.target.checked);
+			if (key === "label") {
+				if (e.target.value === "") {
+					delete form_element[key];
+				} else {
+					form_element[key] = e.target.value;
+				}
 			} else {
 				form_element[key] = e.target.value;
 			}
@@ -157,78 +158,104 @@ export const ControlPanel: React.FC<{
 		setting_components = (
 			<>
 				<div id="control_panel_editmode">
-					<span>操作モード:</span>
-					<button disabled={props.editMode === "drag"} onClick={(e) => props.setEditMode("drag")}>
-						drag
-					</button>
-					<button disabled={props.editMode === "resize"} onClick={(e) => props.setEditMode("resize")}>
-						resize
-					</button>
+					<span>操作モード</span>
+					<div>
+						<button style={{ width: "calc(50% - 10px)" }} disabled={props.editMode === "drag"} onClick={(e) => props.setEditMode("drag")}>
+							drag
+						</button>
+						<button style={{ width: "calc(50% - 10px)" }} disabled={props.editMode === "resize"} onClick={(e) => props.setEditMode("resize")}>
+							resize
+						</button>
+					</div>
 				</div>
 				<Partition />
-				<div id="control_panel_w">
-					<span>w:</span>
-					<input style={input_style} value={form_element.w} onChange={(e) => inputOnChange(e, "w")} />
-					<span>px</span>
+				<div>
+					<a>サイズ</a>
 					<Hint
-						title="width&#13;&#10;要素の横の大きさ"
+						title="w:要素の横の大きさ&#13;&#10;h:要素の縦の大きさ"
 					/>
+					<div id="control_panel_w">
+						<div style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
+							<span style={{ width: "25px" }}>w:</span>
+							<span style={{ fontSize: "12px" }}>{variableReplacer(form_element.w, props.variable)}px</span>
+						</div>
+						<input style={{ width: "calc(100% - 20pxs)" }} value={form_element.w} onChange={(e) => inputOnChange(e, "w")} />
+					</div>
+					<div id="control_panel_h">
+						<div style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
+							<span style={{ width: "25px" }}>h:</span>
+							<span style={{ fontSize: "12px" }}>{variableReplacer(form_element.h, props.variable)}px</span>
+						</div>
+						<input style={{ width: "calc(100% - 20pxs)" }} value={form_element.h} onChange={(e) => inputOnChange(e, "h")} />
+					</div>
 				</div>
-				<div id="control_panel_h">
-					<span>h:</span>
-					<input style={input_style} value={form_element.h} onChange={(e) => inputOnChange(e, "h")} />
-					<span>px</span>
+				<Partition />
+				<div>
+					<a>位置</a>
 					<Hint
-						title="height&#13;&#10;要素の縦の大きさ"
+						title="x:フォームの左上が基準の右向きを正とした時の要素の左上の点の位置&#13;&#10;y:下向きを正とした時の要素の左上の点の位置"
 					/>
-				</div>
-				<div id="control_panel_x">
-					<span>x:</span>
-					<input style={input_style} value={form_element.x} onChange={(e) => inputOnChange(e, "x")} />
-					<span>px</span>
-					<Hint
-						title="フォームの左上が基準の右向きを正とした時の&#13;&#10;要素の左上の点の位置"
-					/>
-				</div>
-				<div id="control_panel_y">
-					<span>y:</span>
-					<input style={input_style} value={form_element.y} onChange={(e) => inputOnChange(e, "y")} />
-					<span>px</span>
-					<Hint
-						title="フォームの左上が基準の下向きを正とした時の&#13;&#10;要素の左上の点の位置"
-					/>
+					<div id="control_panel_x">
+						<div style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
+							<span style={{ width: "25px" }}>x:</span>
+							<span style={{ fontSize: "12px" }}>{variableReplacer(form_element.x, props.variable)}px</span>
+						</div>
+						<input style={{ width: "calc(100% - 20pxs)" }} value={form_element.x} onChange={(e) => inputOnChange(e, "x")} />
+					</div>
+					<div id="control_panel_y">
+						<div style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
+							<span style={{ width: "25px" }}>y:</span>
+							<span style={{ fontSize: "12px" }}>{variableReplacer(form_element.y, props.variable)}px</span>
+						</div>
+						<input style={{ width: "calc(100% - 20pxs)" }} value={form_element.y} onChange={(e) => inputOnChange(e, "y")} />
+					</div>
 				</div>
 				<Partition />
 				<div id="control_panel_is_show_text">
-					<span>is_show_text:</span>
-					<input type="checkbox" checked={variableReplacer(form_element.is_show_text, props.variable) === "true"} onChange={(e) => inputOnChange(e, "is_show_text")} />
-					<Hint title="textで指定した文字を表示するか" />
+					<span>is_show_text</span>
+					<Hint
+						title="textで指定した文字を表示するか&#13;&#10;'true'の場合に表示されます。"
+					/>
+					<div style={{ display: "flex", alignItems: "center" }}>
+						<input type="checkbox" checked={variableReplacer(form_element.is_show_text, props.variable) === "true"} readOnly={true} />
+						<input style={{ width: "calc(100% - 30px)" }} value={form_element.is_show_text} onChange={(e) => inputOnChange(e, "is_show_text")} />
+					</div>
 				</div>
 				<div id="control_panel_is_show_image">
-					<span>is_show_image:</span>
-					<input type="checkbox" checked={variableReplacer(form_element.is_show_image, props.variable) === "true"} onChange={(e) => inputOnChange(e, "is_show_image")} />
-					<Hint title="textureで指定した画像を表示するか" />
+					<span>is_show_image</span>
+					<Hint
+						title="textureで指定した画像を表示するか&#13;&#10;'true'の場合に表示されます。"
+					/>
+					<div style={{ display: "flex", alignItems: "center" }}>
+						<input type="checkbox" checked={variableReplacer(form_element.is_show_image, props.variable) === "true"} readOnly={true} />
+						<input style={{ width: "calc(100% - 30px)" }} value={form_element.is_show_image} onChange={(e) => inputOnChange(e, "is_show_image")} />
+					</div>
 				</div>
 				<div id="control_panel_is_show_button">
-					<span>is_show_button:</span>
-					<input
-						type="checkbox"
-						checked={variableReplacer(form_element.is_show_button, props.variable) === "true"}
-						onChange={(e) => inputOnChange(e, "is_show_button")}
+					<span>is_show_button</span>
+					<Hint
+						title="ボタンとして押せるようにするか&#13;&#10;'true'の場合に表示されます。"
 					/>
-					<Hint title="ボタンとして押せるようにするか" />
+					<div style={{ display: "flex", alignItems: "center" }}>
+						<input type="checkbox" checked={variableReplacer(form_element.is_show_button, props.variable) === "true"} readOnly={true} />
+						<input style={{ width: "calc(100% - 30px)" }} value={form_element.is_show_button} onChange={(e) => inputOnChange(e, "is_show_button")} />
+					</div>
 				</div>
 				<div id="control_panel_is_show_close">
-					<span>is_show_close:</span>
-					<input type="checkbox" checked={variableReplacer(form_element.is_show_close, props.variable) === "true"} onChange={(e) => inputOnChange(e, "is_show_close")} />
+					<span>is_show_close</span>
 					<Hint
 						title="フォーム右上にある閉じるボタンをその要素に表示するか&#13;&#10;既存の閉じるボタンを使用するため、サイズや位置、画像は調整できません。&#13;&#10;フォームの外枠に使用しています。"
 					/>
+					<div style={{ display: "flex", alignItems: "center" }}>
+						<input type="checkbox" checked={variableReplacer(form_element.is_show_close, props.variable) === "true"} readOnly={true} />
+						<input style={{ width: "calc(100% - 30px)" }} value={form_element.is_show_close} onChange={(e) => inputOnChange(e, "is_show_close")} />
+					</div>
 				</div>
 				<Partition />
 				<div id="control_panel_text">
 					<span>text</span>
 					<Hint title="要素の中央に表示される文字" />
+					<p style={{ margin: 0, fontSize: "12px" }}>{variableReplacer(form_element.text, props.variable)}</p>
 					<input style={{ width: "calc(100% - 20px)" }} value={form_element.text} onChange={(e) => inputOnChange(e, "text")} />
 				</div>
 				<Partition />
@@ -237,6 +264,7 @@ export const ControlPanel: React.FC<{
 					<Hint
 						title="要素のサイズに拡大縮小され表示される画像のパス&#13;&#10;textures/...."
 					/>
+					<p style={{ margin: 0, fontSize: "12px" }}>{variableReplacer(form_element.texture, props.variable)}</p>
 					<input style={{ width: "110px" }} value={form_element.texture} onChange={(e) => inputOnChange(e, "texture")} />
 				</div>
 				<Partition />
@@ -245,12 +273,14 @@ export const ControlPanel: React.FC<{
 					<Hint
 						title="カーソルを要素に合わせた時もしくはタップした時に&#13;&#10;表示されるテキスト"
 					/>
+					<p style={{ margin: 0, fontSize: "12px" }}>{variableReplacer(form_element.hover_text, props.variable)}</p>
 					<input style={{ width: "120px" }} value={form_element.hover_text} onChange={(e) => inputOnChange(e, "hover_text")} />
 				</div>
 				<Partition />
 				<div id="control_panel_label">
 					<span>label</span>
 					<Hint title="ボタンが押された時にscriptAPIで取得できる値" />
+					<p style={{ margin: 0, fontSize: "12px" }}>{variableReplacer(String(form_element.label), props.variable)}</p>
 					<input style={{ width: "130px" }} value={form_element.label} onChange={(e) => inputOnChange(e, "label")} />
 				</div>
 			</>
