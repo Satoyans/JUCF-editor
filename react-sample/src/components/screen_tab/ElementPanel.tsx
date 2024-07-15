@@ -1,6 +1,7 @@
 import React from "react";
 import { formElementsTypes, formElementsVariableTypes } from "../../formElementTypes";
 import { themeColors } from "../themeColor";
+import { variableReplacer } from "../../variableReplacer";
 
 //エレメントパネル
 export const ElementPanel: React.FC<{
@@ -14,6 +15,9 @@ export const ElementPanel: React.FC<{
 		setTargetFormElementIndex: React.Dispatch<React.SetStateAction<number | null>>;
 		uploadedImages: {
 			[path: string]: string;
+		};
+		variable: {
+			[key: string]: string | number | boolean;
 		};
 	};
 }> = ({ props }) => {
@@ -67,7 +71,7 @@ export const ElementPanel: React.FC<{
 											textOverflow: "ellipsis",
 										}}
 									>
-										{text}
+										{variableReplacer(text, props.variable)}
 									</p>
 								</React.Fragment>
 						  ))}
@@ -90,7 +94,7 @@ export const ElementPanel: React.FC<{
 								height: "100%",
 								imageRendering: "pixelated",
 							}}
-							src={`data:image/png;base64,${props.uploadedImages[form_element.texture]}`}
+							src={`data:image/png;base64,${props.uploadedImages[variableReplacer(form_element.texture, props.variable)]}`}
 						/>
 					)}
 				</div>

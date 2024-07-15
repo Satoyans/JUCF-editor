@@ -76,7 +76,7 @@ export const ElementsGenerator: React.FC<{
 											height: `${10 * props.screenZoomRatio}px`,
 										}}
 									>
-										{text}
+										{variableReplacer(text, props.variable)}
 									</p>
 								</React.Fragment>
 						  ))}
@@ -92,7 +92,10 @@ export const ElementsGenerator: React.FC<{
 					}}
 				>
 					{!form_element.is_show_image ? null : (
-						<img style={{ imageRendering: "pixelated", width: "100%", height: "100%" }} src={`data:image/png;base64,${props.uploadedImages[form_element.texture]}`} />
+						<img
+							style={{ imageRendering: "pixelated", width: "100%", height: "100%" }}
+							src={`data:image/png;base64,${props.uploadedImages[variableReplacer(form_element.texture, props.variable)]}`}
+						/>
 					)}
 				</div>
 			</div>
