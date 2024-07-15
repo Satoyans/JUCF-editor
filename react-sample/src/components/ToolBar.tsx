@@ -47,6 +47,7 @@ export const ToolBar: React.FC<{
 			<div id="toolbar_buttons" style={{ margin: "0 0 0 10px", display: "flex", flexGrow: 1, width: "300px" }}>
 				{/* <p style={{ margin: 0, fontSize: 24 }}>toolbar</p> */}
 				<button
+					style={{ width: "60px", margin: "0 5px" }}
 					onClick={() => {
 						const form_elements = JSON.parse(JSON.stringify(props.formElements));
 						form_elements.push(createFormElement());
@@ -57,6 +58,7 @@ export const ToolBar: React.FC<{
 					add
 				</button>
 				<button
+					style={{ width: "60px", margin: "0 5px" }}
 					onClick={() => {
 						const index = props.targetFormElementIndex;
 						if (index === null) return;
@@ -69,6 +71,7 @@ export const ToolBar: React.FC<{
 					remove
 				</button>
 				<button
+					style={{ width: "60px", margin: "0 5px" }}
 					onClick={() => {
 						const index = props.targetFormElementIndex;
 						if (index === null) return;
