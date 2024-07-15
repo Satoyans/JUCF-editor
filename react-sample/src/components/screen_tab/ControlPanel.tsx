@@ -106,7 +106,8 @@ export const ControlPanel: React.FC<{
 					<Hint
 						title="コマンドで呼び出す際のフォームの名前&#13;&#10;変数は使用できません。"
 					/>
-					<p style={{ margin: 0, fontSize: "12px" }}>{variableReplacer(props.formName, props.variable)}</p>
+					{/* フォームの名前は変数を使用しないからプレビュー的なのは要らないかな */}
+					{/* <p style={{ margin: 0, fontSize: "12px" }}>{props.formName}</p> */}
 					<input
 						style={{ width: "calc(100% - 20px)" }}
 						value={props.formName}
@@ -115,7 +116,6 @@ export const ControlPanel: React.FC<{
 						}}
 					/>
 				</div>
-				{/*TODO フォームの名前とか変数とか*/}
 			</>
 		);
 	} else {
