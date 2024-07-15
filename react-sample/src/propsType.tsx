@@ -30,8 +30,6 @@ export type propsType = {
 		}>
 	>;
 
-	formId: string;
-	setFormId: React.Dispatch<React.SetStateAction<string>>;
 	targetFormElementIndex: number | null;
 	setTargetFormElementIndex: React.Dispatch<React.SetStateAction<number | null>>;
 	targetFormElement: HTMLElement | null;

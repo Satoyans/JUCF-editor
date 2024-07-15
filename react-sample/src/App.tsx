@@ -39,14 +39,12 @@ function getElementPanelHeight(form_elements: formElementsVariableTypes.elementP
 function App() {
 	//State: フォームの枠を表示するか
 	const [isShowFormFrame, setIsShowFormFrame] = useState("true");
-	//State: フォームの枠を表示するか
+	//State: フォーム名
 	const [formName, setFormName] = useState("custom_form");
 	//State: 選択されているタブ
 	const [selectedTab, setSelectedTab] = useState<"screen" | "image" | "variable">("screen");
 	//State: サイトのテーマカラー
 	const [themeColor, setThemeColor] = useState<"Light" | "Dark">("Light");
-	//State: フォームid
-	const [formId, setFormId] = useState("custom_form");
 	//State: ターゲットエレメントインデックス
 	const [targetFormElementIndex, setTargetFormElementIndex] = useState<number | null>(null);
 	//State: ターゲットエレメント
@@ -109,8 +107,6 @@ function App() {
 		setGameScreenSize,
 		formSize,
 		setFormSize,
-		formId,
-		setFormId,
 		targetFormElementIndex,
 		setTargetFormElementIndex,
 		targetFormElement,
