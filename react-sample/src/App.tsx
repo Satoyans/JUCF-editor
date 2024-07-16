@@ -178,24 +178,8 @@ function App() {
 	}
 	return (
 		<div className="App">
-			<Header />
-			<ToolBar
-				props={{
-					formElements,
-					setFormElements,
-					setTargetFormElementIndex,
-					targetFormElementIndex,
-					selectedTab,
-					setSelectedTab,
-					themeColor,
-					isDontRecode,
-					setIsDontRecode,
-					setStateFutureRecoder,
-					setStatePastRecoder,
-					stateFutureRecoder,
-					statePastRecoder,
-				}}
-			/>
+			<Header props={{ ...props }} />
+			<ToolBar props={{ ...props }} />
 
 			{return_components}
 		</div>
