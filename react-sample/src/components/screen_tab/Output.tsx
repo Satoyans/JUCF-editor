@@ -54,6 +54,32 @@ export const Output: React.FC<{
 	return (
 		<div>
 			<div>
+				<p style={{ margin: 0 }}>追加コマンド(コマンドブロック推奨)</p>
+				<div>
+					<span>1.</span>
+					<textarea
+						style={{ width: "calc(100% - 50px)" }}
+						//value={`/tag @p add {"form_name":${props.formName},"form_size":{"x":${props.formSize.x},"y":${props.formSize.y}},"isShowFormFrame":${
+						//	props.isShowFormFrame
+						//},"elements":${JSON.stringify(props.formElements)}}`.replaceAll('"', "'")}
+						value={`/tag @p add "${JSON.stringify({
+							form_name: props.formName,
+							form_size: props.formSizeVariable,
+							is_show_form_frame: props.isShowFormFrame,
+							variables: props.variable,
+							elements: props.formElements,
+						})
+							.replace(/\\/g, "\\\\")
+							.replace(/"/g, '\\"')}"`}
+						readOnly={true}
+					/>
+				</div>
+				<div>
+					<span>2.</span>
+					<textarea style={{ width: "calc(100% - 50px)" }} value={"/scriptevent cf:tag"} onChange={(e) => e.preventDefault()} readOnly={true} />
+				</div>
+			</div>
+			<div>
 				<span>復元コード(このサイト用)</span>
 				<button
 					onClick={(e) => {
@@ -159,32 +185,6 @@ export const Output: React.FC<{
 						}px`,
 					}}
 				></textarea>
-			</div>
-			<div>
-				<p style={{ margin: 0 }}>追加コマンド(コマンドブロック推奨)</p>
-				<div>
-					<span>1.</span>
-					<textarea
-						style={{ width: "calc(100% - 50px)" }}
-						//value={`/tag @p add {"form_name":${props.formName},"form_size":{"x":${props.formSize.x},"y":${props.formSize.y}},"isShowFormFrame":${
-						//	props.isShowFormFrame
-						//},"elements":${JSON.stringify(props.formElements)}}`.replaceAll('"', "'")}
-						value={`/tag @p add "${JSON.stringify({
-							form_name: props.formName,
-							form_size: props.formSizeVariable,
-							is_show_form_frame: props.isShowFormFrame,
-							variables: props.variable,
-							elements: props.formElements,
-						})
-							.replace(/\\/g, "\\\\")
-							.replace(/"/g, '\\"')}"`}
-						readOnly={true}
-					/>
-				</div>
-				<div>
-					<span>2.</span>
-					<textarea style={{ width: "calc(100% - 50px)" }} value={"/scriptevent cf:tag"} onChange={(e) => e.preventDefault()} readOnly={true} />
-				</div>
 			</div>
 		</div>
 	);
