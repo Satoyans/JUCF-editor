@@ -48,11 +48,11 @@ export const Screen: React.FC<{
 					width: `${game_screen_size.x}px`,
 					height: `${game_screen_size.y}px`,
 					backgroundColor: themeColors[props.themeColor].screen.gameArea,
-					// display: "flex",
-					// justifyContent: "center",
-					// alignItems: "center",
+					display: "flex",
+					justifyContent: "center",
+					alignItems: "center",
 					// flexShrink: 0,
-					margin: "auto",
+					// margin: "auto",
 					boxShadow: "0 0 0 1px black inset",
 				}}
 			>
