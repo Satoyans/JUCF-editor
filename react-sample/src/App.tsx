@@ -94,6 +94,36 @@ function App() {
 		setScreenZoomRatio(getScale(gameScreenSize, formSize, elementPanelHeight));
 	};
 
+	//フォームエレメント更新時にエレメントパネルの高さ更新
+	useEffect(() => setElementPanelHeight(getElementPanelHeight(formElements)), [formElements, screenZoomRatio]);
+
+	//ターゲットインデックス更新時にターゲットを更新
+	useEffect(() => {
+		if (targetFormElementIndex === null) return setTargetFormElement(null);
+		const form_elements_div = document.querySelector("#form_elements");
+		if (form_elements_div === null) throw new Error("form_elements_div is null");
+		setTargetFormElement(form_elements_div.children[targetFormElementIndex] as HTMLElement);
+	}, [targetFormElementIndex]);
+
+	//State: undo記録用
+	const [statePastRecoder, setStatePastRecoder] = useState<{ elements: typeof formElements; index: typeof targetFormElementIndex }[]>([]);
+	const [stateFutureRecoder, setStateFutureRecoder] = useState<{ elements: typeof formElements; index: typeof targetFormElementIndex }[]>([]);
+	const [isDontRecode, setIsDontRecode] = useState(true);
+	//undoとredo
+	useEffect(() => {
+		if (isDontRecode) {
+			setIsDontRecode(false);
+			return;
+		}
+		if (statePastRecoder.length !== 0) {
+			const recoder = statePastRecoder[statePastRecoder.length - 1];
+			if (recoder.elements === formElements && recoder.index === targetFormElementIndex) return;
+		}
+		statePastRecoder.push({ elements: formElements.map((e) => ({ ...e })), index: targetFormElementIndex });
+		setStatePastRecoder(statePastRecoder);
+		setStateFutureRecoder([]);
+	}, [formElements, targetFormElementIndex]);
+
 	const props = {
 		isShowFormFrame,
 		setIsShowFormFrame,
@@ -127,18 +157,13 @@ function App() {
 		setGameScreenSizeVariable,
 		variable,
 		setVariable,
+		statePastRecoder,
+		setStatePastRecoder,
+		stateFutureRecoder,
+		setStateFutureRecoder,
+		isDontRecode,
+		setIsDontRecode,
 	};
-
-	//フォームエレメント更新時にエレメントパネルの高さ更新
-	useEffect(() => setElementPanelHeight(getElementPanelHeight(formElements)), [formElements, screenZoomRatio]);
-
-	//ターゲットインデックス更新時にターゲットを更新
-	useEffect(() => {
-		if (targetFormElementIndex === null) return setTargetFormElement(null);
-		const form_elements_div = document.querySelector("#form_elements");
-		if (form_elements_div === null) throw new Error("form_elements_div is null");
-		setTargetFormElement(form_elements_div.children[targetFormElementIndex] as HTMLElement);
-	}, [targetFormElementIndex]);
 
 	let return_components;
 
@@ -154,7 +179,24 @@ function App() {
 	return (
 		<div className="App">
 			<Header />
-			<ToolBar props={{ formElements, setFormElements, setTargetFormElementIndex, targetFormElementIndex, selectedTab, setSelectedTab, themeColor }} />
+			<ToolBar
+				props={{
+					formElements,
+					setFormElements,
+					setTargetFormElementIndex,
+					targetFormElementIndex,
+					selectedTab,
+					setSelectedTab,
+					themeColor,
+					isDontRecode,
+					setIsDontRecode,
+					setStateFutureRecoder,
+					setStatePastRecoder,
+					stateFutureRecoder,
+					statePastRecoder,
+				}}
+			/>
+
 			{return_components}
 		</div>
 	);

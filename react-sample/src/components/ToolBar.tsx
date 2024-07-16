@@ -1,5 +1,6 @@
 import { formElementsTypes, formElementsVariableTypes } from "../formElementTypes";
 import { themeColors } from "./themeColor";
+import { propsType } from "../propsType";
 
 function createFormElement(): formElementsVariableTypes.elementPropertiesTypes.all {
 	return {
@@ -19,13 +20,19 @@ function createFormElement(): formElementsVariableTypes.elementPropertiesTypes.a
 //ツールバー
 export const ToolBar: React.FC<{
 	props: {
-		formElements: formElementsVariableTypes.elementPropertiesTypes.all[];
-		setFormElements: React.Dispatch<React.SetStateAction<formElementsVariableTypes.elementPropertiesTypes.all[]>>;
-		targetFormElementIndex: number | null;
-		setTargetFormElementIndex: React.Dispatch<React.SetStateAction<number | null>>;
-		selectedTab: "screen" | "image" | "variable";
-		setSelectedTab: React.Dispatch<React.SetStateAction<"screen" | "image" | "variable">>;
-		themeColor: "Light" | "Dark";
+		formElements: propsType["formElements"];
+		setFormElements: propsType["setFormElements"];
+		targetFormElementIndex: propsType["targetFormElementIndex"];
+		setTargetFormElementIndex: propsType["setTargetFormElementIndex"];
+		selectedTab: propsType["selectedTab"];
+		setSelectedTab: propsType["setSelectedTab"];
+		themeColor: propsType["themeColor"];
+		setIsDontRecode: propsType["setIsDontRecode"];
+		isDontRecode: propsType["isDontRecode"];
+		setStatePastRecoder: propsType["setStatePastRecoder"];
+		statePastRecoder: propsType["statePastRecoder"];
+		setStateFutureRecoder: propsType["setStateFutureRecoder"];
+		stateFutureRecoder: propsType["stateFutureRecoder"];
 	};
 }> = ({ props }) => {
 	const tab_div_style = { width: "100px", marginTop: "10px", border: "solid 1px ", borderBottom: "none", borderRadius: "5px 5px 0 0" };
@@ -44,45 +51,81 @@ export const ToolBar: React.FC<{
 	let buttons = <></>;
 	if (props.selectedTab === "screen") {
 		buttons = (
-			<div id="toolbar_buttons" style={{ margin: "0 0 0 10px", display: "flex", flexGrow: 1, width: "300px" }}>
+			<div id="toolbar_buttons" style={{ margin: "0 0 0 10px", display: "flex", flexGrow: 1, width: "300px", height: "100%" }}>
 				{/* <p style={{ margin: 0, fontSize: 24 }}>toolbar</p> */}
-				<button
-					style={{ width: "60px", margin: "0 5px" }}
-					onClick={() => {
-						const form_elements = JSON.parse(JSON.stringify(props.formElements));
-						form_elements.push(createFormElement());
-						props.setFormElements(form_elements);
-						props.setTargetFormElementIndex(form_elements.length - 1);
-					}}
-				>
-					add
-				</button>
-				<button
-					style={{ width: "60px", margin: "0 5px" }}
-					onClick={() => {
-						const index = props.targetFormElementIndex;
-						if (index === null) return;
-						const form_elements = JSON.parse(JSON.stringify(props.formElements));
-						form_elements.splice(index, 1);
-						props.setTargetFormElementIndex(null);
-						props.setFormElements(form_elements);
-					}}
-				>
-					remove
-				</button>
-				<button
-					style={{ width: "60px", margin: "0 5px" }}
-					onClick={() => {
-						const index = props.targetFormElementIndex;
-						if (index === null) return;
-						const form_elements = JSON.parse(JSON.stringify(props.formElements));
-						form_elements.push(form_elements[index]);
-						props.setTargetFormElementIndex(form_elements.length - 1);
-						props.setFormElements(form_elements);
-					}}
-				>
-					copy
-				</button>
+				<div style={{ margin: "5px 0 5px 0" }}>
+					<button
+						style={{ width: "60px", height: "40px", margin: "0 2px" }}
+						onClick={() => {
+							const form_elements = JSON.parse(JSON.stringify(props.formElements));
+							form_elements.push(createFormElement());
+							props.setFormElements(form_elements);
+							props.setTargetFormElementIndex(form_elements.length - 1);
+						}}
+					>
+						add
+					</button>
+					<button
+						style={{ width: "60px", height: "40px", margin: "0 2px" }}
+						onClick={() => {
+							const index = props.targetFormElementIndex;
+							if (index === null) return;
+							const form_elements = JSON.parse(JSON.stringify(props.formElements));
+							form_elements.splice(index, 1);
+							props.setTargetFormElementIndex(null);
+							props.setFormElements(form_elements);
+						}}
+					>
+						remove
+					</button>
+					<button
+						style={{ width: "60px", height: "40px", margin: "0 2px" }}
+						onClick={() => {
+							const index = props.targetFormElementIndex;
+							if (index === null) return;
+							const form_elements = JSON.parse(JSON.stringify(props.formElements));
+							form_elements.push(form_elements[index]);
+							props.setTargetFormElementIndex(form_elements.length - 1);
+							props.setFormElements(form_elements);
+						}}
+					>
+						copy
+					</button>
+				</div>
+				<div style={{ margin: "5px 0 5px 10px" }}>
+					<button
+						style={{ width: "60px", height: "40px", margin: "0 2px" }}
+						onClick={() => {
+							if (props.statePastRecoder.length === 0) return;
+							const state_past_recoder_copy = [...props.statePastRecoder];
+							console.log(state_past_recoder_copy);
+							const now_recoder = state_past_recoder_copy.splice(props.statePastRecoder.length - 1, 1);
+							const recoder = state_past_recoder_copy[state_past_recoder_copy.length - 1];
+							props.setFormElements([...(recoder !== undefined ? recoder.elements : []).map((e) => ({ ...e }))]);
+							props.setTargetFormElementIndex(recoder !== undefined ? recoder.index : null);
+							props.setStatePastRecoder(state_past_recoder_copy);
+							props.setStateFutureRecoder([now_recoder[0], ...props.stateFutureRecoder]);
+							props.setIsDontRecode(true);
+						}}
+					>
+						undo
+					</button>
+					<button
+						style={{ width: "60px", height: "40px", margin: "0 2px" }}
+						onClick={() => {
+							if (props.stateFutureRecoder.length === 0) return;
+							const state_future_recoder_copy = [...props.stateFutureRecoder];
+							const now_recoder = state_future_recoder_copy.splice(0, 1);
+							props.setFormElements([...now_recoder[0].elements.map((e) => ({ ...e }))]);
+							props.setTargetFormElementIndex(now_recoder[0].index);
+							props.setStateFutureRecoder(state_future_recoder_copy);
+							props.setStatePastRecoder([...props.statePastRecoder, now_recoder[0]]);
+							props.setIsDontRecode(true);
+						}}
+					>
+						redo
+					</button>
+				</div>
 			</div>
 		);
 	}

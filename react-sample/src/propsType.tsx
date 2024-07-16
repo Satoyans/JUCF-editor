@@ -78,4 +78,30 @@ export type propsType = {
 			[key: string]: string | number | boolean;
 		}>
 	>;
+	statePastRecoder: {
+		elements: formElementsVariableTypes.elementPropertiesTypes.all[];
+		index: number | null;
+	}[];
+	setStatePastRecoder: React.Dispatch<
+		React.SetStateAction<
+			{
+				elements: formElementsVariableTypes.elementPropertiesTypes.all[];
+				index: number | null;
+			}[]
+		>
+	>;
+	stateFutureRecoder: {
+		elements: formElementsVariableTypes.elementPropertiesTypes.all[];
+		index: number | null;
+	}[];
+	setStateFutureRecoder: React.Dispatch<
+		React.SetStateAction<
+			{
+				elements: formElementsVariableTypes.elementPropertiesTypes.all[];
+				index: number | null;
+			}[]
+		>
+	>;
+	isDontRecode: boolean;
+	setIsDontRecode: React.Dispatch<React.SetStateAction<boolean>>;
 };
