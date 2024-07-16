@@ -133,6 +133,5 @@ function getImage(
 	const path_png = path + ".png";
 	const path_jpg = path + ".jpg";
 	const path_jpeg = path + ".jpeg";
-	console.log(path, path_png, path_jpg, path_jpeg);
 	return uploadedImages[path] ?? uploadedImages[path_png] ?? uploadedImages[path_jpg] ?? uploadedImages[path_jpeg] ?? "";
 }

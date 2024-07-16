@@ -1,5 +1,4 @@
 export const variableReplacer = (original_text: string, variables: { [key: string]: string | number | boolean }) => {
-	console.log(original_text);
 	const split_texts = original_text.split("%");
 	let count = 0;
 	const variable_texts: string[] = [];

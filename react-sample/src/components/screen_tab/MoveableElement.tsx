@@ -54,8 +54,6 @@ const MoveableElement: React.FC<{
 		form_elements[index].x = (left / props.screenZoomRatio).toFixed(0);
 		form_elements[index].y = (top / props.screenZoomRatio).toFixed(0);
 		props.setFormElements(form_elements);
-
-		// console.log(e.transform.replace("translate(", "").replace(/px/g, "").replace(")", "").split(", "));
 	};
 
 	const onResize = (e: OnResize) => {
