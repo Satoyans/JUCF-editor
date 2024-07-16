@@ -89,7 +89,7 @@ export const VariableList: React.FC<{
 
 							<div className="edit_button" style={{ margin: "5px", display: "flex", alignItems: "center" }}>
 								<button
-									style={{ width: "25px", height: "25px", display: "flex", justifyContent: "center", alignItems: "center" }}
+									style={{ width: "25px", height: "25px", display: "flex", justifyContent: "center", alignItems: "center", margin: "10px 5px" }}
 									onClick={(e) => {
 										const target = e.target as HTMLButtonElement;
 										const id = target.parentElement!.parentElement!.id;
@@ -98,6 +98,19 @@ export const VariableList: React.FC<{
 									}}
 								>
 									<a style={{ fontSize: "18px", userSelect: "none", pointerEvents: "none" }}>🖋</a>
+								</button>
+								<button
+									style={{ width: "25px", height: "25px", display: "flex", justifyContent: "center", alignItems: "center", margin: "10px 5px" }}
+									onClick={(e) => {
+										const target = e.target as HTMLButtonElement;
+										const id = target.parentElement!.parentElement!.id;
+										const delete_key = id.replace("variable_", "");
+										const new_variable = { ...props.variable };
+										delete new_variable[delete_key];
+										props.setVariable(new_variable);
+									}}
+								>
+									<a style={{ fontSize: "18px", userSelect: "none", pointerEvents: "none" }}>🗑</a>
 								</button>
 							</div>
 						</div>

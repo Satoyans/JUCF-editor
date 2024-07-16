@@ -87,7 +87,7 @@ export const ImageList: React.FC<{
 									})()}
 								</div>
 								<div style={{ display: "flex", flexDirection: "row" }}>
-									<div className="edit_button" style={{ margin: "10px" }}>
+									<div className="edit_button" style={{ margin: "10px 5px" }}>
 										<button
 											id={`uploaded_images_${path}`}
 											style={{ width: "40px", height: "40px" }}
@@ -101,7 +101,7 @@ export const ImageList: React.FC<{
 											<a style={{ fontSize: "24px", userSelect: "none", pointerEvents: "none" }}>🖋</a>
 										</button>
 									</div>
-									<div className="remove_button" style={{ margin: "10px" }}>
+									<div className="remove_button" style={{ margin: "10px 5px" }}>
 										<button
 											style={{ width: "40px", height: "40px" }}
 											onClick={(e) => {
