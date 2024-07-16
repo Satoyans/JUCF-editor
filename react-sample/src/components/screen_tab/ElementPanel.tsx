@@ -31,7 +31,7 @@ export const ElementPanel: React.FC<{
 					margin: "10px",
 
 					display: "flex",
-					justifyContent: " center",
+					justifyContent: "flex-start",
 					alignItems: "center",
 					boxShadow: `${index === props.targetFormElementIndex ? "0 0 0 1px red inset" : "0 0 0 1px black inset"}`,
 				}}
@@ -47,11 +47,7 @@ export const ElementPanel: React.FC<{
 						pointerEvents: "none",
 						userSelect: "none",
 						zIndex: 1,
-						position: "absolute",
-						display: "flex",
-						alignContent: "center",
-						justifyContent: "center",
-						flexDirection: "column",
+						position: "relative",
 					}}
 				>
 					{form_element.is_show_text !== "true"
@@ -84,14 +80,15 @@ export const ElementPanel: React.FC<{
 						width: "78px",
 						height: "78px",
 						zIndex: 0,
-						position: "absolute",
+						position: "relative",
+						left: form_element.is_show_text !== "true" ? 1 : -78,
 					}}
 				>
 					{form_element.is_show_image !== "true" ? null : (
 						<img
 							style={{
-								width: "100%",
-								height: "100%",
+								width: "78px",
+								height: "78px",
 								imageRendering: "pixelated",
 							}}
 							src={`data:image/png;base64,${getImage(props.uploadedImages, props.variable, form_element.texture)}`}
@@ -113,6 +110,7 @@ export const ElementPanel: React.FC<{
 				overflowY: "auto",
 			}}
 		>
+			{props.formElements.length === 0 ? null : <span style={{ position: "absolute", fontSize: "8px", marginLeft: "10px" }}>{"layer ----------->"}</span>}
 			{props.formElements.map((form_element, index) => (
 				<React.Fragment key={index}>{InPanelElement(form_element, index)}</React.Fragment>
 			))}
