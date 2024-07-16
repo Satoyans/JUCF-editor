@@ -86,7 +86,8 @@ export const ControlPanel: React.FC<{
 							type="checkbox"
 							checked={variableReplacer(props.isShowFormFrame, props.variable) === "true"}
 							onChange={(e) => {
-								(e.target as HTMLInputElement).checked = variableReplacer(props.isShowFormFrame, props.variable) === "true";
+								const input_value = String(e.target.checked);
+								props.setIsShowFormFrame(input_value);
 							}}
 						/>
 						<input
@@ -150,7 +151,11 @@ export const ControlPanel: React.FC<{
 					form_element[key] = e.target.value;
 				}
 			} else {
-				form_element[key] = e.target.value;
+				if (e.target.type === "checkbox") {
+					form_element[key] = String(e.target.checked);
+				} else {
+					form_element[key] = e.target.value;
+				}
 			}
 			form_elements[props.targetFormElementIndex] = form_element;
 			props.setFormElements(form_elements);
@@ -217,7 +222,11 @@ export const ControlPanel: React.FC<{
 						title="textで指定した文字を表示するか&#13;&#10;'true'の場合に表示されます。"
 					/>
 					<div style={{ display: "flex", alignItems: "center" }}>
-						<input type="checkbox" checked={variableReplacer(form_element.is_show_text, props.variable) === "true"} readOnly={true} />
+						<input
+							type="checkbox"
+							checked={variableReplacer(form_element.is_show_text, props.variable) === "true"}
+							onChange={(e) => inputOnChange(e, "is_show_text")}
+						/>
 						<input style={{ width: "calc(100% - 30px)" }} value={form_element.is_show_text} onChange={(e) => inputOnChange(e, "is_show_text")} />
 					</div>
 				</div>
@@ -227,7 +236,11 @@ export const ControlPanel: React.FC<{
 						title="textureで指定した画像を表示するか&#13;&#10;'true'の場合に表示されます。"
 					/>
 					<div style={{ display: "flex", alignItems: "center" }}>
-						<input type="checkbox" checked={variableReplacer(form_element.is_show_image, props.variable) === "true"} readOnly={true} />
+						<input
+							type="checkbox"
+							checked={variableReplacer(form_element.is_show_image, props.variable) === "true"}
+							onChange={(e) => inputOnChange(e, "is_show_image")}
+						/>
 						<input style={{ width: "calc(100% - 30px)" }} value={form_element.is_show_image} onChange={(e) => inputOnChange(e, "is_show_image")} />
 					</div>
 				</div>
@@ -237,7 +250,11 @@ export const ControlPanel: React.FC<{
 						title="ボタンとして押せるようにするか&#13;&#10;'true'の場合に表示されます。"
 					/>
 					<div style={{ display: "flex", alignItems: "center" }}>
-						<input type="checkbox" checked={variableReplacer(form_element.is_show_button, props.variable) === "true"} readOnly={true} />
+						<input
+							type="checkbox"
+							checked={variableReplacer(form_element.is_show_button, props.variable) === "true"}
+							onChange={(e) => inputOnChange(e, "is_show_button")}
+						/>
 						<input style={{ width: "calc(100% - 30px)" }} value={form_element.is_show_button} onChange={(e) => inputOnChange(e, "is_show_button")} />
 					</div>
 				</div>
@@ -247,7 +264,11 @@ export const ControlPanel: React.FC<{
 						title="フォーム右上にある閉じるボタンをその要素に表示するか&#13;&#10;既存の閉じるボタンを使用するため、サイズや位置、画像は調整できません。&#13;&#10;フォームの外枠に使用しています。"
 					/>
 					<div style={{ display: "flex", alignItems: "center" }}>
-						<input type="checkbox" checked={variableReplacer(form_element.is_show_close, props.variable) === "true"} readOnly={true} />
+						<input
+							type="checkbox"
+							checked={variableReplacer(form_element.is_show_close, props.variable) === "true"}
+							onChange={(e) => inputOnChange(e, "is_show_close")}
+						/>
 						<input style={{ width: "calc(100% - 30px)" }} value={form_element.is_show_close} onChange={(e) => inputOnChange(e, "is_show_close")} />
 					</div>
 				</div>
