@@ -160,6 +160,16 @@ export const ControlPanel: React.FC<{
 			form_elements[props.targetFormElementIndex] = form_element;
 			props.setFormElements(form_elements);
 		};
+		const changeLayer = (type: "|<<" | "<" | ">" | ">>|") => {
+			if (props.targetFormElementIndex === null) throw new Error("props.targetFormElementIndex is null (changeLayer)");
+			const next = { "|<<": 0, "<": props.targetFormElementIndex - 1, ">": props.targetFormElementIndex + 1, ">>|": props.formElements.length - 1 };
+			const new_form_elements = Array.from(props.formElements);
+			const target_form_elements = new_form_elements.splice(props.targetFormElementIndex, 1);
+			console.table(new_form_elements);
+			console.table(target_form_elements);
+			props.setFormElements(Array.from(new_form_elements).splice(0, next[type]).concat(target_form_elements).concat(Array.from(new_form_elements).splice(next[type])));
+			props.setTargetFormElementIndex(next[type]);
+		};
 		setting_components = (
 			<>
 				<div id="control_panel_editmode">
@@ -170,6 +180,25 @@ export const ControlPanel: React.FC<{
 						</button>
 						<button style={{ width: "calc(50% - 10px)" }} disabled={props.editMode === "resize"} onClick={(e) => props.setEditMode("resize")}>
 							resize
+						</button>
+					</div>
+				</div>
+				<Partition />
+				<div id="control_panel_layer">
+					<span>レイヤー</span>
+					<div>
+						<button style={{ width: "40px" }} disabled={props.targetFormElementIndex === 0} onClick={(e) => changeLayer("|<<")}>
+							{"|<<"}
+						</button>
+						<button style={{ width: "30px" }} disabled={props.targetFormElementIndex === 0} onClick={(e) => changeLayer("<")}>
+							{"<"}
+						</button>
+						<span style={{ margin: "5px" }}>{props.targetFormElementIndex}</span>
+						<button style={{ width: "30px" }} disabled={props.targetFormElementIndex === props.formElements.length - 1} onClick={(e) => changeLayer(">")}>
+							{">"}
+						</button>
+						<button style={{ width: "40px" }} disabled={props.targetFormElementIndex === props.formElements.length - 1} onClick={(e) => changeLayer(">>|")}>
+							{">>|"}
 						</button>
 					</div>
 				</div>
