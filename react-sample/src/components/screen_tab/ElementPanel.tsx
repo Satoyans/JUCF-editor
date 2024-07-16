@@ -46,8 +46,35 @@ export const ElementPanel: React.FC<{
 					style={{
 						pointerEvents: "none",
 						userSelect: "none",
-						zIndex: 1,
+						width: "80px",
+						height: "80px",
 						position: "relative",
+						zIndex: 0,
+					}}
+				>
+					{form_element.is_show_image !== "true" ? null : (
+						<img
+							style={{
+								margin: "1px",
+								width: "78px",
+								height: "78px",
+								imageRendering: "pixelated",
+							}}
+							src={`data:image/png;base64,${getImage(props.uploadedImages, props.variable, form_element.texture)}`}
+						/>
+					)}
+				</div>
+				<div
+					style={{
+						pointerEvents: "none",
+						userSelect: "none",
+						zIndex: 1,
+						display: "flex",
+						flexDirection: "column",
+						justifyContent: "center",
+						position: "relative",
+						width: "100%",
+						left: form_element.is_show_image === "true" ? -79 : 0,
 					}}
 				>
 					{form_element.is_show_text !== "true"
@@ -56,7 +83,6 @@ export const ElementPanel: React.FC<{
 								<React.Fragment key={i}>
 									<p
 										style={{
-											width: "100%",
 											whiteSpace: "nowrap",
 											margin: 0,
 											textAlign: "left",
@@ -71,29 +97,6 @@ export const ElementPanel: React.FC<{
 									</p>
 								</React.Fragment>
 						  ))}
-				</div>
-
-				<div
-					style={{
-						pointerEvents: "none",
-						userSelect: "none",
-						width: "78px",
-						height: "78px",
-						zIndex: 0,
-						position: "relative",
-						left: form_element.is_show_text !== "true" ? 1 : -78,
-					}}
-				>
-					{form_element.is_show_image !== "true" ? null : (
-						<img
-							style={{
-								width: "78px",
-								height: "78px",
-								imageRendering: "pixelated",
-							}}
-							src={`data:image/png;base64,${getImage(props.uploadedImages, props.variable, form_element.texture)}`}
-						/>
-					)}
 				</div>
 			</div>
 		);
