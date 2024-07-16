@@ -140,14 +140,6 @@ function App() {
 		setTargetFormElement(form_elements_div.children[targetFormElementIndex] as HTMLElement);
 	}, [targetFormElementIndex]);
 
-	//ズーム倍率更新関数
-	const updateZoomRatio = (diff: number) => {
-		const after = screenZoomRatio + diff * 0.01;
-		//1%より小さいならreturn
-		if (after < 1 * 0.01) return;
-		setScreenZoomRatio(after);
-	};
-
 	let return_components;
 
 	if (selectedTab === "screen") {
