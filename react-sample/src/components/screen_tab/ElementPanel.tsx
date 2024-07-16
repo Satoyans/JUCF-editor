@@ -54,7 +54,7 @@ export const ElementPanel: React.FC<{
 						flexDirection: "column",
 					}}
 				>
-					{!form_element.is_show_text
+					{form_element.is_show_text !== "true"
 						? null
 						: form_element.text.split("\\n").map((text, i) => (
 								<React.Fragment key={i}>
@@ -87,7 +87,7 @@ export const ElementPanel: React.FC<{
 						position: "absolute",
 					}}
 				>
-					{!form_element.is_show_image ? null : (
+					{form_element.is_show_image !== "true" ? null : (
 						<img
 							style={{
 								width: "100%",

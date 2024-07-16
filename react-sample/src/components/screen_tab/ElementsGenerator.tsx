@@ -61,7 +61,7 @@ export const ElementsGenerator: React.FC<{
 						flexDirection: "column",
 					}}
 				>
-					{!form_element.is_show_text
+					{form_element.is_show_text !== "true"
 						? null
 						: form_element.text.split("\\n").map((text, i) => (
 								<React.Fragment key={i}>
@@ -92,7 +92,7 @@ export const ElementsGenerator: React.FC<{
 						display: "flex",
 					}}
 				>
-					{!form_element.is_show_image ? null : (
+					{form_element.is_show_image !== "true" ? null : (
 						<img
 							style={{ imageRendering: "pixelated", width: "100%", height: "100%" }}
 							src={`data:image/png;base64,${getImage(props.uploadedImages, props.variable, form_element.texture)}`}
