@@ -21,6 +21,11 @@ export const ScreenTab: React.FC<{
 			</div>
 			<ElementPanel props={{ ...props }} />
 			<Output props={{ ...props }} />
+			<div>
+				<span>バグ報告は</span>
+				<a href="https://github.com/Satoyans/JUCF_editor">Github</a>
+				<span>もしくはDiscord@satoyan_まで!</span>
+			</div>
 		</>
 	);
 };
