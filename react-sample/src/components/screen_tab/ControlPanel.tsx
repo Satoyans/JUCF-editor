@@ -79,7 +79,7 @@ export const ControlPanel: React.FC<{
 				<div id="control_panel_showformframe">
 					<span>isShowFormFrame</span>
 					<Hint
-						title="フォームの枠を表示するか&#13;&#10;'true'の場合に表示されます。"
+						title="フォームの外枠を表示するか&#13;&#10;'true'の場合に表示されます。"
 					/>
 					<div style={{ width: "calc(100% - 30px)" }}>
 						<input
@@ -290,7 +290,7 @@ export const ControlPanel: React.FC<{
 				<div id="control_panel_is_show_close">
 					<span>is_show_close</span>
 					<Hint
-						title="フォーム右上にある閉じるボタンをその要素に表示するか&#13;&#10;既存の閉じるボタンを使用するため、サイズや位置、画像は調整できません。&#13;&#10;フォームの外枠に使用しています。"
+						title="フォーム右上にある閉じるボタンをその要素に表示するか&#13;&#10;既存の閉じるボタンを使用するため画像を変更できないほか、細かくサイズや位置を調整できません。&#13;&#10;フォームの外枠に使用しています。"
 					/>
 					<div style={{ display: "flex", alignItems: "center" }}>
 						<input
