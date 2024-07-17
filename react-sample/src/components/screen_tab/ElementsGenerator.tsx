@@ -38,7 +38,6 @@ export const ElementsGenerator: React.FC<{
 					transform: `translate(${form_size_x}px, ${form_size_y}px)`,
 					position: "absolute",
 					// letterSpacing: `${-0.75 * props.screenZoomRatio}px`,
-					fontSize: `${10 * props.screenZoomRatio}px`,
 					boxShadow: `${index === props.targetFormElementIndex ? "0 0 0 2px red inset" : "0 0 0 2px black inset"}`,
 					zIndex: `${index === props.targetFormElementIndex ? 1 : 0}`,
 
@@ -67,13 +66,16 @@ export const ElementsGenerator: React.FC<{
 								<React.Fragment key={i}>
 									<p
 										style={{
+											fontSize: `${8 * props.screenZoomRatio}px`,
 											whiteSpace: "nowrap",
 											pointerEvents: "none",
 											userSelect: "none",
 											margin: 0,
+											marginTop: `${2 * props.screenZoomRatio}px`,
 											textAlign: "left",
 											lineHeight: `${10 * props.screenZoomRatio}px`,
-											height: `${10 * props.screenZoomRatio}px`,
+											height: `${8 * props.screenZoomRatio}px`,
+											letterSpacing: "-0.062em",
 										}}
 									>
 										{variableReplacer(text, props.variable)}
