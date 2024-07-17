@@ -1,5 +1,6 @@
-import Moveable, { OnDrag, OnResize } from "react-moveable";
+import Moveable, { OnDrag, OnDragEnd, OnResize, OnResizeEnd } from "react-moveable";
 import { formElementsTypes, formElementsVariableTypes } from "../../formElementTypes";
+import { SetStateAction } from "react";
 
 const MoveableElement: React.FC<{
 	props: {
@@ -29,6 +30,8 @@ const MoveableElement: React.FC<{
 	const screen_top = 100;
 	const screen_left = Math.abs(game_screen_width - form_screen_width) / 2;
 
+	let timer = 0;
+	let form_elements: formElementsVariableTypes.elementPropertiesTypes.all[] | undefined = undefined;
 	const onDrag = (e: OnDrag) => {
 		let [left, top] = e.transform
 			.replace("translate(", "")
@@ -36,7 +39,6 @@ const MoveableElement: React.FC<{
 			.replace(")", "")
 			.split(", ")
 			.map((num) => Number(num));
-		//上
 		if (top < -e.height) top = -e.height;
 		//下
 		if (top > form_screen_height) top = form_screen_height;
@@ -48,11 +50,17 @@ const MoveableElement: React.FC<{
 
 		const index = Number(e.target.id.replace("form_element", ""));
 		if (Number.isNaN(index)) throw new Error("form_element index is not a namber");
-		const form_elements = JSON.parse(JSON.stringify(props.formElements));
+
+		//上
+		form_elements = JSON.parse(JSON.stringify(props.formElements));
 		// form_elements[index].x = Number((left / props.screenZoomRatio).toFixed(0));
 		// form_elements[index].y = Number((top / props.screenZoomRatio).toFixed(0));
-		form_elements[index].x = (left / props.screenZoomRatio).toFixed(0);
-		form_elements[index].y = (top / props.screenZoomRatio).toFixed(0);
+		form_elements![index].x = (left / props.screenZoomRatio).toFixed(0);
+		form_elements![index].y = (top / props.screenZoomRatio).toFixed(0);
+	};
+
+	const onDragEnd = (e: OnDragEnd) => {
+		if (form_elements === undefined) return;
 		props.setFormElements(form_elements);
 	};
 
@@ -63,9 +71,9 @@ const MoveableElement: React.FC<{
 
 		const index = Number(e.target.id.replace("form_element", ""));
 		if (Number.isNaN(index)) throw new Error("form_element index is not a namber");
-		const form_elements = JSON.parse(JSON.stringify(props.formElements));
-		form_elements[index].w = (e.width / props.screenZoomRatio).toFixed(0);
-		form_elements[index].h = (e.height / props.screenZoomRatio).toFixed(0);
+		form_elements = JSON.parse(JSON.stringify(props.formElements));
+		form_elements![index].w = (e.width / props.screenZoomRatio).toFixed(0);
+		form_elements![index].h = (e.height / props.screenZoomRatio).toFixed(0);
 		// props.setFormElements(form_elements);
 
 		//onDragの処理
@@ -88,10 +96,15 @@ const MoveableElement: React.FC<{
 		if (Number.isNaN(index)) throw new Error("form_element index is not a namber");
 		// form_elements[index].x = Number((left / props.screenZoomRatio).toFixed(0));
 		// form_elements[index].y = Number((top / props.screenZoomRatio).toFixed(0));
-		form_elements[index].x = (left / props.screenZoomRatio).toFixed(0);
-		form_elements[index].y = (top / props.screenZoomRatio).toFixed(0);
+		form_elements![index].x = (left / props.screenZoomRatio).toFixed(0);
+		form_elements![index].y = (top / props.screenZoomRatio).toFixed(0);
+	};
+
+	const onResizeEnd = (e: OnResizeEnd) => {
+		if (form_elements === undefined) return;
 		props.setFormElements(form_elements);
 	};
+
 	return (
 		<Moveable
 			target={props.targetFormElement}
@@ -102,7 +115,9 @@ const MoveableElement: React.FC<{
 			snapGridWidth={props.screenZoomRatio}
 			snapGridHeight={props.screenZoomRatio}
 			onDrag={onDrag}
+			onDragEnd={onDragEnd}
 			onResize={onResize}
+			onResizeEnd={onResizeEnd}
 		/>
 	);
 };
