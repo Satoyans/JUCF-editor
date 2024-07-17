@@ -10,10 +10,10 @@ export const Header: React.FC<{
 			<div className="title" style={{ margin: "0 0 0 10px" }}>
 				<p style={{ margin: 0, fontSize: 36 }}>JUCF-editor</p>
 			</div>
-			<div style={{ display: "flex", alignItems: "center" }}>
-				{/* テーマは全てのボーダーと文字を変えないといけなさそう */}
-				{/* 失敗 */}
-				{/*<div>
+			{/* <div style={{ display: "flex", alignItems: "center" }}> */}
+			{/* テーマは全てのボーダーと文字を変えないといけなさそう */}
+			{/* 失敗 */}
+			{/*<div>
 					<button
 						onClick={() => {
 							props.setThemeColor(props.themeColor === "Light" ? "Dark" : "Light");
@@ -23,8 +23,14 @@ export const Header: React.FC<{
 						{props.themeColor}
 					</button>
 				</div>*/}
-				<div className="github_link" style={{ marginLeft: "auto", margin: "0 20px 0 0" }}>
-					<a
+			<div className="github_link" style={{ marginLeft: "auto", margin: "0 20px 0 0" }}>
+				<img
+					style={{ height: "40px", width: "40px", margin: "5px", border: "solid 1px black" }}
+					src="./img/github_icon.png"
+					alt="github_icon"
+					onClick={() => window.open("https://github.com/Satoyans/JUCF_editor")}
+				/>
+				{/* <a
 						href="https://github.com/Satoyans/JUCF_editor"
 						target="_blank"
 						rel="noopener noreferrer"
@@ -32,8 +38,9 @@ export const Header: React.FC<{
 					>
 						JUCF-editor
 					</a>
-				</div>
+				*/}
 			</div>
+			{/* </div> */}
 		</div>
 	);
 };
