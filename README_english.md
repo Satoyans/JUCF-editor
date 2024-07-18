@@ -19,6 +19,10 @@
 - `/scriptevent cf:list` Displays a list of registered forms.
 - `/scriptevent cfs:<form_name> [json(variable)]` Sends the form to the calling player. You can also specify variables in the message portion.
 
+## sample
+
+[sample.md](./sample.md)
+
 ## memo
 
 [memo.md(japanese)](./memo.md)
