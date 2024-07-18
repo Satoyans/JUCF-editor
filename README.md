@@ -21,6 +21,10 @@
 - `/scriptevent cf:list` 登録されたフォーム一覧を表示します。
 - `/scriptevent cfs:<フォーム名> [変数のjson]` 呼び出したプレイヤーにフォームを送信します。メッセージ部分に変数を指定することもできます。
 
+## サンプル
+
+[sample.md](./sample.md)
+
 ## 細かいめも
 
 [memo.md](./memo.md)
