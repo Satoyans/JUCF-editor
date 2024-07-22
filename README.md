@@ -1,6 +1,8 @@
 # JUCF-editor
 
-[English version](./README_english.md)
+[English version is here](./README_english.md)
+
+![jucf icon](./sample_images/JUCF_icon.png)
 
 ## JUCFの導入の仕方
 

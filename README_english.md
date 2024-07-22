@@ -1,5 +1,7 @@
 # JUCF-editor
 
+![jucf icon](./sample_images/JUCF_icon.png)
+
 ## How to use JUCF
 
 1. Download .mcpack for each behavior pack and resource pack
