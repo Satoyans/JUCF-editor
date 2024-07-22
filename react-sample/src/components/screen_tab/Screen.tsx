@@ -1,22 +1,17 @@
+import { propsType } from "../../propsType";
 import { themeColors } from "../themeColor";
 
 //スクリーン
 export const Screen: React.FC<{
 	props: {
-		themeColor: "Light" | "Dark";
-		formSize: {
-			x: number;
-			y: number;
-		};
-		gameScreenSize: {
-			x: number;
-			y: number;
-		};
-		screenZoomRatio: number;
-		setScreenZoomRatio: React.Dispatch<React.SetStateAction<number>>;
-		targetFormElementIndex: number | null;
-		setTargetFormElementIndex: React.Dispatch<React.SetStateAction<number | null>>;
-		elementPanelHeight: number;
+		themeColor: propsType["themeColor"];
+		formSize: propsType["formSize"];
+		gameScreenSize: propsType["gameScreenSize"];
+		screenZoomRatio: propsType["screenZoomRatio"];
+		setScreenZoomRatio: propsType["setScreenZoomRatio"];
+		targetFormElementIndex: propsType["targetFormElementIndex"];
+		setTargetFormElementIndex: propsType["setTargetFormElementIndex"];
+		elementPanelHeight: propsType["elementPanelHeight"];
 	};
 	children: React.ReactNode;
 }> = ({ props, children }) => {

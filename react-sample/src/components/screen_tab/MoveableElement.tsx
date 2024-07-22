@@ -1,18 +1,19 @@
 import Moveable, { OnDrag, OnResize } from "react-moveable";
 import { formElementsTypes, formElementsVariableTypes } from "../../formElementTypes";
+import { propsType } from "../../propsType";
 
 const MoveableElement: React.FC<{
 	props: {
-		formSize: { x: number; y: number };
-		gameScreenSize: { x: number; y: number };
-		screenZoomRatio: number;
+		formSize: propsType["formSize"];
+		gameScreenSize: propsType["gameScreenSize"];
+		screenZoomRatio: propsType["screenZoomRatio"];
 
-		targetFormElement: HTMLElement | null;
-		setTargetFormElement: React.Dispatch<React.SetStateAction<HTMLElement | null>>;
+		targetFormElement: propsType["targetFormElement"];
+		setTargetFormElement: propsType["setTargetFormElement"];
 
-		formElements: formElementsVariableTypes.elementPropertiesTypes.all[];
-		setFormElements: React.Dispatch<React.SetStateAction<formElementsVariableTypes.elementPropertiesTypes.all[]>>;
-		editMode: "drag" | "resize";
+		formElements: propsType["formElements"];
+		setFormElements: propsType["setFormElements"];
+		editMode: propsType["editMode"];
 	};
 }> = ({ props }) => {
 	const form_size = { x: props.formSize.x * props.screenZoomRatio, y: props.formSize.y * props.screenZoomRatio };
@@ -95,8 +96,8 @@ const MoveableElement: React.FC<{
 	return (
 		<Moveable
 			target={props.targetFormElement}
-			resizable={props.editMode === "resize"}
-			draggable={props.editMode === "drag"}
+			resizable={props.editMode === "resize" || props.editMode === "both"}
+			draggable={props.editMode === "drag" || props.editMode === "both"}
 			snappable={true}
 			snapContainer={props.targetFormElement?.parentElement}
 			snapGridWidth={props.screenZoomRatio}

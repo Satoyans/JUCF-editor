@@ -54,7 +54,7 @@ function App() {
 	//State: エレメントパネルの高さ
 	const [elementPanelHeight, setElementPanelHeight] = useState(0);
 	//State: 操作モード
-	const [editMode, setEditMode] = useState<"drag" | "resize">("drag");
+	const [editMode, setEditMode] = useState<"drag" | "resize" | "both">("drag");
 	//State: 保存したbase64の画像たち
 	const [uploadedImages, setUploadedImages] = useState<{ [path: string]: string }>({});
 

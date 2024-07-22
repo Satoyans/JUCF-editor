@@ -1,17 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
 import { themeColors } from "../themeColor";
+import { propsType } from "../../propsType";
 
 export const VariableList: React.FC<{
 	props: {
-		variable: {
-			[key: string]: string | number | boolean;
-		};
-		setVariable: React.Dispatch<
-			React.SetStateAction<{
-				[key: string]: string | number | boolean;
-			}>
-		>;
-		themeColor: "Dark" | "Light";
+		variable: propsType["variable"];
+		setVariable: propsType["setVariable"];
+		themeColor: propsType["themeColor"];
 	};
 }> = ({ props }) => {
 	const [editVariableKey, setEditVariableKey] = useState<string | null>(null);

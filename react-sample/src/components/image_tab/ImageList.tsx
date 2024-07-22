@@ -1,15 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
 import { themeColors } from "../themeColor";
+import { propsType } from "../../propsType";
 
 export const ImageList: React.FC<{
 	props: {
-		uploadedImages: { [path: string]: string };
-		setUploadedImages: React.Dispatch<
-			React.SetStateAction<{
-				[path: string]: string;
-			}>
-		>;
-		themeColor: "Light" | "Dark";
+		uploadedImages: propsType["uploadedImages"];
+		setUploadedImages: propsType["setUploadedImages"];
+		themeColor: propsType["themeColor"];
 	};
 }> = ({ props }) => {
 	const [editNameImage, setEditNameImage] = useState<string | null>(null);

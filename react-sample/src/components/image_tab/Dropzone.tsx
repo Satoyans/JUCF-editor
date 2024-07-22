@@ -4,13 +4,9 @@ import { themeColors } from "../themeColor";
 
 export const Dropzone: React.FC<{
 	props: {
-		uploadedImages: { [path: string]: string };
-		setUploadedImages: React.Dispatch<
-			React.SetStateAction<{
-				[path: string]: string;
-			}>
-		>;
-		themeColor: "Light" | "Dark";
+		uploadedImages: propsType["uploadedImages"];
+		setUploadedImages: propsType["setUploadedImages"];
+		themeColor: propsType["themeColor"];
 	};
 }> = ({ props }) => {
 	return (

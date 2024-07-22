@@ -1,11 +1,12 @@
 import React from "react";
 import { formElementsTypes, formElementsVariableTypes } from "../../formElementTypes";
 import { variableReplacer } from "../../variableReplacer";
+import { propsType } from "../../propsType";
 
 //エレメントジェネレーター
 export const ElementsGenerator: React.FC<{
 	props: {
-		formElements: formElementsVariableTypes.elementPropertiesTypes.all[];
+		formElements: propsType["formElements"];
 		setFormElements: React.Dispatch<React.SetStateAction<formElementsVariableTypes.elementPropertiesTypes.all[]>>;
 		screenZoomRatio: number;
 		setScreenZoomRatio: React.Dispatch<React.SetStateAction<number>>;

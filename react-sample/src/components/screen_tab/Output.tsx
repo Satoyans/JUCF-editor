@@ -1,37 +1,21 @@
 import { useEffect, useRef, useState } from "react";
 import { formElementsTypes, formElementsVariableTypes } from "../../formElementTypes";
+import { propsType } from "../../propsType";
 
 export const Output: React.FC<{
 	props: {
-		setFormElements: React.Dispatch<React.SetStateAction<formElementsVariableTypes.elementPropertiesTypes.all[]>>;
-		formElements: formElementsVariableTypes.elementPropertiesTypes.all[];
-		formName: string;
-		formSize: {
-			x: number;
-			y: number;
-		};
-		isShowFormFrame: string;
-		setTargetFormElementIndex: React.Dispatch<React.SetStateAction<number | null>>;
-		variable: {
-			[key: string]: string | number | boolean;
-		};
-		formSizeVariable: {
-			x: string;
-			y: string;
-		};
-		setVariable: React.Dispatch<
-			React.SetStateAction<{
-				[key: string]: string | number | boolean;
-			}>
-		>;
-		setFormName: React.Dispatch<React.SetStateAction<string>>;
-		setFormSizeVariable: React.Dispatch<
-			React.SetStateAction<{
-				x: string;
-				y: string;
-			}>
-		>;
-		setIsShowFormFrame: React.Dispatch<React.SetStateAction<string>>;
+		setFormElements: propsType["setFormElements"];
+		formElements: propsType["formElements"];
+		formName: propsType["formName"];
+		formSize: propsType["formSize"];
+		isShowFormFrame: propsType["isShowFormFrame"];
+		setTargetFormElementIndex: propsType["setTargetFormElementIndex"];
+		variable: propsType["variable"];
+		formSizeVariable: propsType["formSizeVariable"];
+		setVariable: propsType["setVariable"];
+		setFormName: propsType["setFormName"];
+		setFormSizeVariable: propsType["setFormSizeVariable"];
+		setIsShowFormFrame: propsType["setIsShowFormFrame"];
 	};
 }> = ({ props }) => {
 	//テキストエリア用のステート

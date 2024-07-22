@@ -1,13 +1,9 @@
+import { propsType } from "../../propsType";
+
 export const VariableInput: React.FC<{
 	props: {
-		variable: {
-			[key: string]: string | number | boolean;
-		};
-		setVariable: React.Dispatch<
-			React.SetStateAction<{
-				[key: string]: string | number | boolean;
-			}>
-		>;
+		variable: propsType["variable"];
+		setVariable: propsType["setVariable"];
 	};
 }> = ({ props }) => {
 	return (

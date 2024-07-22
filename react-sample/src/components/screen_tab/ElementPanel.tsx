@@ -2,23 +2,20 @@ import React from "react";
 import { formElementsTypes, formElementsVariableTypes } from "../../formElementTypes";
 import { themeColors } from "../themeColor";
 import { variableReplacer } from "../../variableReplacer";
+import { propsType } from "../../propsType";
 
 //エレメントパネル
 export const ElementPanel: React.FC<{
 	props: {
-		themeColor: "Light" | "Dark";
-		elementPanelHeight: number;
-		formElements: formElementsVariableTypes.elementPropertiesTypes.all[];
-		targetFormElement: null | HTMLElement;
-		setTargetFormElement: React.Dispatch<React.SetStateAction<HTMLElement | null>>;
-		targetFormElementIndex: number | null;
-		setTargetFormElementIndex: React.Dispatch<React.SetStateAction<number | null>>;
-		uploadedImages: {
-			[path: string]: string;
-		};
-		variable: {
-			[key: string]: string | number | boolean;
-		};
+		themeColor: propsType["themeColor"];
+		elementPanelHeight: propsType["elementPanelHeight"];
+		formElements: propsType["formElements"];
+		targetFormElement: propsType["targetFormElement"];
+		setTargetFormElement: propsType["setTargetFormElement"];
+		targetFormElementIndex: propsType["targetFormElementIndex"];
+		setTargetFormElementIndex: propsType["setTargetFormElementIndex"];
+		uploadedImages: propsType["uploadedImages"];
+		variable: propsType["variable"];
 	};
 }> = ({ props }) => {
 	const row_count = Math.floor((window.innerWidth - 20) / 100);

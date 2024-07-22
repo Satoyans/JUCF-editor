@@ -40,8 +40,8 @@ export type propsType = {
 	setElementPanelHeight: React.Dispatch<React.SetStateAction<number>>;
 	screenZoomRatio: number;
 	setScreenZoomRatio: React.Dispatch<React.SetStateAction<number>>;
-	editMode: "drag" | "resize";
-	setEditMode: React.Dispatch<React.SetStateAction<"drag" | "resize">>;
+	editMode: "drag" | "resize" | "both";
+	setEditMode: React.Dispatch<React.SetStateAction<"drag" | "resize" | "both">>;
 	uploadedImages: {
 		[path: string]: string;
 	};
