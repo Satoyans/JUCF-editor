@@ -3,8 +3,8 @@
 ## How to use JUCF
 
 1. Download .mcpack for each behavior pack and resource pack
-   - [JUCF-BP](https://github.com/Satoyans/JUCF-BP)
-   - [JUCF-RP](https://github.com/Satoyans/JUCF-RP)
+   - [JUCF-BP](https://github.com/Satoyans/JUCF-BP/releases)
+   - [JUCF-RP](https://github.com/Satoyans/JUCF-RP/releases)
 2. Add to World
     - All experimental toggles work even when turned off.
 

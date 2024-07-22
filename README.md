@@ -5,8 +5,8 @@
 ## JUCFの導入の仕方
 
 1. ビヘイビアパックとリソースパックそれぞれの.mcpackをダウンロードする
-   - [JUCF-BP](https://github.com/Satoyans/JUCF-BP)
-   - [JUCF-RP](https://github.com/Satoyans/JUCF-RP)
+   - [JUCF-BP](https://github.com/Satoyans/JUCF-BP/releases)
+   - [JUCF-RP](https://github.com/Satoyans/JUCF-RP/releases)
 2. ワールドに追加する
     - 実験トグルは全てOFFでも動きます。
 
