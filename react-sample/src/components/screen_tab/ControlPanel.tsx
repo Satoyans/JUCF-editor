@@ -175,11 +175,14 @@ export const ControlPanel: React.FC<{
 				<div id="control_panel_editmode">
 					<span>操作モード</span>
 					<div>
-						<button style={{ width: "calc(50% - 10px)" }} disabled={props.editMode === "drag"} onClick={(e) => props.setEditMode("drag")}>
+						<button style={{ width: "calc(33% - 5px)" }} disabled={props.editMode === "drag"} onClick={(e) => props.setEditMode("drag")}>
 							drag
 						</button>
-						<button style={{ width: "calc(50% - 10px)" }} disabled={props.editMode === "resize"} onClick={(e) => props.setEditMode("resize")}>
+						<button style={{ width: "calc(33% - 5px)" }} disabled={props.editMode === "resize"} onClick={(e) => props.setEditMode("resize")}>
 							resize
+						</button>
+						<button style={{ width: "calc(33% - 5px)" }} disabled={props.editMode === "resize"} onClick={(e) => props.setEditMode("both")}>
+							both
 						</button>
 					</div>
 				</div>
