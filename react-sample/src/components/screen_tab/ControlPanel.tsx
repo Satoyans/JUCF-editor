@@ -1,7 +1,9 @@
 import { formElementsTypes, formElementsVariableTypes } from "../../formElementTypes";
 import { propsType } from "../../propsType";
+import { typeIdOptions } from "../../typeIdsWrapper";
 import { variableReplacer } from "../../variableReplacer";
 import { themeColors } from "../themeColor";
+import Select from "react-select";
 
 //コントロールパネル
 export const ControlPanel: React.FC<{
@@ -127,23 +129,6 @@ export const ControlPanel: React.FC<{
 		const inputOnChange = (e: React.ChangeEvent<HTMLInputElement>, key: keyof formElementsVariableTypes.elementPropertiesTypes.all) => {
 			if (props.targetFormElementIndex === null) throw new Error("form element index is null");
 			const form_elements: formElementsVariableTypes.elementPropertiesTypes.all[] = JSON.parse(JSON.stringify(props.formElements));
-			/*
-			変数のために全部stringで処理
-			if (key === "h" || key === "w" || key === "x" || key === "y") {
-				const value = Number(e.target.value);
-				if (Number.isNaN(value)) return;
-				form_element[key] = value;
-			} else if (key === "is_show_button" || key === "is_show_close" || key === "is_show_image" || key === "is_show_text") {
-				form_element[key] = e.target.checked;
-			} else if (key === "label") {
-				if (e.target.value === "") {
-					delete form_element[key];
-				} else {
-					form_element[key] = e.target.value;
-				}
-			} else {
-				form_element[key] = e.target.value;
-			}*/
 			if (key === "label") {
 				if (e.target.value === "") {
 					delete form_element[key];
@@ -304,6 +289,18 @@ export const ControlPanel: React.FC<{
 						<input style={{ width: "calc(100% - 30px)" }} value={form_element.is_show_close} onChange={(e) => inputOnChange(e, "is_show_close")} />
 					</div>
 				</div>
+				<div id="control_panel_is_show_item">
+					<span>is_show_item</span>
+					<Hint title="auxで指定されたアイテムを表示します。" />
+					<div style={{ display: "flex", alignItems: "center" }}>
+						<input
+							type="checkbox"
+							checked={variableReplacer(form_element.is_show_item, props.variable) === "true"}
+							onChange={(e) => inputOnChange(e, "is_show_item")}
+						/>
+						<input style={{ width: "calc(100% - 30px)" }} value={form_element.is_show_item} onChange={(e) => inputOnChange(e, "is_show_item")} />
+					</div>
+				</div>
 				<Partition />
 				<div id="control_panel_text">
 					<span>text</span>
@@ -329,6 +326,70 @@ export const ControlPanel: React.FC<{
 					<p style={{ margin: 0, fontSize: "12px" }}>{variableReplacer(form_element.hover_text, props.variable)}</p>
 					<input style={{ width: "120px" }} value={form_element.hover_text} onChange={(e) => inputOnChange(e, "hover_text")} />
 				</div>
+				<Partition />
+				<div id="control_panel_aux">
+					<span>aux</span>
+					<Hint
+						title="インベントリーアイテムレンダラーに表示されるアイテムのaux。&#13;&#10;aux = id * 65536 (+32768 エンチャントオーラの有無)&#13;&#10;idはアップデートにより変更される可能性があります。"
+					/>
+					<div style={{ display: "flex" }}>
+						<input
+							type="checkbox"
+							checked={
+								Number.isNaN(Number(variableReplacer(form_element.aux, props.variable)))
+									? false
+									: (Number(variableReplacer(form_element.aux, props.variable)) / 65536) % 1 >= 0.5
+							}
+							onChange={(e) => {
+								const num = Number(variableReplacer(form_element.aux, props.variable));
+								if (Number.isNaN(num)) return;
+								let next_value = num;
+								if ((num / 65536) % 1 >= 0.5) {
+									next_value -= 32768;
+								} else {
+									next_value += 32768;
+								}
+
+								//props更新
+								const form_elements: formElementsVariableTypes.elementPropertiesTypes.all[] = JSON.parse(JSON.stringify(props.formElements));
+								if (props.targetFormElementIndex === null) return window.alert("targetForrmElementIndex is null");
+								form_elements[props.targetFormElementIndex].aux = String(next_value);
+								props.setFormElements(form_elements);
+							}}
+						/>
+						<p style={{ fontSize: "12px", margin: 0 }}>エンチャントのオーラ</p>
+					</div>
+
+					<Select
+						options={typeIdOptions.map((v) => ({ ...v, label: v.label.replace("minecraft:", "") }))}
+						styles={{
+							placeholder(base, props) {
+								return { ...base, fontSize: "12px" };
+							},
+							valueContainer(base, props) {
+								return { ...base, fontSize: "12px" };
+							},
+							option(base, props) {
+								return { ...base, fontSize: "8px" };
+							},
+						}}
+						onChange={(e) => {
+							const input = document.querySelector("#control_panel_aux > input") as HTMLInputElement;
+							const value = String(e?.value ? e.value * 65536 : "");
+							input.value = value;
+
+							//props更新
+							const form_elements: formElementsVariableTypes.elementPropertiesTypes.all[] = JSON.parse(JSON.stringify(props.formElements));
+							if (props.targetFormElementIndex === null) return window.alert("targetForrmElementIndex is null");
+							form_elements[props.targetFormElementIndex].aux = value;
+							props.setFormElements(form_elements);
+						}}
+					/>
+
+					<p style={{ margin: 0, fontSize: "12px" }}>{variableReplacer(String(form_element.aux), props.variable)}</p>
+					<input style={{ width: "130px" }} value={form_element.aux} onChange={(e) => inputOnChange(e, "aux")} />
+				</div>
+
 				<Partition />
 				<div id="control_panel_label">
 					<span>label</span>

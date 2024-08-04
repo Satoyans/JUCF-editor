@@ -96,6 +96,8 @@ export const Output: React.FC<{
 							//elements
 							let index_count = 0;
 							for (let element of elements) {
+								//typeofで使いたいだけ
+								//恐らく値は使っていない
 								const element_type: formElementsVariableTypes.elementPropertiesTypes.all = {
 									h: "0",
 									w: "0",
@@ -104,10 +106,12 @@ export const Output: React.FC<{
 									hover_text: "",
 									texture: "",
 									text: "",
+									aux: "",
 									is_show_button: "true",
 									is_show_close: "true",
 									is_show_image: "true",
 									is_show_text: "true",
+									is_show_item: "true",
 								};
 								if (Object.keys(element).length !== Object.keys(element_type).length && Object.keys(element).length - 1 !== Object.keys(element_type).length)
 									throw new Error(`elements index:${index_count}\nキーの数が異常です。`);

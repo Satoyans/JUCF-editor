@@ -18,12 +18,16 @@ export namespace formElementsTypes {
 		export interface hoverTextOption {
 			hover_text: string;
 		}
+		export interface itemRendererOption {
+			aux: number;
+		}
 		export interface customOption {
 			buttonOption?: buttonOption;
 			closeButtonOption?: closeButtonOption;
 			textOption?: textOption;
 			imageOption?: imageOption;
 			hoverTextOption?: hoverTextOption;
+			itemRendererOption?: itemRendererOption;
 		}
 	}
 	export namespace elementPropertiesTypes {
@@ -32,17 +36,20 @@ export namespace formElementsTypes {
 		export interface addText extends basePropertiesType, elementPropertiesOption.textOption {}
 		export interface addImage extends basePropertiesType, elementPropertiesOption.imageOption {}
 		export interface addHoverText extends basePropertiesType, elementPropertiesOption.hoverTextOption {}
+		export interface addItemRenderer extends basePropertiesType, elementPropertiesOption.itemRendererOption {}
 		export interface all
 			extends basePropertiesType,
 				elementPropertiesOption.buttonOption,
 				elementPropertiesOption.closeButtonOption,
 				elementPropertiesOption.hoverTextOption,
 				elementPropertiesOption.imageOption,
+				elementPropertiesOption.itemRendererOption,
 				elementPropertiesOption.textOption {
 			is_show_button: boolean;
 			is_show_close: boolean;
 			is_show_text: boolean;
 			is_show_image: boolean;
+			is_show_item: boolean;
 		}
 	}
 }
@@ -67,12 +74,16 @@ export namespace formElementsVariableTypes {
 		export interface hoverTextOption {
 			hover_text: string;
 		}
+		export interface itemRendererOption {
+			aux: string; //変数のため
+		}
 		export interface customOption {
 			buttonOption?: buttonOption;
 			closeButtonOption?: closeButtonOption;
 			textOption?: textOption;
 			imageOption?: imageOption;
 			hoverTextOption?: hoverTextOption;
+			itemRendererOption?: itemRendererOption;
 		}
 	}
 	export namespace elementPropertiesTypes {
@@ -81,17 +92,20 @@ export namespace formElementsVariableTypes {
 		export interface addText extends basePropertiesType, elementPropertiesOption.textOption {}
 		export interface addImage extends basePropertiesType, elementPropertiesOption.imageOption {}
 		export interface addHoverText extends basePropertiesType, elementPropertiesOption.hoverTextOption {}
+		export interface addItemRenderer extends basePropertiesType, elementPropertiesOption.itemRendererOption {}
 		export interface all
 			extends basePropertiesType,
 				elementPropertiesOption.buttonOption,
 				elementPropertiesOption.closeButtonOption,
 				elementPropertiesOption.hoverTextOption,
 				elementPropertiesOption.imageOption,
+				elementPropertiesOption.itemRendererOption,
 				elementPropertiesOption.textOption {
-			is_show_button: string; //変数
-			is_show_close: string; //変数
-			is_show_text: string; //変数
-			is_show_image: string; //変数
+			is_show_button: string; //変数使えるように
+			is_show_close: string; //変数使えるように
+			is_show_text: string; //変数使えるように
+			is_show_image: string; //変数使えるように
+			is_show_item: string; //変数使えるように
 		}
 	}
 }

@@ -11,9 +11,11 @@ function createFormElement(): formElementsVariableTypes.elementPropertiesTypes.a
 		text: "element",
 		texture: "",
 		hover_text: "",
+		aux: "0",
 		is_show_button: "false",
 		is_show_close: "false",
 		is_show_image: "false",
+		is_show_item: "false",
 		is_show_text: "true",
 	};
 }
