@@ -36,3 +36,6 @@ v1.21.2
 Add-ons, distribution worlds, servers, etc. using JUCF are welcome.<br>
 Please refrain from redistribution without modification of originality.<br>
 Bug reports can be sent to this repository or Discord@satoyan_!
+
+The item renderer id is part of Herobrine643928's [Chest-UI](https://github.com/Herobrine643928/Chest-UI/blob/main/BP/scripts/extensions/typeIds.js).<br>
+<https://github.com/Herobrine643928/Chest-UI>©<https://github.com/Herobrine643928>
