@@ -166,7 +166,7 @@ export const ControlPanel: React.FC<{
 						<button style={{ width: "calc(33% - 5px)" }} disabled={props.editMode === "resize"} onClick={(e) => props.setEditMode("resize")}>
 							resize
 						</button>
-						<button style={{ width: "calc(33% - 5px)" }} disabled={props.editMode === "resize"} onClick={(e) => props.setEditMode("both")}>
+						<button style={{ width: "calc(33% - 5px)" }} disabled={props.editMode === "both"} onClick={(e) => props.setEditMode("both")}>
 							both
 						</button>
 					</div>
