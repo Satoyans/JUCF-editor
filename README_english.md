@@ -2,6 +2,10 @@
 
 ![jucf icon](./sample_images/JUCF_icon.png)
 
+JUCF is an add-on for Minecraft integration that allows you to customize your forms without any knowledge of json-ui or scriptAPI. <br>
+JUCF-editor allows you to create forms easily. <br>
+*Actions other than display (such as executing a command when a button is pressed) require the use of scritpAPI.
+
 ## How to use JUCF
 
 1. Download .mcpack for each behavior pack and resource pack
@@ -31,7 +35,7 @@
 
 ## Test Version
 
-v1.21.2
+v1.21.20
 
 Add-ons, distribution worlds, servers, etc. using JUCF are welcome.<br>
 Please refrain from redistribution without modification of originality.<br>
@@ -39,3 +43,5 @@ Bug reports can be sent to this repository or Discord@satoyan_!
 
 The item renderer id is part of Herobrine643928's [Chest-UI](https://github.com/Herobrine643928/Chest-UI/blob/main/BP/scripts/extensions/typeIds.js).<br>
 <https://github.com/Herobrine643928/Chest-UI>©<https://github.com/Herobrine643928>
+
+Translated using DeepL.
