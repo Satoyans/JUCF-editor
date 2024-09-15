@@ -18,7 +18,7 @@ JUCF-editorを使用することで簡単にフォームを作成することが
 
 ## 作成したフォームの表示の仕方
 
-1. エディターで生成されたコマンドを順番に実行します。
+1. [エディター](https://satoyans.github.io/JUCF-editor/)で作成したコマンドを順番に実行します。
 2. `/scriptevent cfs:フォーム名`を実行または`/scriptevent cf:list`で"表示"を選択すると表示されます。
 
 ## コマンド
