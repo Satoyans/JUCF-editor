@@ -1,6 +1,6 @@
 # JUCF-editor
 
-[English version is here](./README_english.md)
+japanese/[english](./README_english.md)
 
 ![jucf icon](./sample_images/JUCF_icon.png)
 
