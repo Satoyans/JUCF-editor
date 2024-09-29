@@ -1,5 +1,7 @@
 # JUCF-editor
 
+[japanese](./README.md)/english
+
 ![jucf icon](./sample_images/JUCF_icon.png)
 
 JUCF is an add-on for Minecraft integration that allows you to customize your forms without any knowledge of json-ui or scriptAPI. <br>
