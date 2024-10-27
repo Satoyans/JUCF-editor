@@ -43,5 +43,4 @@ JUCFを利用したアドオン、配布ワールド、サーバー等大歓迎�
 オリジナル性の変更を加えない再配布はご遠慮ください。<br>
 バグ報告はこのリポジトリかDiscord@satoyan_まで!
 
-アイテムレンダラーのidにはHerobrine643928氏の[Chest-UIの一部](https://github.com/Herobrine643928/Chest-UI/blob/main/BP/scripts/extensions/typeIds.js)を利用しています。<br>
-<https://github.com/Herobrine643928/Chest-UI>©<https://github.com/Herobrine643928>
+アイテムレンダラーのidにはHerobrine643928氏の[bds-docsの一部](https://github.com/bedrock-apis/bds-docs)を利用しています。
