@@ -43,4 +43,4 @@ JUCFを利用したアドオン、配布ワールド、サーバー等大歓迎�
 オリジナル性の変更を加えない再配布はご遠慮ください。<br>
 バグ報告はこのリポジトリかDiscord@satoyan_まで!
 
-アイテムレンダラーのidにはHerobrine643928氏の[bds-docsの一部](https://github.com/bedrock-apis/bds-docs)を利用しています。
+アイテムレンダラーのidにはbedrock-apis氏の[bds-docsの一部](https://github.com/bedrock-apis/bds-docs)を利用しています。
