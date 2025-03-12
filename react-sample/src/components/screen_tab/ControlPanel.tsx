@@ -10,6 +10,8 @@ export const ControlPanel: React.FC<{
 	props: propsType;
 }> = ({ props }) => {
 	let setting_components;
+
+	//要素が選択されているか
 	if (props.targetFormElementIndex === null) {
 		//スクリーン自体の設定を表示する
 		setting_components = (
@@ -49,7 +51,7 @@ export const ControlPanel: React.FC<{
 				<div id="control_panel_formsize">
 					<span>form size</span>
 					<Hint
-						title="フォームのサイズ&#13;&#10;ゲームスクリーンサイズより大きくなると表示されなかったりタップできなくなったりする。&#13;&#10;横300縦180辺りが無難?"
+						title="フォームのサイズ&#13;&#10;ゲームスクリーンサイズより大きくなると表示されなかったりタップできなくなったりする。&#13;&#10;横300縦180辺りが無難"
 					/>
 					<p style={{ margin: 0, fontSize: "12px" }}>
 						{props.formSize.x}px/{props.formSize.y}px
@@ -316,6 +318,15 @@ export const ControlPanel: React.FC<{
 					/>
 					<p style={{ margin: 0, fontSize: "12px" }}>{variableReplacer(form_element.texture, props.variable)}</p>
 					<input style={{ width: "110px" }} value={form_element.texture} onChange={(e) => inputOnChange(e, "texture")} />
+				</div>
+				<Partition />
+				<div id="control_panel_command">
+					<span>command</span>
+					<Hint
+						title="ボタンが押された時に実行されるコマンド&#13;&#10;"
+					/>
+					<p style={{ margin: 0, fontSize: "12px" }}>{variableReplacer(form_element.command, props.variable)}</p>
+					<input style={{ width: "110px" }} value={form_element.command} onChange={(e) => inputOnChange(e, "command")} />
 				</div>
 				<Partition />
 				<div id="control_panel_hovertext">

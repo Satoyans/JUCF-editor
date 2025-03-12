@@ -63,7 +63,9 @@ export namespace formElementsVariableTypes {
 		label?: string;
 	}
 	export namespace elementPropertiesOption {
-		export interface buttonOption {}
+		export interface buttonOption {
+			command: string;
+		}
 		export interface closeButtonOption {}
 		export interface textOption {
 			text: string;

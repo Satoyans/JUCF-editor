@@ -10,6 +10,7 @@ function createFormElement(): formElementsVariableTypes.elementPropertiesTypes.a
 		y: "0",
 		text: "element",
 		texture: "",
+		command: "",
 		hover_text: "",
 		aux: "0",
 		is_show_button: "false",

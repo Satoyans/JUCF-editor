@@ -105,6 +105,7 @@ export const Output: React.FC<{
 									y: "0",
 									hover_text: "",
 									texture: "",
+									command: "",
 									text: "",
 									aux: "",
 									is_show_button: "true",
