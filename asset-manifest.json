@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/JUCF-editor/static/css/main.8a685450.css",
-    "main.js": "/JUCF-editor/static/js/main.53876f13.js",
+    "main.js": "/JUCF-editor/static/js/main.776113b5.js",
     "index.html": "/JUCF-editor/index.html",
     "main.8a685450.css.map": "/JUCF-editor/static/css/main.8a685450.css.map",
-    "main.53876f13.js.map": "/JUCF-editor/static/js/main.53876f13.js.map"
+    "main.776113b5.js.map": "/JUCF-editor/static/js/main.776113b5.js.map"
   },
   "entrypoints": [
     "static/css/main.8a685450.css",
-    "static/js/main.53876f13.js"
+    "static/js/main.776113b5.js"
   ]
 }
