@@ -50,7 +50,7 @@ export const Dropzone: React.FC<{
 								await Promise.all(
 									files.map(async ({ file, path }) => {
 										if (file.type !== "image/png" && file.type !== "image/jpeg") return { path: "", base64: "" };
-										if (!file.name.endsWith(".png") && !file.type.endsWith(".jpeg") && !file.type.endsWith(".jpg")) return { path: "", base64: "" };
+										if (!file.name.endsWith(".png") && !file.name.endsWith(".jpeg") && !file.name.endsWith(".jpg")) return { path: "", base64: "" };
 										return { path, base64: arrayBufferToBase64(await file.arrayBuffer()) };
 									})
 								)
