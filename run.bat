@@ -1,2 +1,2 @@
-cd ./react-sample
+cd ./react-jucf-editor
 call npm start
