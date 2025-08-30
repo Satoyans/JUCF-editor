@@ -8,7 +8,7 @@ function createFormElement(): formElementsVariableTypes.elementPropertiesTypes.a
 		w: "30",
 		x: "0",
 		y: "0",
-		text: "element",
+		text: "text",
 		texture: "",
 		command: "",
 		hover_text: "",
@@ -66,7 +66,7 @@ export const ToolBar: React.FC<{
 							props.setTargetFormElementIndex(form_elements.length - 1);
 						}}
 					>
-						add
+						追加
 					</button>
 					<button
 						style={{ width: "60px", height: "40px", margin: "0 2px" }}
@@ -79,7 +79,7 @@ export const ToolBar: React.FC<{
 							props.setFormElements(form_elements);
 						}}
 					>
-						remove
+						削除
 					</button>
 					<button
 						style={{ width: "60px", height: "40px", margin: "0 2px" }}
@@ -92,7 +92,7 @@ export const ToolBar: React.FC<{
 							props.setFormElements(form_elements);
 						}}
 					>
-						copy
+						コピー
 					</button>
 				</div>
 				<div style={{ margin: "5px 0 5px 10px" }}>

@@ -17,7 +17,7 @@ export const ControlPanel: React.FC<{
 		setting_components = (
 			<>
 				<div id="control_panel_gamesize">
-					<span>game screen size</span>
+					<span>ゲームスクリーンサイズ</span>
 					<Hint
 						title="Minecraftの画面のサイズ&#13;&#10;横幅は470弱でほぼ固定。&#13;&#10;縦幅はPCフルスクリーンで約240&#13;&#10;スマホは機種によるが180前後"
 					/>
@@ -49,7 +49,7 @@ export const ControlPanel: React.FC<{
 				</div>
 				<Partition />
 				<div id="control_panel_formsize">
-					<span>form size</span>
+					<span>フォームサイズ</span>
 					<Hint
 						title="フォームのサイズ&#13;&#10;ゲームスクリーンサイズより大きくなると表示されなかったりタップできなくなったりする。&#13;&#10;横300縦180辺りが無難"
 					/>
@@ -81,7 +81,7 @@ export const ControlPanel: React.FC<{
 				</div>
 				<Partition />
 				<div id="control_panel_showformframe">
-					<span>isShowFormFrame</span>
+					<span>フォームの枠</span>
 					<Hint
 						title="フォームの外枠を表示するか&#13;&#10;'true'の場合に表示されます。"
 					/>
@@ -106,7 +106,7 @@ export const ControlPanel: React.FC<{
 				</div>
 				<Partition />
 				<div id="control_panel_formname">
-					<span>formName</span>
+					<span>フォーム名</span>
 					<Hint
 						title="コマンドで呼び出す際のフォームの名前&#13;&#10;変数は使用できません。"
 					/>
@@ -221,22 +221,23 @@ export const ControlPanel: React.FC<{
 					/>
 					<div id="control_panel_x">
 						<div style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
-							<span style={{ width: "25px" }}>x:</span>
+							<span style={{ width: "25px", color: "#353535ff" }}>x:</span>
 							<span style={{ fontSize: "12px" }}>{variableReplacer(form_element.x, props.variable)}px</span>
 						</div>
 						<input style={{ width: "calc(100% - 20pxs)" }} value={form_element.x} onChange={(e) => inputOnChange(e, "x")} />
 					</div>
 					<div id="control_panel_y">
 						<div style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
-							<span style={{ width: "25px" }}>y:</span>
+							<span style={{ width: "25px", color: "#353535ff" }}>y:</span>
 							<span style={{ fontSize: "12px" }}>{variableReplacer(form_element.y, props.variable)}px</span>
 						</div>
 						<input style={{ width: "calc(100% - 20pxs)" }} value={form_element.y} onChange={(e) => inputOnChange(e, "y")} />
 					</div>
 				</div>
 				<Partition />
+				<a>表示するか</a>
 				<div id="control_panel_is_show_text">
-					<span>is_show_text</span>
+					<span style={{ color: "#353535ff" }}>テキスト</span>
 					<Hint
 						title="textで指定した文字を表示するか&#13;&#10;'true'の場合に表示されます。"
 					/>
@@ -250,7 +251,7 @@ export const ControlPanel: React.FC<{
 					</div>
 				</div>
 				<div id="control_panel_is_show_image">
-					<span>is_show_image</span>
+					<span style={{ color: "#353535ff" }}>画像</span>
 					<Hint
 						title="textureで指定した画像を表示するか&#13;&#10;'true'の場合に表示されます。"
 					/>
@@ -264,7 +265,7 @@ export const ControlPanel: React.FC<{
 					</div>
 				</div>
 				<div id="control_panel_is_show_button">
-					<span>is_show_button</span>
+					<span style={{ color: "#353535ff" }}>ボタン</span>
 					<Hint
 						title="ボタンとして押せるようにするか&#13;&#10;'true'の場合に表示されます。"
 					/>
@@ -278,9 +279,9 @@ export const ControlPanel: React.FC<{
 					</div>
 				</div>
 				<div id="control_panel_is_show_close">
-					<span>is_show_close</span>
+					<span style={{ color: "#353535ff" }}>閉じる</span>
 					<Hint
-						title="フォーム右上にある閉じるボタンをその要素に表示するか&#13;&#10;既存の閉じるボタンを使用するため画像を変更できないほか、細かくサイズや位置を調整できません。&#13;&#10;フォームの外枠に使用しています。"
+						title="フォーム右上にある閉じるボタンをその要素に表示するか&#13;&#10;既存の閉じるボタンを使用するため画像やサイズ、位置を調整できません。"
 					/>
 					<div style={{ display: "flex", alignItems: "center" }}>
 						<input
@@ -292,7 +293,7 @@ export const ControlPanel: React.FC<{
 					</div>
 				</div>
 				<div id="control_panel_is_show_item">
-					<span>is_show_item</span>
+					<span style={{ color: "#353535ff" }}>アイテム</span>
 					<Hint title="auxで指定されたアイテムを表示します。" />
 					<div style={{ display: "flex", alignItems: "center" }}>
 						<input
@@ -363,7 +364,7 @@ export const ControlPanel: React.FC<{
 
 								//props更新
 								const form_elements: formElementsVariableTypes.elementPropertiesTypes.all[] = JSON.parse(JSON.stringify(props.formElements));
-								if (props.targetFormElementIndex === null) return window.alert("targetForrmElementIndex is null");
+								if (props.targetFormElementIndex === null) return window.alert("targetFormElementIndex is null");
 								form_elements[props.targetFormElementIndex].aux = String(next_value);
 								props.setFormElements(form_elements);
 							}}
