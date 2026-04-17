@@ -176,17 +176,17 @@ export const ControlPanel: React.FC = () => {
 				<div id="control_panel_layer">
 					<span>レイヤー</span>
 					<div>
-						<button style={{ width: "40px" }} disabled={targetFormElementIndex === 0} onClick={(e) => changeLayer("|<<")}>
+						<button style={{ padding: "4px 8px" }} disabled={targetFormElementIndex === 0} onClick={(e) => changeLayer("|<<")}>
 							{"|<<"}
 						</button>
-						<button style={{ width: "30px" }} disabled={targetFormElementIndex === 0} onClick={(e) => changeLayer("<")}>
+						<button style={{ padding: "4px 10px", marginLeft: "4px" }} disabled={targetFormElementIndex === 0} onClick={(e) => changeLayer("<")}>
 							{"<"}
 						</button>
-						<span style={{ margin: "5px" }}>{targetFormElementIndex}</span>
-						<button style={{ width: "30px" }} disabled={targetFormElementIndex === formElements.length - 1} onClick={(e) => changeLayer(">")}>
+						<span style={{ margin: "5px 10px" }}>{targetFormElementIndex}</span>
+						<button style={{ padding: "4px 10px", marginRight: "4px" }} disabled={targetFormElementIndex === formElements.length - 1} onClick={(e) => changeLayer(">")}>
 							{">"}
 						</button>
-						<button style={{ width: "40px" }} disabled={targetFormElementIndex === formElements.length - 1} onClick={(e) => changeLayer(">>|")}>
+						<button style={{ padding: "4px 8px" }} disabled={targetFormElementIndex === formElements.length - 1} onClick={(e) => changeLayer(">>|")}>
 							{">>|"}
 						</button>
 					</div>

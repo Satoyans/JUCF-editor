@@ -48,7 +48,7 @@ export const Header: React.FC = () => {
 				{/* Githubアイコンをタイトルの直後に配置 */}
 				<img
 					style={{ height: "30px", width: "30px", marginLeft: "15px", cursor: "pointer" }}
-					src="./img/github_icon.png"
+					src={`${process.env.PUBLIC_URL}/img/github_icon.png`}
 					alt="github_icon"
 					title="Github Repository"
 					onClick={() => window.open("https://github.com/Satoyans/JUCF_editor")}

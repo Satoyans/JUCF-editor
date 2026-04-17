@@ -12,6 +12,7 @@ export const Screen: React.FC<{
 		screenZoomRatio,
 		setTargetFormElementIndex,
 		elementPanelHeight,
+		isShowFormFrame,
 	} = useAppContext();
 
 	const scaledFormSize = {
@@ -21,6 +22,19 @@ export const Screen: React.FC<{
 	const scaledGameScreenSize = {
 		x: gameScreenSize.x * screenZoomRatio,
 		y: gameScreenSize.y * screenZoomRatio,
+	};
+
+	const isNineSlice = isShowFormFrame === "true";
+	const s = screenZoomRatio;
+
+	const formScreenStyle: React.CSSProperties = {
+		width: "100%",
+		height: "100%",
+		backgroundColor: themeColors[themeColor].screen.formArea,
+		border: themeColor === "Dark" ? "2px dashed rgba(255, 255, 255, 0.2)" : "2px dashed rgba(0, 0, 0, 0.2)",
+		boxShadow: isNineSlice ? "none" : (themeColor === "Dark" ? "0 4px 20px rgba(0, 0, 0, 0.3)" : "0 4px 20px rgba(0, 0, 0, 0.1)"),
+		borderRadius: "2px",
+		position: "relative"
 	};
 
 	return (
@@ -42,24 +56,43 @@ export const Screen: React.FC<{
 					display: "flex",
 					justifyContent: "center",
 					alignItems: "center",
+					overflow: "hidden", // 追加：game_screen外部にはみ出たものを隠す
 					boxShadow: themeColor === "Dark" ? "0 10px 40px rgba(0, 0, 0, 0.5)" : "0 10px 40px rgba(0, 0, 0, 0.15)",
                     borderRadius: "4px"
 				}}
 			>
 				<div
-					id="form_screen"
-					onClick={() => setTargetFormElementIndex(null)}
+					id="form_screen_wrapper"
 					style={{
 						width: `${scaledFormSize.x}px`,
 						height: `${scaledFormSize.y}px`,
-						backgroundColor: themeColors[themeColor].screen.formArea,
 						margin: "auto",
-						border: themeColor === "Dark" ? "2px dashed rgba(255, 255, 255, 0.2)" : "2px dashed rgba(0, 0, 0, 0.2)",
-                        boxShadow: themeColor === "Dark" ? "0 4px 20px rgba(0, 0, 0, 0.3)" : "0 4px 20px rgba(0, 0, 0, 0.1)",
-                        borderRadius: "2px"
+						position: "relative"
 					}}
 				>
-					{children}
+					{/* 見た目だけの枠線（レイアウトに一切影響を与えない） */}
+					{isNineSlice && (
+						<div style={{
+							position: "absolute",
+							top: `-${23 * s}px`,
+							bottom: `-${8 * s}px`,
+							left: `-${8 * s}px`,
+							right: `-${8 * s}px`,
+							pointerEvents: "none",
+							borderImageSource: `url('${process.env.PUBLIC_URL}/img/form_background.png')`,
+							borderImageSlice: "23 8 8 8",
+							borderWidth: `${23 * s}px ${8 * s}px ${8 * s}px ${8 * s}px`,
+							borderStyle: "solid"
+						}} />
+					)}
+
+					<div
+						id="form_screen"
+						onClick={() => setTargetFormElementIndex(null)}
+						style={formScreenStyle}
+					>
+						{children}
+					</div>
 				</div>
 			</div>
 		</div>
