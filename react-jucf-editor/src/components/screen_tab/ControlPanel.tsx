@@ -396,7 +396,7 @@ export const ControlPanel: React.FC = () => {
 		<div
 			id="control_panel"
 			style={{
-				width: 200,
+				width: 220,
 				height: `${Math.max(gameScreenSize.y * screenZoomRatio, formSize.y * screenZoomRatio)}px`,
 				maxHeight: `${window.innerHeight - 50 - 50 - elementPanelHeight - 20}px`,
 				boxShadow: "0 0 0 1px black inset",

@@ -35,6 +35,7 @@ export const Screen: React.FC<{
 			<div
 				id="game_screen"
 				style={{
+					margin: "0 auto",
 					width: `${scaledGameScreenSize.x}px`,
 					height: `${scaledGameScreenSize.y}px`,
 					backgroundColor: themeColors[themeColor].screen.gameArea,

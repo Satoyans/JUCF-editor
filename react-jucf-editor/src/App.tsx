@@ -10,8 +10,8 @@ import { VariableTab } from "./components/variable_tab/VariableTab";
 import { AppContext } from "./AppContext";
 
 //ウィンドウサイズとゲームスクリーンサイズの比を返す関数
-function getScale(gameScreenSize: { x: number; y: number }, formSize: { x: number; y: number }, elementPanelHeight: number) {
-	const windowX = window.innerWidth - 20 - 200; //余分 + コントロールパネル
+function getScale(gameScreenSize: { x: number; y: number }, formSize: { x: number; y: number }, elementPanelHeight: number, isShowControlPanel: boolean) {
+	const windowX = window.innerWidth - 90 - 20 - (isShowControlPanel ? 220 : 0); //左ツールバー(90) + 余分(20) + コントロールパネル(220)
 	const windowY = window.innerHeight - 50 - 50 - elementPanelHeight - 20; //  header + toolbar + under + 余分
 	if (windowX < 0 || windowY < 0) return 0;
 	const maxScreenSizeX = Math.max(gameScreenSize.x, formSize.x);
@@ -81,13 +81,18 @@ function App() {
 	const [gameScreenSize, setGameScreenSize] = useState({ x: 450, y: 180 });
 	//State: フォームサイズ
 	const [formSize, setFormSize] = useState({ x: 300, y: 180 });
+	//State: コントロールパネルの表示状態
+	const [isShowControlPanel, setIsShowControlPanel] = useState(true);
 	//State: ズーム倍率
-	const [screenZoomRatio, setScreenZoomRatio] = useState(getScale(gameScreenSize, formSize, elementPanelHeight));
+	const [screenZoomRatio, setScreenZoomRatio] = useState(getScale(gameScreenSize, formSize, elementPanelHeight, isShowControlPanel));
 
-	// ウィンドウサイズ変更時にズーム倍率変更
+	// ウィンドウサイズ変更時やパネル開閉時にズーム倍率変更
 	window.onresize = () => {
-		setScreenZoomRatio(getScale(gameScreenSize, formSize, elementPanelHeight));
+		setScreenZoomRatio(getScale(gameScreenSize, formSize, elementPanelHeight, isShowControlPanel));
 	};
+	useEffect(() => {
+		setScreenZoomRatio(getScale(gameScreenSize, formSize, elementPanelHeight, isShowControlPanel));
+	}, [gameScreenSize, formSize, elementPanelHeight, isShowControlPanel]);
 
 	//フォームエレメント更新時にエレメントパネルの高さ更新
 	useEffect(() => setElementPanelHeight(getElementPanelHeight(formElements)), [formElements, screenZoomRatio]);
@@ -142,6 +147,8 @@ function App() {
 		setElementPanelHeight,
 		screenZoomRatio,
 		setScreenZoomRatio,
+		isShowControlPanel,
+		setIsShowControlPanel,
 		editMode,
 		setEditMode,
 		uploadedImages,

@@ -41,6 +41,8 @@ export type AppContextType = {
 	setElementPanelHeight: React.Dispatch<React.SetStateAction<number>>;
 	screenZoomRatio: number;
 	setScreenZoomRatio: React.Dispatch<React.SetStateAction<number>>;
+	isShowControlPanel: boolean;
+	setIsShowControlPanel: React.Dispatch<React.SetStateAction<boolean>>;
 	editMode: "drag" | "resize" | "both";
 	setEditMode: React.Dispatch<React.SetStateAction<"drag" | "resize" | "both">>;
 	uploadedImages: {

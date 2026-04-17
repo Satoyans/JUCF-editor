@@ -6,9 +6,10 @@ import MoveableElement from "./MoveableElement";
 import { Output } from "./Output";
 import { Screen } from "./Screen";
 import { ScreenToolBar } from "./ScreenToolBar";
+import { useAppContext } from "../../AppContext";
 
 export const ScreenTab: React.FC = () => {
-	const [isShowControlPanel, setIsShowControlPanel] = useState(true);
+	const { isShowControlPanel, setIsShowControlPanel } = useAppContext();
 
 	return (
 		<>
@@ -23,7 +24,7 @@ export const ScreenTab: React.FC = () => {
 					onClick={() => setIsShowControlPanel(!isShowControlPanel)}
 					style={{
 						position: "absolute",
-						right: isShowControlPanel ? 200 : 0,
+						right: isShowControlPanel ? 220 : 0,
 						top: 0,
 						width: "20px",
 						height: "40px",
