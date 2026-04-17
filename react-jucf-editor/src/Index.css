@@ -1,3 +1,85 @@
 body {
 	margin: 0;
+	font-family: "Inter", "Segoe UI", Tahoma, sans-serif;
+	color: #111827;
+	background-color: #f3f4f6;
+}
+
+* {
+	box-sizing: border-box;
+}
+
+/* Custom Scrollbar for Light Theme */
+::-webkit-scrollbar {
+	width: 10px;
+	height: 10px;
+}
+::-webkit-scrollbar-track {
+	background: transparent;
+}
+::-webkit-scrollbar-thumb {
+	background: #d1d5db;
+	border-radius: 5px;
+	border: 2px solid transparent;
+	background-clip: content-box;
+}
+::-webkit-scrollbar-thumb:hover {
+	background-color: #9ca3af;
+}
+
+/* Modern Button Reset */
+button {
+	background-color: #ffffff;
+	color: #111827;
+	border: 1px solid #d1d5db;
+	border-radius: 6px;
+	padding: 6px 14px;
+	font-size: 13px;
+	cursor: pointer;
+	transition: all 0.2s ease;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+button:hover:not(:disabled) {
+	background-color: #f9fafb;
+	border-color: #9ca3af;
+}
+
+button:active:not(:disabled) {
+	transform: scale(0.97);
+}
+
+button:disabled {
+	opacity: 0.4;
+	cursor: not-allowed;
+	pointer-events: none;
+}
+
+/* Modern Dropdown & Inputs */
+input[type="text"], 
+input:not([type]), 
+select {
+	background-color: #ffffff;
+	border: 1px solid #d1d5db;
+	color: #111827;
+	border-radius: 6px;
+	padding: 6px 8px;
+	font-size: 13px;
+	transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+input:focus, 
+select:focus {
+	outline: none;
+	border-color: #3b82f6;
+	box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
+
+/* Utility shadow classes */
+.modern-panel {
+	background-color: #ffffff;
+	border: 1px solid #e5e7eb;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }

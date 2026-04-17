@@ -35,13 +35,13 @@ export const ScreenToolBar: React.FC = () => {
         setEditMode
     } = useAppContext();
 
-    const btnStyle = { width: "calc(100% - 10px)", height: "30px", margin: "5px 5px" };
+    const btnStyle = { width: "calc(100% - 14px)", margin: "4px 7px" };
     const SectionHeader: React.FC<{title: string}> = ({title}) => (
-        <div style={{ textAlign: "center", fontSize: "12px", borderBottom: "1px solid #aaa", margin: "10px 5px 5px", color: "#555" }}>{title}</div>
+        <div style={{ textAlign: "center", fontSize: "11px", fontWeight: "bold", borderBottom: "1px solid #e5e7eb", margin: "10px 10px 5px", paddingBottom: "2px", color: "#6b7280" }}>{title}</div>
     );
 
     return (
-        <div style={{ width: "90px", minHeight: "100%", borderRight: "solid 1px black", display: "flex", flexDirection: "column" }}>
+        <div style={{ width: "90px", minHeight: "100%", borderRight: "1px solid #e5e7eb", backgroundColor: "#ffffff", display: "flex", flexDirection: "column" }}>
             
             <SectionHeader title="要素を操作" />
             <button
@@ -86,19 +86,19 @@ export const ScreenToolBar: React.FC = () => {
 
             <SectionHeader title="操作モード" />
             <button 
-                style={{ ...btnStyle, backgroundColor: editMode === "drag" ? "#ccc" : undefined }} 
+                style={{ ...btnStyle, backgroundColor: editMode === "drag" ? "#3b82f6" : undefined, color: editMode === "drag" ? "#fff" : undefined }} 
                 onClick={() => setEditMode("drag")}
             >
                 Drag
             </button>
             <button 
-                style={{ ...btnStyle, backgroundColor: editMode === "resize" ? "#ccc" : undefined }} 
+                style={{ ...btnStyle, backgroundColor: editMode === "resize" ? "#3b82f6" : undefined, color: editMode === "resize" ? "#fff" : undefined }} 
                 onClick={() => setEditMode("resize")}
             >
                 Resize
             </button>
             <button 
-                style={{ ...btnStyle, backgroundColor: editMode === "both" ? "#ccc" : undefined }} 
+                style={{ ...btnStyle, backgroundColor: editMode === "both" ? "#3b82f6" : undefined, color: editMode === "both" ? "#fff" : undefined }} 
                 onClick={() => setEditMode("both")}
             >
                 Both

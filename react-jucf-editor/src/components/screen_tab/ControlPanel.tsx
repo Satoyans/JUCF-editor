@@ -399,7 +399,7 @@ export const ControlPanel: React.FC = () => {
 				width: 220,
 				height: `${Math.max(gameScreenSize.y * screenZoomRatio, formSize.y * screenZoomRatio)}px`,
 				maxHeight: `${window.innerHeight - 50 - 50 - elementPanelHeight - 20}px`,
-				boxShadow: "0 0 0 1px black inset",
+				borderLeft: "1px solid #e5e7eb",
 				backgroundColor: themeColors[themeColor].control_panel.background,
 				paddingLeft: "5px",
 				overflowY: "scroll",

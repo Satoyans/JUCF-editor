@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import React from "react";
 import { formElementsVariableTypes } from "./formElementTypes";
 import { Header } from "./components/Header";
-import { ToolBar } from "./components/ToolBar";
 import { ScreenTab } from "./components/screen_tab/ScreenTab";
 import { ImageTab } from "./components/image_tab/ImageTab";
 import { variableReplacer } from "./variableReplacer";
@@ -12,7 +11,7 @@ import { AppContext } from "./AppContext";
 //ウィンドウサイズとゲームスクリーンサイズの比を返す関数
 function getScale(gameScreenSize: { x: number; y: number }, formSize: { x: number; y: number }, elementPanelHeight: number, isShowControlPanel: boolean) {
 	const windowX = window.innerWidth - 90 - 20 - (isShowControlPanel ? 220 : 0); //左ツールバー(90) + 余分(20) + コントロールパネル(220)
-	const windowY = window.innerHeight - 50 - 50 - elementPanelHeight - 20; //  header + toolbar + under + 余分
+	const windowY = window.innerHeight - 55 - elementPanelHeight - 20; // ヘッダー(55) + 余分(20) + 上下マージン
 	if (windowX < 0 || windowY < 0) return 0;
 	const maxScreenSizeX = Math.max(gameScreenSize.x, formSize.x);
 	const maxScreenSizeY = Math.max(gameScreenSize.y, formSize.y);
@@ -182,7 +181,6 @@ function App() {
 		<AppContext.Provider value={contextValue}>
 			<div className="App">
 				<Header />
-				<ToolBar />
 
 				{returnComponents}
 			</div>

@@ -42,7 +42,8 @@ export const Screen: React.FC<{
 					display: "flex",
 					justifyContent: "center",
 					alignItems: "center",
-					boxShadow: "0 0 0 1px black inset",
+					boxShadow: themeColor === "Dark" ? "0 10px 40px rgba(0, 0, 0, 0.5)" : "0 10px 40px rgba(0, 0, 0, 0.15)",
+                    borderRadius: "4px"
 				}}
 			>
 				<div
@@ -53,7 +54,9 @@ export const Screen: React.FC<{
 						height: `${scaledFormSize.y}px`,
 						backgroundColor: themeColors[themeColor].screen.formArea,
 						margin: "auto",
-						boxShadow: "0 0 0 1px black inset",
+						border: themeColor === "Dark" ? "2px dashed rgba(255, 255, 255, 0.2)" : "2px dashed rgba(0, 0, 0, 0.2)",
+                        boxShadow: themeColor === "Dark" ? "0 4px 20px rgba(0, 0, 0, 0.3)" : "0 4px 20px rgba(0, 0, 0, 0.1)",
+                        borderRadius: "2px"
 					}}
 				>
 					{children}
