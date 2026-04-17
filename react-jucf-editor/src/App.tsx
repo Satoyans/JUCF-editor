@@ -56,7 +56,7 @@ function App() {
 	const [variable, setVariable] = useState<{ [key: string]: string | number | boolean }>({});
 
 	//State: ゲームスクリーンサイズ変数
-	const [gameScreenSizeVariable, setGameScreenSizeVariable] = useState({ x: "450", y: "180" });
+	const [gameScreenSizeVariable, setGameScreenSizeVariable] = useState({ x: "450", y: "240" });
 	useEffect(() => {
 		const { x, y } = gameScreenSizeVariable;
 		const xNum = Number(variableReplacer(x, variable));
@@ -77,7 +77,7 @@ function App() {
 	}, [formSizeVariable]);
 
 	//State: ゲームスクリーンサイズ
-	const [gameScreenSize, setGameScreenSize] = useState({ x: 450, y: 180 });
+	const [gameScreenSize, setGameScreenSize] = useState({ x: 450, y: 240 });
 	//State: フォームサイズ
 	const [formSize, setFormSize] = useState({ x: 300, y: 180 });
 	//State: コントロールパネルの表示状態
