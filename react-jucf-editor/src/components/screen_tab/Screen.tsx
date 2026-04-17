@@ -29,7 +29,7 @@ export const Screen: React.FC<{
 			style={{
 				overflow: "auto",
 				maxHeight: `${window.innerHeight - 50 - 50 - elementPanelHeight - 20}px`,
-				width: `${window.innerWidth - 20 - 200}px`,
+				flexGrow: 1,
 			}}
 		>
 			<div
