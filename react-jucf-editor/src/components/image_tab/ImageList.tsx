@@ -1,14 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import { themeColors } from "../themeColor";
-import { propsType } from "../../propsType";
+import { useAppContext } from "../../AppContext";
 
-export const ImageList: React.FC<{
-	props: {
-		uploadedImages: propsType["uploadedImages"];
-		setUploadedImages: propsType["setUploadedImages"];
-		themeColor: propsType["themeColor"];
-	};
-}> = ({ props }) => {
+export const ImageList: React.FC = () => {
+	const { uploadedImages, setUploadedImages, themeColor } = useAppContext();
 	const [editNameImage, setEditNameImage] = useState<string | null>(null);
 	const ref = useRef<HTMLInputElement>(null!);
 	useEffect(() => {
@@ -17,7 +12,7 @@ export const ImageList: React.FC<{
 	}, [editNameImage]);
 	useEffect(() => {
 		setEditNameImage(null);
-	}, [Object.keys(props.uploadedImages).length]);
+	}, [Object.keys(uploadedImages).length]);
 
 	return (
 		<div
@@ -26,7 +21,7 @@ export const ImageList: React.FC<{
 				flexDirection: "column",
 			}}
 		>
-			{Object.keys(props.uploadedImages)
+			{Object.keys(uploadedImages)
 				.sort((a, b) => (a.toLowerCase() > b.toLowerCase() ? 1 : -1))
 				.map((path, i) => (
 					<React.Fragment key={i}>
@@ -38,7 +33,7 @@ export const ImageList: React.FC<{
 									marginBottom: 0,
 									height: "60px",
 									border: "solid 1px black",
-									backgroundColor: themeColors[props.themeColor].image_panel.background,
+									backgroundColor: themeColors[themeColor].image_panel.background,
 									display: "flex",
 									justifyContent: "space-between",
 								}}
@@ -53,7 +48,7 @@ export const ImageList: React.FC<{
 								>
 									<img
 										style={{ width: "50px", height: "50px", margin: "5px", imageRendering: "pixelated", border: "solid 1px" }}
-										src={`data:image/png;base64,${props.uploadedImages[path]}`}
+										src={`data:image/png;base64,${uploadedImages[path]}`}
 									/>
 									{(() => {
 										if (editNameImage !== `uploaded_images_${path}`) return <p>{path}</p>;
@@ -63,18 +58,18 @@ export const ImageList: React.FC<{
 												<button
 													style={{ height: "100%", width: "60px" }}
 													onClick={(e) => {
-														const new_key = ref.current.value;
-														if (new_key === "") return;
+														const newKey = ref.current.value;
+														if (newKey === "") return;
 														const target = e.target as HTMLButtonElement;
 														const id = target.parentElement!.parentElement!.parentElement!.id;
 														const key = id.replace("uploaded_images_", "");
-														if (new_key.split(".")[new_key.split(".").length - 1] !== key.split(".")[key.split(".").length - 1])
+														if (newKey.split(".")[newKey.split(".").length - 1] !== key.split(".")[key.split(".").length - 1])
 															return window.alert("拡張子が一致しません");
-														if (new_key === key) return;
-														const uploaded_images = { ...props.uploadedImages };
-														uploaded_images[new_key] = uploaded_images[key];
-														delete uploaded_images[key];
-														props.setUploadedImages(uploaded_images);
+														if (newKey === key) return;
+														const uploadedImagesCopy = { ...uploadedImages };
+														uploadedImagesCopy[newKey] = uploadedImagesCopy[key];
+														delete uploadedImagesCopy[key];
+														setUploadedImages(uploadedImagesCopy);
 													}}
 												>
 													更新
@@ -104,10 +99,10 @@ export const ImageList: React.FC<{
 											onClick={(e) => {
 												const target = e.target as HTMLButtonElement;
 												const id = target.parentElement!.parentElement!.parentElement!.id;
-												const remove_image_path = id.replace("uploaded_images_", "");
-												const uploaded_images = { ...props.uploadedImages };
-												delete uploaded_images[remove_image_path];
-												props.setUploadedImages(uploaded_images);
+												const removeImagePath = id.replace("uploaded_images_", "");
+												const uploadedImagesCopy = { ...uploadedImages };
+												delete uploadedImagesCopy[removeImagePath];
+												setUploadedImages(uploadedImagesCopy);
 											}}
 										>
 											<a style={{ fontSize: "24px", userSelect: "none", pointerEvents: "none" }}>🗑</a>

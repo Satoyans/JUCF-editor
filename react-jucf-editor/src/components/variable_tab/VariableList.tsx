@@ -1,32 +1,27 @@
 import React, { useEffect, useRef, useState } from "react";
 import { themeColors } from "../themeColor";
-import { propsType } from "../../propsType";
+import { useAppContext } from "../../AppContext";
 
-export const VariableList: React.FC<{
-	props: {
-		variable: propsType["variable"];
-		setVariable: propsType["setVariable"];
-		themeColor: propsType["themeColor"];
-	};
-}> = ({ props }) => {
+export const VariableList: React.FC = () => {
+	const { variable, setVariable, themeColor } = useAppContext();
 	const [editVariableKey, setEditVariableKey] = useState<string | null>(null);
-	const ref_key = useRef<HTMLInputElement>(null!);
-	const ref_value = useRef<HTMLInputElement>(null!);
+	const refKey = useRef<HTMLInputElement>(null!);
+	const refValue = useRef<HTMLInputElement>(null!);
 	useEffect(() => {
 		if (!editVariableKey) return;
 		const key = editVariableKey.replace("variable_", "");
-		const value = props.variable[key];
-		ref_key.current.value = key;
-		ref_value.current.value = String(value);
-	}, [editVariableKey]);
+		const value = variable[key];
+		refKey.current.value = key;
+		refValue.current.value = String(value);
+	}, [editVariableKey, variable]);
 
 	useEffect(() => {
 		setEditVariableKey(null);
-	}, [Object.keys(props.variable).length]);
+	}, [Object.keys(variable).length]);
 
 	return (
 		<>
-			{Object.keys(props.variable)
+			{Object.keys(variable)
 				.sort((a, b) => (a.toLowerCase() > b.toLowerCase() ? 1 : -1))
 				.map((key, i) => (
 					<React.Fragment key={i}>
@@ -37,7 +32,7 @@ export const VariableList: React.FC<{
 								marginBottom: 0,
 								height: "30px",
 								border: "solid 1px black",
-								backgroundColor: themeColors[props.themeColor].variable_panel.background,
+								backgroundColor: themeColors[themeColor].variable_panel.background,
 								display: "flex",
 								justifyContent: "space-between",
 							}}
@@ -45,29 +40,28 @@ export const VariableList: React.FC<{
 							{editVariableKey === `variable_${key}` ? (
 								<div style={{ margin: "3px 10px", width: "60%", display: "flex", flexDirection: "row", height: "24px" }}>
 									<span style={{ margin: 0, display: "flex", alignItems: "center" }}>%</span>
-									<input ref={ref_key}></input>
+									<input ref={refKey}></input>
 									<span style={{ margin: 0, display: "flex", alignItems: "center" }}>%</span>
 									<span style={{ margin: "0 10px", display: "flex", alignItems: "center" }}>⇒</span>
-									<input ref={ref_value}></input>
+									<input ref={refValue}></input>
 									<button
 										onClick={(e) => {
-											const new_key = ref_key.current.value;
-											const new_value = ref_value.current.value;
+											const newKey = refKey.current.value;
+											const newValue = refValue.current.value;
 
 											const target = e.target as HTMLButtonElement;
 											const id = target.parentElement!.parentElement!.id;
 
-											const old_key = id.replace("variable_", "");
-											const old_value = props.variable[old_key];
+											const oldKey = id.replace("variable_", "");
 
-											if (new_key === "") return;
-											if (new_key !== old_key && props.variable[new_key] !== undefined) return alert(`キー"${new_key}"は既に使用されています。`);
+											if (newKey === "") return;
+											if (newKey !== oldKey && variable[newKey] !== undefined) return alert(`キー"${newKey}"は既に使用されています。`);
 
 											//新しいオブジェクトとして作成
-											const new_variable = { ...props.variable };
-											delete new_variable[old_key];
-											new_variable[new_key] = new_value;
-											props.setVariable(new_variable);
+											const newVariable = { ...variable };
+											delete newVariable[oldKey];
+											newVariable[newKey] = newValue;
+											setVariable(newVariable);
 											setEditVariableKey(null);
 										}}
 									>
@@ -78,7 +72,7 @@ export const VariableList: React.FC<{
 								<div style={{ margin: "0 10px", width: "60%", display: "flex", flexDirection: "row" }}>
 									<span style={{ display: "flex", alignItems: "center" }}>%{key}%</span>
 									<span style={{ margin: "0 10px", display: "flex", alignItems: "center" }}>⇒</span>
-									<span style={{ display: "flex", alignItems: "center" }}>{String(props.variable[key])}</span>
+									<span style={{ display: "flex", alignItems: "center" }}>{String(variable[key])}</span>
 								</div>
 							)}
 
@@ -99,10 +93,10 @@ export const VariableList: React.FC<{
 									onClick={(e) => {
 										const target = e.target as HTMLButtonElement;
 										const id = target.parentElement!.parentElement!.id;
-										const delete_key = id.replace("variable_", "");
-										const new_variable = { ...props.variable };
-										delete new_variable[delete_key];
-										props.setVariable(new_variable);
+										const deleteKey = id.replace("variable_", "");
+										const newVariable = { ...variable };
+										delete newVariable[deleteKey];
+										setVariable(newVariable);
 									}}
 								>
 									<a style={{ fontSize: "18px", userSelect: "none", pointerEvents: "none" }}>🗑</a>

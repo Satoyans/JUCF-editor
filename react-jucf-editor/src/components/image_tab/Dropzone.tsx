@@ -1,21 +1,15 @@
-import { useEffect, useState } from "react";
-import { propsType } from "../../propsType";
 import { themeColors } from "../themeColor";
+import { useAppContext } from "../../AppContext";
 
-export const Dropzone: React.FC<{
-	props: {
-		uploadedImages: propsType["uploadedImages"];
-		setUploadedImages: propsType["setUploadedImages"];
-		themeColor: propsType["themeColor"];
-	};
-}> = ({ props }) => {
+export const Dropzone: React.FC = () => {
+	const { uploadedImages, setUploadedImages, themeColor } = useAppContext();
 	return (
 		<div
 			style={{
 				width: "calc(100% - 14px)",
 				height: "50px",
 				margin: "5px",
-				backgroundColor: themeColors[props.themeColor].dropzone.background,
+				backgroundColor: themeColors[themeColor].dropzone.background,
 				border: "solid 2px black",
 				display: "flex",
 				alignContent: "center",
@@ -25,28 +19,28 @@ export const Dropzone: React.FC<{
 			onDrop={async (e) => {
 				e.preventDefault();
 				const items = Array.from(e.dataTransfer.items);
-				const base64_images = await Promise.all(
+				const base64Images = await Promise.all(
 					items.map(async (item, i) => {
 						return new Promise<{ base64: string; path: string }[]>(async (resolve) => {
 							//エントリーを取得
 							const entry = item.webkitGetAsEntry();
 							if (!entry) return;
 							//再帰的に調べてファイルの一覧を返す
-							const file_entries = await searchFile(entry);
+							const fileEntries = await searchFile(entry);
 							//ファイルエントリーからファイルとフルパスを取得
 							const files = await Promise.all(
-								file_entries.map(
-									(file_entry) =>
+								fileEntries.map(
+									(fileEntry) =>
 										new Promise<{ file: File; path: string }>((resolve, reject) => {
-											file_entry.file(
-												(file) => resolve({ file: file, path: file_entry.fullPath.slice(1) }),
+											fileEntry.file(
+												(file) => resolve({ file: file, path: fileEntry.fullPath.slice(1) }),
 												(e) => reject(e)
 											);
 										})
 								)
 							);
 							//ファイルからbase64の画像とフルパスのオブジェクトに変換
-							const base64_images = (
+							const base64ImagesResolved = (
 								await Promise.all(
 									files.map(async ({ file, path }) => {
 										if (file.type !== "image/png" && file.type !== "image/jpeg") return { path: "", base64: "" };
@@ -55,18 +49,18 @@ export const Dropzone: React.FC<{
 									})
 								)
 							).filter((v) => v.path !== "");
-							resolve(base64_images);
+							resolve(base64ImagesResolved);
 						});
 					})
 				);
 				//前のステートの値を別オブジェクトとして生成
-				const result: { [path: string]: string } = { ...props.uploadedImages };
+				const result: { [path: string]: string } = { ...uploadedImages };
 				//前のステートに追加
-				for (let uploaded_image of base64_images.flat()) {
-					result[uploaded_image.path] = uploaded_image.base64;
+				for (let uploadedImage of base64Images.flat()) {
+					result[uploadedImage.path] = uploadedImage.base64;
 				}
 				//セット
-				props.setUploadedImages(result);
+				setUploadedImages(result);
 			}}
 		>
 			<p style={{ pointerEvents: "none", userSelect: "none" }}>ここにドロップしてファイルまたはフォルダをアップロード</p>
@@ -85,20 +79,20 @@ async function searchFile(entry: FileSystemEntry): Promise<FileSystemFileEntry[]
 					resolve(entries);
 				});
 			});
-		let all_entries: FileSystemEntry[] = [];
+		let allEntries: FileSystemEntry[] = [];
 		const readAllEntries = async () => {
 			const entries = await getEntries();
 			if (entries.length > 0) {
-				all_entries = [...all_entries, ...entries];
+				allEntries = [...allEntries, ...entries];
 				await readAllEntries();
 			}
 		};
 		await readAllEntries();
-		let result_paths: FileSystemFileEntry[] = [];
-		for (const entry of all_entries) {
-			result_paths.push(...(await searchFile(entry)));
+		let resultPaths: FileSystemFileEntry[] = [];
+		for (const entry2 of allEntries) {
+			resultPaths.push(...(await searchFile(entry2)));
 		}
-		return result_paths;
+		return resultPaths;
 	}
 	return [];
 }

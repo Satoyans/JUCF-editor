@@ -1,10 +1,9 @@
-import { propsType } from "../../propsType";
 import { VariableInput } from "./VariableInput";
 import { VariableList } from "./VariableList";
 
-export const VariableTab: React.FC<{ props: propsType }> = ({ props }) => (
+export const VariableTab: React.FC = () => (
 	<>
-		<VariableInput props={{ ...props }} />
-		<VariableList props={{ ...props }} />
+		<VariableInput />
+		<VariableList />
 	</>
 );

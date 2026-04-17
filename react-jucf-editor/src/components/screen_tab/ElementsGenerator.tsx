@@ -1,46 +1,38 @@
 import React from "react";
-import { formElementsTypes, formElementsVariableTypes } from "../../formElementTypes";
+import { formElementsVariableTypes } from "../../formElementTypes";
 import { variableReplacer } from "../../variableReplacer";
-import { propsType } from "../../propsType";
+import { useAppContext } from "../../AppContext";
 
 //エレメントジェネレーター
-export const ElementsGenerator: React.FC<{
-	props: {
-		formElements: propsType["formElements"];
-		setFormElements: React.Dispatch<React.SetStateAction<formElementsVariableTypes.elementPropertiesTypes.all[]>>;
-		screenZoomRatio: number;
-		setScreenZoomRatio: React.Dispatch<React.SetStateAction<number>>;
-		targetFormElementIndex: number | null;
-		setTargetFormElementIndex: React.Dispatch<React.SetStateAction<number | null>>;
-		uploadedImages: {
-			[path: string]: string;
-		};
-		variable: {
-			[key: string]: string | number | boolean;
-		};
-	};
-}> = ({ props }) => {
-	function elementGenerator(form_element: formElementsVariableTypes.elementPropertiesTypes.all, index: number) {
-		const replaced_form_size_w = Number(variableReplacer(form_element.w, props.variable));
-		const replaced_form_size_h = Number(variableReplacer(form_element.h, props.variable));
-		const replaced_form_size_x = Number(variableReplacer(form_element.x, props.variable));
-		const replaced_form_size_y = Number(variableReplacer(form_element.y, props.variable));
-		const form_size_w = Number.isNaN(replaced_form_size_w) ? 0 : replaced_form_size_w * props.screenZoomRatio;
-		const form_size_h = Number.isNaN(replaced_form_size_h) ? 0 : replaced_form_size_h * props.screenZoomRatio;
-		const form_size_x = Number.isNaN(replaced_form_size_x) ? 0 : replaced_form_size_x * props.screenZoomRatio;
-		const form_size_y = Number.isNaN(replaced_form_size_y) ? 0 : replaced_form_size_y * props.screenZoomRatio;
+export const ElementsGenerator: React.FC = () => {
+	const {
+		formElements,
+		screenZoomRatio,
+		targetFormElementIndex,
+		uploadedImages,
+		variable,
+	} = useAppContext();
+
+	function elementGenerator(formElement: formElementsVariableTypes.elementPropertiesTypes.all, index: number) {
+		const replacedFormSizeW = Number(variableReplacer(formElement.w, variable));
+		const replacedFormSizeH = Number(variableReplacer(formElement.h, variable));
+		const replacedFormSizeX = Number(variableReplacer(formElement.x, variable));
+		const replacedFormSizeY = Number(variableReplacer(formElement.y, variable));
+		const formSizeW = Number.isNaN(replacedFormSizeW) ? 0 : replacedFormSizeW * screenZoomRatio;
+		const formSizeH = Number.isNaN(replacedFormSizeH) ? 0 : replacedFormSizeH * screenZoomRatio;
+		const formSizeX = Number.isNaN(replacedFormSizeX) ? 0 : replacedFormSizeX * screenZoomRatio;
+		const formSizeY = Number.isNaN(replacedFormSizeY) ? 0 : replacedFormSizeY * screenZoomRatio;
 		return (
 			<div
 				id={`form_element${index}`}
 				className={`form_element`}
 				style={{
-					width: `${form_size_w}px`,
-					height: `${form_size_h}px`,
-					transform: `translate(${form_size_x}px, ${form_size_y}px)`,
+					width: `${formSizeW}px`,
+					height: `${formSizeH}px`,
+					transform: `translate(${formSizeX}px, ${formSizeY}px)`,
 					position: "absolute",
-					// letterSpacing: `${-0.75 * props.screenZoomRatio}px`,
-					boxShadow: `${index === props.targetFormElementIndex ? "0 0 0 2px red inset" : "0 0 0 2px black inset"}`,
-					zIndex: `${index === props.targetFormElementIndex ? 1 : 0}`,
+					boxShadow: `${index === targetFormElementIndex ? "0 0 0 2px red inset" : "0 0 0 2px black inset"}`,
+					zIndex: `${index === targetFormElementIndex ? 1 : 0}`,
 
 					display: "flex",
 					alignItems: "center",
@@ -51,9 +43,7 @@ export const ElementsGenerator: React.FC<{
 				<div
 					style={{
 						zIndex: 1,
-						// width: `${form_element.w * props.screenZoomRatio}px`,
-
-						height: `${form_size_h}px`,
+						height: `${formSizeH}px`,
 						position: "absolute",
 						display: "flex",
 						alignContent: "center",
@@ -61,25 +51,25 @@ export const ElementsGenerator: React.FC<{
 						flexDirection: "column",
 					}}
 				>
-					{form_element.is_show_text !== "true"
+					{formElement.is_show_text !== "true"
 						? null
-						: form_element.text.split("\\n").map((text, i) => (
+						: formElement.text.split("\\n").map((text, i) => (
 								<React.Fragment key={i}>
 									<p
 										style={{
-											fontSize: `${8 * props.screenZoomRatio}px`,
+											fontSize: `${8 * screenZoomRatio}px`,
 											whiteSpace: "nowrap",
 											pointerEvents: "none",
 											userSelect: "none",
 											margin: 0,
-											marginTop: `${2 * props.screenZoomRatio}px`,
+											marginTop: `${2 * screenZoomRatio}px`,
 											textAlign: "left",
-											lineHeight: `${10 * props.screenZoomRatio}px`,
-											height: `${8 * props.screenZoomRatio}px`,
+											lineHeight: `${10 * screenZoomRatio}px`,
+											height: `${8 * screenZoomRatio}px`,
 											letterSpacing: "-0.062em",
 										}}
 									>
-										{variableReplacer(text, props.variable)}
+										{variableReplacer(text, variable)}
 									</p>
 								</React.Fragment>
 						  ))}
@@ -89,16 +79,16 @@ export const ElementsGenerator: React.FC<{
 						pointerEvents: "none",
 						userSelect: "none",
 						zIndex: 0,
-						width: `${form_size_w - 4}px`,
-						height: `${form_size_h - 4}px`,
+						width: `${formSizeW - 4}px`,
+						height: `${formSizeH - 4}px`,
 						position: "absolute",
 						display: "flex",
 					}}
 				>
-					{form_element.is_show_image !== "true" ? null : (
+					{formElement.is_show_image !== "true" ? null : (
 						<img
 							style={{ imageRendering: "pixelated", width: "100%", height: "100%" }}
-							src={`data:image/png;base64,${getImage(props.uploadedImages, props.variable, form_element.texture)}`}
+							src={`data:image/png;base64,${getImage(uploadedImages, variable, formElement.texture)}`}
 						/>
 					)}
 				</div>
@@ -107,8 +97,8 @@ export const ElementsGenerator: React.FC<{
 	}
 	return (
 		<div id="form_elements">
-			{props.formElements.map((form_element, index) => (
-				<React.Fragment key={index}>{elementGenerator(form_element, index)}</React.Fragment>
+			{formElements.map((formElement, index) => (
+				<React.Fragment key={index}>{elementGenerator(formElement, index)}</React.Fragment>
 			))}
 		</div>
 	);
@@ -124,8 +114,8 @@ function getImage(
 	texture: string
 ) {
 	const path = variableReplacer(texture, variable);
-	const path_png = path + ".png";
-	const path_jpg = path + ".jpg";
-	const path_jpeg = path + ".jpeg";
-	return uploadedImages[path] ?? uploadedImages[path_png] ?? uploadedImages[path_jpg] ?? uploadedImages[path_jpeg] ?? "";
+	const pathPng = path + ".png";
+	const pathJpg = path + ".jpg";
+	const pathJpeg = path + ".jpeg";
+	return uploadedImages[path] ?? uploadedImages[pathPng] ?? uploadedImages[pathJpg] ?? uploadedImages[pathJpeg] ?? "";
 }

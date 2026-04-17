@@ -1,34 +1,27 @@
 import Moveable, { OnDrag, OnResize } from "react-moveable";
-import { formElementsTypes, formElementsVariableTypes } from "../../formElementTypes";
-import { propsType } from "../../propsType";
+import { useAppContext } from "../../AppContext";
 
-const MoveableElement: React.FC<{
-	props: {
-		formSize: propsType["formSize"];
-		gameScreenSize: propsType["gameScreenSize"];
-		screenZoomRatio: propsType["screenZoomRatio"];
-
-		targetFormElement: propsType["targetFormElement"];
-		setTargetFormElement: propsType["setTargetFormElement"];
-
-		formElements: propsType["formElements"];
-		setFormElements: propsType["setFormElements"];
-		editMode: propsType["editMode"];
-	};
-}> = ({ props }) => {
-	const form_size = { x: props.formSize.x * props.screenZoomRatio, y: props.formSize.y * props.screenZoomRatio };
-	const game_screen_size = { x: props.gameScreenSize.x * props.screenZoomRatio, y: props.gameScreenSize.y * props.screenZoomRatio };
+const MoveableElement: React.FC = () => {
+	const {
+		formSize,
+		gameScreenSize,
+		screenZoomRatio,
+		targetFormElement,
+		formElements,
+		setFormElements,
+		editMode,
+	} = useAppContext();
 
 	if (document.querySelector("#screen") === null) return <></>;
-	const game_screen_div = document.querySelector("#game_screen") as HTMLDivElement;
-	const form_screen_div = document.querySelector("#form_screen") as HTMLDivElement;
-	const game_screen_width = Number(game_screen_div.style.width.replace("px", ""));
-	const game_screen_height = Number(game_screen_div.style.height.replace("px", ""));
-	const form_screen_width = Number(form_screen_div.style.width.replace("px", ""));
-	const form_screen_height = Number(form_screen_div.style.height.replace("px", ""));
+	const gameScreenDiv = document.querySelector("#game_screen") as HTMLDivElement;
+	const formScreenDiv = document.querySelector("#form_screen") as HTMLDivElement;
+	const gameScreenWidth = Number(gameScreenDiv.style.width.replace("px", ""));
+	const gameScreenHeight = Number(gameScreenDiv.style.height.replace("px", ""));
+	const formScreenWidth = Number(formScreenDiv.style.width.replace("px", ""));
+	const formScreenHeight = Number(formScreenDiv.style.height.replace("px", ""));
 
-	const screen_top = 100;
-	const screen_left = Math.abs(game_screen_width - form_screen_width) / 2;
+	// const screenTop = 100;
+	// const screenLeft = Math.abs(gameScreenWidth - formScreenWidth) / 2;
 
 	const onDrag = (e: OnDrag) => {
 		let [left, top] = e.transform
@@ -40,21 +33,19 @@ const MoveableElement: React.FC<{
 		//上
 		if (top < -e.height) top = -e.height;
 		//下
-		if (top > form_screen_height) top = form_screen_height;
+		if (top > formScreenHeight) top = formScreenHeight;
 		//左
 		if (left < -e.width) left = -e.width;
 		//右
-		if (left > form_screen_width) left = form_screen_width;
+		if (left > formScreenWidth) left = formScreenWidth;
 		e.target.style.transform = `translate(${left}px, ${top}px)`;
 
 		const index = Number(e.target.id.replace("form_element", ""));
 		if (Number.isNaN(index)) throw new Error("form_element index is not a namber");
-		const form_elements = JSON.parse(JSON.stringify(props.formElements));
-		// form_elements[index].x = Number((left / props.screenZoomRatio).toFixed(0));
-		// form_elements[index].y = Number((top / props.screenZoomRatio).toFixed(0));
-		form_elements[index].x = (left / props.screenZoomRatio).toFixed(0);
-		form_elements[index].y = (top / props.screenZoomRatio).toFixed(0);
-		props.setFormElements(form_elements);
+		const formElementsCopy = JSON.parse(JSON.stringify(formElements));
+		formElementsCopy[index].x = (left / screenZoomRatio).toFixed(0);
+		formElementsCopy[index].y = (top / screenZoomRatio).toFixed(0);
+		setFormElements(formElementsCopy);
 	};
 
 	const onResize = (e: OnResize) => {
@@ -64,10 +55,9 @@ const MoveableElement: React.FC<{
 
 		const index = Number(e.target.id.replace("form_element", ""));
 		if (Number.isNaN(index)) throw new Error("form_element index is not a namber");
-		const form_elements = JSON.parse(JSON.stringify(props.formElements));
-		form_elements[index].w = (e.width / props.screenZoomRatio).toFixed(0);
-		form_elements[index].h = (e.height / props.screenZoomRatio).toFixed(0);
-		// props.setFormElements(form_elements);
+		const formElementsCopy = JSON.parse(JSON.stringify(formElements));
+		formElementsCopy[index].w = (e.width / screenZoomRatio).toFixed(0);
+		formElementsCopy[index].h = (e.height / screenZoomRatio).toFixed(0);
 
 		//onDragの処理
 		let [left, top] = e.transform
@@ -79,29 +69,27 @@ const MoveableElement: React.FC<{
 		//上
 		if (top < -e.height) top = -e.height;
 		//下
-		if (top > form_screen_height) top = form_screen_height;
+		if (top > formScreenHeight) top = formScreenHeight;
 		//左
 		if (left < -e.width) left = -e.width;
 		//右
-		if (left > form_screen_width) left = form_screen_width;
+		if (left > formScreenWidth) left = formScreenWidth;
 		e.target.style.transform = `translate(${left}px, ${top}px)`;
 
 		if (Number.isNaN(index)) throw new Error("form_element index is not a namber");
-		// form_elements[index].x = Number((left / props.screenZoomRatio).toFixed(0));
-		// form_elements[index].y = Number((top / props.screenZoomRatio).toFixed(0));
-		form_elements[index].x = (left / props.screenZoomRatio).toFixed(0);
-		form_elements[index].y = (top / props.screenZoomRatio).toFixed(0);
-		props.setFormElements(form_elements);
+		formElementsCopy[index].x = (left / screenZoomRatio).toFixed(0);
+		formElementsCopy[index].y = (top / screenZoomRatio).toFixed(0);
+		setFormElements(formElementsCopy);
 	};
 	return (
 		<Moveable
-			target={props.targetFormElement}
-			resizable={props.editMode === "resize" || props.editMode === "both"}
-			draggable={props.editMode === "drag" || props.editMode === "both"}
+			target={targetFormElement}
+			resizable={editMode === "resize" || editMode === "both"}
+			draggable={editMode === "drag" || editMode === "both"}
 			snappable={true}
-			snapContainer={props.targetFormElement?.parentElement}
-			snapGridWidth={props.screenZoomRatio}
-			snapGridHeight={props.screenZoomRatio}
+			snapContainer={targetFormElement?.parentElement}
+			snapGridWidth={screenZoomRatio}
+			snapGridHeight={screenZoomRatio}
 			onDrag={onDrag}
 			onResize={onResize}
 		/>

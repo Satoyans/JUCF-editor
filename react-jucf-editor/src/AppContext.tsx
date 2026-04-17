@@ -1,6 +1,7 @@
+import { createContext, useContext } from "react";
 import { formElementsTypes, formElementsVariableTypes } from "./formElementTypes";
 
-export type propsType = {
+export type AppContextType = {
 	isShowFormFrame: string;
 	setIsShowFormFrame: React.Dispatch<React.SetStateAction<string>>;
 	formName: string;
@@ -104,4 +105,14 @@ export type propsType = {
 	>;
 	isDontRecode: boolean;
 	setIsDontRecode: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+export const AppContext = createContext<AppContextType | undefined>(undefined);
+
+export const useAppContext = () => {
+	const context = useContext(AppContext);
+	if (context === undefined) {
+		throw new Error("useAppContext must be used within an AppContext.Provider");
+	}
+	return context;
 };

@@ -1,39 +1,34 @@
 import { useEffect, useState } from "react";
-import { default as MoveableElement } from "./components/screen_tab/MoveableElement";
 import React from "react";
 import { formElementsVariableTypes } from "./formElementTypes";
-import { ElementsGenerator } from "./components/screen_tab/ElementsGenerator";
-import { ControlPanel } from "./components/screen_tab/ControlPanel";
-import { ElementPanel } from "./components/screen_tab/ElementPanel";
 import { Header } from "./components/Header";
 import { ToolBar } from "./components/ToolBar";
-import { Screen } from "./components/screen_tab/Screen";
-import { Output } from "./components/screen_tab/Output";
 import { ScreenTab } from "./components/screen_tab/ScreenTab";
 import { ImageTab } from "./components/image_tab/ImageTab";
 import { variableReplacer } from "./variableReplacer";
 import { VariableTab } from "./components/variable_tab/VariableTab";
+import { AppContext } from "./AppContext";
 
 //ウィンドウサイズとゲームスクリーンサイズの比を返す関数
-function getScale(game_screen_size: { x: number; y: number }, form_size: { x: number; y: number }, elementPanelHeight: number) {
-	const window_x = window.innerWidth - 20 - 200; //余分 + コントロールパネル
-	const window_y = window.innerHeight - 50 - 50 - elementPanelHeight - 20; //  header + toolbar + under + 余分
-	if (window_x < 0 || window_y < 0) return 0;
-	const max_screen_size_x = Math.max(game_screen_size.x, form_size.x);
-	const max_screen_size_y = Math.max(game_screen_size.y, form_size.y);
-	const scaleX = window_x / max_screen_size_x;
-	const scaleY = window_y / max_screen_size_y;
+function getScale(gameScreenSize: { x: number; y: number }, formSize: { x: number; y: number }, elementPanelHeight: number) {
+	const windowX = window.innerWidth - 20 - 200; //余分 + コントロールパネル
+	const windowY = window.innerHeight - 50 - 50 - elementPanelHeight - 20; //  header + toolbar + under + 余分
+	if (windowX < 0 || windowY < 0) return 0;
+	const maxScreenSizeX = Math.max(gameScreenSize.x, formSize.x);
+	const maxScreenSizeY = Math.max(gameScreenSize.y, formSize.y);
+	const scaleX = windowX / maxScreenSizeX;
+	const scaleY = windowY / maxScreenSizeY;
 
 	const minScale = Math.min(scaleX, scaleY);
 	return Number(Math.floor(minScale * 10)) * 0.1; //o.oo
 }
 //フォームエレメントからエレメントパネルの高さを求める関数
-function getElementPanelHeight(form_elements: formElementsVariableTypes.elementPropertiesTypes.all[]) {
-	if (form_elements.length === 0) return 100;
-	const width_element_count = Math.floor((window.innerWidth - 20) / 100); //横方向に何個並べられるか
-	const height_element_count = Math.ceil(form_elements.length / width_element_count); //縦方向に何列必要か
-	if (height_element_count > 2) return 200;
-	return height_element_count * 100;
+function getElementPanelHeight(formElements: formElementsVariableTypes.elementPropertiesTypes.all[]) {
+	if (formElements.length === 0) return 100;
+	const widthElementCount = Math.floor((window.innerWidth - 20) / 100); //横方向に何個並べられるか
+	const heightElementCount = Math.ceil(formElements.length / widthElementCount); //縦方向に何列必要か
+	if (heightElementCount > 2) return 200;
+	return heightElementCount * 100;
 }
 
 function App() {
@@ -65,21 +60,21 @@ function App() {
 	const [gameScreenSizeVariable, setGameScreenSizeVariable] = useState({ x: "450", y: "180" });
 	useEffect(() => {
 		const { x, y } = gameScreenSizeVariable;
-		const x_num = Number(variableReplacer(x, variable));
-		const y_num = Number(variableReplacer(y, variable));
+		const xNum = Number(variableReplacer(x, variable));
+		const yNum = Number(variableReplacer(y, variable));
 
-		const set_value = { x: Number.isNaN(x_num) ? 0 : x_num, y: Number.isNaN(y_num) ? 0 : y_num };
-		setGameScreenSize(set_value);
+		const setValue = { x: Number.isNaN(xNum) ? 0 : xNum, y: Number.isNaN(yNum) ? 0 : yNum };
+		setGameScreenSize(setValue);
 	}, [gameScreenSizeVariable]);
 	//State: フォームサイズ変数
 	const [formSizeVariable, setFormSizeVariable] = useState({ x: "300", y: "180" });
 	useEffect(() => {
 		const { x, y } = formSizeVariable;
-		const x_num = Number(variableReplacer(x, variable));
-		const y_num = Number(variableReplacer(y, variable));
+		const xNum = Number(variableReplacer(x, variable));
+		const yNum = Number(variableReplacer(y, variable));
 
-		const set_value = { x: Number.isNaN(x_num) ? 0 : x_num, y: Number.isNaN(y_num) ? 0 : y_num };
-		setFormSize(set_value);
+		const setValue = { x: Number.isNaN(xNum) ? 0 : xNum, y: Number.isNaN(yNum) ? 0 : yNum };
+		setFormSize(setValue);
 	}, [formSizeVariable]);
 
 	//State: ゲームスクリーンサイズ
@@ -100,9 +95,9 @@ function App() {
 	//ターゲットインデックス更新時にターゲットを更新
 	useEffect(() => {
 		if (targetFormElementIndex === null) return setTargetFormElement(null);
-		const form_elements_div = document.querySelector("#form_elements");
-		if (form_elements_div === null) throw new Error("form_elements_div is null");
-		setTargetFormElement(form_elements_div.children[targetFormElementIndex] as HTMLElement);
+		const formElementsDiv = document.querySelector("#form_elements");
+		if (formElementsDiv === null) throw new Error("formElementsDiv is null");
+		setTargetFormElement(formElementsDiv.children[targetFormElementIndex] as HTMLElement);
 	}, [targetFormElementIndex]);
 
 	//State: undo記録用
@@ -124,7 +119,7 @@ function App() {
 		setStateFutureRecoder([]);
 	}, [formElements, targetFormElementIndex]);
 
-	const props = {
+	const contextValue = {
 		isShowFormFrame,
 		setIsShowFormFrame,
 		formName,
@@ -165,24 +160,26 @@ function App() {
 		setIsDontRecode,
 	};
 
-	let return_components;
+	let returnComponents;
 
 	if (selectedTab === "screen") {
-		return_components = <ScreenTab props={{ ...props }} />;
+		returnComponents = <ScreenTab />;
 	}
 	if (selectedTab === "image") {
-		return_components = <ImageTab props={{ ...props }} />;
+		returnComponents = <ImageTab />;
 	}
 	if (selectedTab === "variable") {
-		return_components = <VariableTab props={{ ...props }} />;
+		returnComponents = <VariableTab />;
 	}
 	return (
-		<div className="App">
-			<Header props={{ ...props }} />
-			<ToolBar props={{ ...props }} />
+		<AppContext.Provider value={contextValue}>
+			<div className="App">
+				<Header />
+				<ToolBar />
 
-			{return_components}
-		</div>
+				{returnComponents}
+			</div>
+		</AppContext.Provider>
 	);
 }
 

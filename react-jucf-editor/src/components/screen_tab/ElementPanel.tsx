@@ -1,25 +1,23 @@
 import React from "react";
-import { formElementsTypes, formElementsVariableTypes } from "../../formElementTypes";
+import { formElementsVariableTypes } from "../../formElementTypes";
 import { themeColors } from "../themeColor";
 import { variableReplacer } from "../../variableReplacer";
-import { propsType } from "../../propsType";
+import { useAppContext } from "../../AppContext";
 
 //エレメントパネル
-export const ElementPanel: React.FC<{
-	props: {
-		themeColor: propsType["themeColor"];
-		elementPanelHeight: propsType["elementPanelHeight"];
-		formElements: propsType["formElements"];
-		targetFormElement: propsType["targetFormElement"];
-		setTargetFormElement: propsType["setTargetFormElement"];
-		targetFormElementIndex: propsType["targetFormElementIndex"];
-		setTargetFormElementIndex: propsType["setTargetFormElementIndex"];
-		uploadedImages: propsType["uploadedImages"];
-		variable: propsType["variable"];
-	};
-}> = ({ props }) => {
-	const row_count = Math.floor((window.innerWidth - 20) / 100);
-	function InPanelElement(form_element: formElementsVariableTypes.elementPropertiesTypes.all, index: number) {
+export const ElementPanel: React.FC = () => {
+	const {
+		themeColor,
+		elementPanelHeight,
+		formElements,
+		targetFormElementIndex,
+		setTargetFormElementIndex,
+		uploadedImages,
+		variable,
+	} = useAppContext();
+
+	// const rowCount = Math.floor((window.innerWidth - 20) / 100);
+	function InPanelElement(formElement: formElementsVariableTypes.elementPropertiesTypes.all, index: number) {
 		return (
 			<div
 				style={{
@@ -30,13 +28,13 @@ export const ElementPanel: React.FC<{
 					display: "flex",
 					justifyContent: "flex-start",
 					alignItems: "center",
-					boxShadow: `${index === props.targetFormElementIndex ? "0 0 0 1px red inset" : "0 0 0 1px black inset"}`,
+					boxShadow: `${index === targetFormElementIndex ? "0 0 0 1px red inset" : "0 0 0 1px black inset"}`,
 				}}
 				id={`in_panel_element${index}`}
 				onClick={(e) => {
-					const form_element_index = Number((e.target as HTMLDivElement).id.replace("in_panel_element", ""));
-					if (Number.isNaN(form_element_index)) throw new Error("element_panel_index is not a number!");
-					props.setTargetFormElementIndex(form_element_index);
+					const formElementIndex = Number((e.currentTarget as HTMLDivElement).id.replace("in_panel_element", ""));
+					if (Number.isNaN(formElementIndex)) throw new Error("element_panel_index is not a number!");
+					setTargetFormElementIndex(formElementIndex);
 				}}
 			>
 				<div
@@ -49,7 +47,7 @@ export const ElementPanel: React.FC<{
 						zIndex: 0,
 					}}
 				>
-					{form_element.is_show_image !== "true" ? null : (
+					{formElement.is_show_image !== "true" ? null : (
 						<img
 							style={{
 								margin: "1px",
@@ -57,7 +55,7 @@ export const ElementPanel: React.FC<{
 								height: "78px",
 								imageRendering: "pixelated",
 							}}
-							src={`data:image/png;base64,${getImage(props.uploadedImages, props.variable, form_element.texture)}`}
+							src={`data:image/png;base64,${getImage(uploadedImages, variable, formElement.texture)}`}
 						/>
 					)}
 				</div>
@@ -71,12 +69,12 @@ export const ElementPanel: React.FC<{
 						justifyContent: "center",
 						position: "relative",
 						width: "100%",
-						left: form_element.is_show_image === "true" ? -79 : 0,
+						left: formElement.is_show_image === "true" ? -79 : 0,
 					}}
 				>
-					{form_element.is_show_text !== "true"
+					{formElement.is_show_text !== "true"
 						? null
-						: form_element.text.split("\\n").map((text, i) => (
+						: formElement.text.split("\\n").map((text, i) => (
 								<React.Fragment key={i}>
 									<p
 										style={{
@@ -90,7 +88,7 @@ export const ElementPanel: React.FC<{
 											textOverflow: "ellipsis",
 										}}
 									>
-										{variableReplacer(text, props.variable)}
+										{variableReplacer(text, variable)}
 									</p>
 								</React.Fragment>
 						  ))}
@@ -102,17 +100,17 @@ export const ElementPanel: React.FC<{
 		<div
 			id="element_panel"
 			style={{
-				backgroundColor: themeColors[props.themeColor].element_panel.background,
+				backgroundColor: themeColors[themeColor].element_panel.background,
 				width: "100%",
-				height: `${props.elementPanelHeight}px`,
+				height: `${elementPanelHeight}px`,
 				display: "flex",
 				flexFlow: "wrap",
 				overflowY: "auto",
 			}}
 		>
-			{props.formElements.length === 0 ? null : <span style={{ position: "absolute", fontSize: "8px", marginLeft: "10px" }}>{"layer ----------->"}</span>}
-			{props.formElements.map((form_element, index) => (
-				<React.Fragment key={index}>{InPanelElement(form_element, index)}</React.Fragment>
+			{formElements.length === 0 ? null : <span style={{ position: "absolute", fontSize: "8px", marginLeft: "10px" }}>{"layer ----------->"}</span>}
+			{formElements.map((formElement, index) => (
+				<React.Fragment key={index}>{InPanelElement(formElement, index)}</React.Fragment>
 			))}
 		</div>
 	);
@@ -128,8 +126,8 @@ function getImage(
 	texture: string
 ) {
 	const path = variableReplacer(texture, variable);
-	const path_png = path + ".png";
-	const path_jpg = path + ".jpg";
-	const path_jpeg = path + ".jpeg";
-	return uploadedImages[path] ?? uploadedImages[path_png] ?? uploadedImages[path_jpg] ?? uploadedImages[path_jpeg] ?? "";
+	const pathPng = path + ".png";
+	const pathJpg = path + ".jpg";
+	const pathJpeg = path + ".jpeg";
+	return uploadedImages[path] ?? uploadedImages[pathPng] ?? uploadedImages[pathJpg] ?? uploadedImages[pathJpeg] ?? "";
 }
