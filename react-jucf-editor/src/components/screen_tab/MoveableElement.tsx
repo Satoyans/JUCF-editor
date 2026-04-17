@@ -1,4 +1,4 @@
-import Moveable, { OnDrag, OnResize } from "react-moveable";
+import Moveable, { OnDrag, OnResize, OnDragEnd, OnResizeEnd } from "react-moveable";
 import { useAppContext } from "../../AppContext";
 
 const MoveableElement: React.FC = () => {
@@ -20,9 +20,7 @@ const MoveableElement: React.FC = () => {
 	const formScreenWidth = Number(formScreenDiv.style.width.replace("px", ""));
 	const formScreenHeight = Number(formScreenDiv.style.height.replace("px", ""));
 
-	// const screenTop = 100;
-	// const screenLeft = Math.abs(gameScreenWidth - formScreenWidth) / 2;
-
+	// ドラッグ中は見た目だけを更新
 	const onDrag = (e: OnDrag) => {
 		let [left, top] = e.transform
 			.replace("translate(", "")
@@ -39,27 +37,38 @@ const MoveableElement: React.FC = () => {
 		//右
 		if (left > formScreenWidth) left = formScreenWidth;
 		e.target.style.transform = `translate(${left}px, ${top}px)`;
-
-		const index = Number(e.target.id.replace("form_element", ""));
-		if (Number.isNaN(index)) throw new Error("form_element index is not a namber");
-		const formElementsCopy = JSON.parse(JSON.stringify(formElements));
-		formElementsCopy[index].x = (left / screenZoomRatio).toFixed(0);
-		formElementsCopy[index].y = (top / screenZoomRatio).toFixed(0);
-		setFormElements(formElementsCopy);
 	};
 
+	// ドラッグ完了時にReactのStateへ保存
+	const onDragEnd = (e: OnDragEnd) => {
+		const target = e.target as HTMLElement;
+		if (!target) return;
+		const index = Number(target.id.replace("form_element", ""));
+		if (Number.isNaN(index)) return;
+
+		const transform = target.style.transform;
+		if (!transform) return;
+
+		let [left, top] = transform
+			.replace("translate(", "")
+			.replace(/px/g, "")
+			.replace(")", "")
+			.split(", ")
+			.map((num) => Number(num));
+
+		setFormElements((prev) => {
+			const formElementsCopy = JSON.parse(JSON.stringify(prev));
+			formElementsCopy[index].x = (left / screenZoomRatio).toFixed(0);
+			formElementsCopy[index].y = (top / screenZoomRatio).toFixed(0);
+			return formElementsCopy;
+		});
+	};
+
+	// リサイズ中は見た目だけを更新
 	const onResize = (e: OnResize) => {
 		e.target.style.width = `${e.width}px`;
 		e.target.style.height = `${e.height}px`;
-		e.target.style.transform = e.drag.transform;
 
-		const index = Number(e.target.id.replace("form_element", ""));
-		if (Number.isNaN(index)) throw new Error("form_element index is not a namber");
-		const formElementsCopy = JSON.parse(JSON.stringify(formElements));
-		formElementsCopy[index].w = (e.width / screenZoomRatio).toFixed(0);
-		formElementsCopy[index].h = (e.height / screenZoomRatio).toFixed(0);
-
-		//onDragの処理
 		let [left, top] = e.transform
 			.replace("translate(", "")
 			.replace(/px/g, "")
@@ -75,12 +84,39 @@ const MoveableElement: React.FC = () => {
 		//右
 		if (left > formScreenWidth) left = formScreenWidth;
 		e.target.style.transform = `translate(${left}px, ${top}px)`;
-
-		if (Number.isNaN(index)) throw new Error("form_element index is not a namber");
-		formElementsCopy[index].x = (left / screenZoomRatio).toFixed(0);
-		formElementsCopy[index].y = (top / screenZoomRatio).toFixed(0);
-		setFormElements(formElementsCopy);
 	};
+
+	// リサイズ完了時にReactのStateへ保存
+	const onResizeEnd = (e: OnResizeEnd) => {
+		const target = e.target as HTMLElement;
+		if (!target) return;
+		const index = Number(target.id.replace("form_element", ""));
+		if (Number.isNaN(index)) return;
+
+		const width = Number(target.style.width.replace("px", ""));
+		const height = Number(target.style.height.replace("px", ""));
+
+		const transform = target.style.transform;
+		let left = 0, top = 0;
+		if (transform) {
+			[left, top] = transform
+				.replace("translate(", "")
+				.replace(/px/g, "")
+				.replace(")", "")
+				.split(", ")
+				.map((num) => Number(num));
+		}
+
+		setFormElements((prev) => {
+			const formElementsCopy = JSON.parse(JSON.stringify(prev));
+			formElementsCopy[index].w = (width / screenZoomRatio).toFixed(0);
+			formElementsCopy[index].h = (height / screenZoomRatio).toFixed(0);
+			formElementsCopy[index].x = (left / screenZoomRatio).toFixed(0);
+			formElementsCopy[index].y = (top / screenZoomRatio).toFixed(0);
+			return formElementsCopy;
+		});
+	};
+
 	return (
 		<Moveable
 			target={targetFormElement}
@@ -91,7 +127,9 @@ const MoveableElement: React.FC = () => {
 			snapGridWidth={screenZoomRatio}
 			snapGridHeight={screenZoomRatio}
 			onDrag={onDrag}
+			onDragEnd={onDragEnd}
 			onResize={onResize}
+			onResizeEnd={onResizeEnd}
 		/>
 	);
 };
